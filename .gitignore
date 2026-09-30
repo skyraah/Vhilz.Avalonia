@@ -1,0 +1,158 @@
+# =========================
+# .NET / C# 项目 .gitignore
+# =========================
+
+# 构建输出
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+build/
+artifacts/
+publish/
+*.binlog
+*.log
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.rsuser
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
+*.pfx
+*.publishsettings
+*.pubxml
+*.publishproj
+*.azurePubxml
+Generated\ Files/
+_UpgradeReport_Files/
+UpgradeLog*.XML
+UpgradeLog*.htm
+ServiceFabricBackup/
+AppPackages/
+BundleArtifacts/
+Package.StoreAssociation.xml
+_pkginfo.txt
+*.appx
+*.appxbundle
+*.appxupload
+
+# ReSharper / Rider
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+.idea/
+*.sln.iml
+
+# VS Code：保留团队共享配置，忽略个人配置
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+*.code-workspace
+.history/
+
+# NuGet / 包管理
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+!**/[Pp]ackages/repositories.config
+project.lock.json
+project.fragment.lock.json
+*.nuget.props
+*.nuget.targets
+paket-files/
+.paket/paket.exe
+
+# 测试与代码覆盖率
+[Tt]est[Rr]esult*/
+TestResults/
+[Bb]uild[Ll]og.*
+*.trx
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+coverage*.info
+OpenCover/
+BenchmarkDotNet.Artifacts/
+nunit-*.xml
+TestResult.xml
+*.VisualState.xml
+
+# 编译中间文件
+*.obj
+*.iobj
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.cache
+*.ilk
+*.meta
+*.pch
+*.psess
+*.vsp
+*.vspx
+*.sap
+*.e2e
+*.plg
+*.opt
+*.vbw
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+ipch/
+dlldata.c
+*_i.c
+*_p.c
+*_i.h
+
+# 本地数据库文件
+*.mdf
+*.ldf
+*.ndf
+
+# 本地机密 / 本地配置
+appsettings.local.json
+appsettings.*.local.json
+*.secrets.json
+
+# 前端依赖 / 缓存，如果项目里有前端
+node_modules/
+bower_components/
+.sass-cache/
+
+# 操作系统
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk

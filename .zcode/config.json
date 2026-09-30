@@ -1,0 +1,21 @@
+{
+  "hooks": {
+    "enabled": true,
+    "events": {
+      "PostToolUse": [
+        {
+          "matcher": "Edit|Write|MultiEdit|apply_patch",
+          "hooks": [
+            {
+              "type": "command",
+              "command": "/home/skye/.cache/JetBrains/Rider2026.2/aia/bundledHooks/quality-check.cmd",
+              "enabled": true,
+              "statusMessage": "Rider quality check",
+              "timeout": 30
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
