@@ -156,3 +156,7 @@ ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 *.lnk
+
+# Agent配置
+.zcode/
+.claude/

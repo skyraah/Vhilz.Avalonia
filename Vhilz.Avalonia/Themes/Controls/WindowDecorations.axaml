@@ -1,0 +1,130 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vhz="https://github.com/skyraah/Vhilz.Avalonia"
+                    xmlns:lucide="clr-namespace:Lucide.Avalonia;assembly=Lucide.Avalonia">
+    <!-- 装饰按钮只定义外观；点击、拖动、缩放由 Avalonia 的部件契约处理。 -->
+    <ControlTheme x:Key="VhilzCaptionButtonTheme" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Width" Value="{DynamicResource VhilzCaptionButtonWidth}" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="Button">
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme x:Key="VhilzWindowDecorationsTheme" TargetType="WindowDrawnDecorations">
+        <Setter Property="DefaultTitleBarHeight" Value="{DynamicResource VhilzWindowTitleBarHeight}" />
+        <Setter Property="DefaultFrameThickness" Value="{DynamicResource VhilzWindowFrameThickness}" />
+        <Setter Property="Template">
+            <WindowDrawnDecorationsTemplate>
+                <WindowDrawnDecorationsContent>
+                    <WindowDrawnDecorationsContent.Underlay>
+                        <Panel>
+                            <Border BorderThickness="{TemplateBinding FrameThickness}"
+                                    BorderBrush="{Binding $parent[vhz:VhilzWindow].BorderBrush}"
+                                    IsHitTestVisible="False" />
+                            <Border Name="PartTitleBar"
+                                    VerticalAlignment="Top"
+                                    Height="{TemplateBinding TitleBarHeight}"
+                                    Background="Transparent"
+                                    IsVisible="{TemplateBinding HasTitleBar}"
+                                    WindowDecorationProperties.ElementRole="TitleBar">
+                                <Border Background="{Binding $parent[vhz:VhilzWindow].TitleBarBackground}">
+                                    <TextBlock VerticalAlignment="Center" Text="{TemplateBinding Title}" />
+                                </Border>
+                            </Border>
+                        </Panel>
+                    </WindowDrawnDecorationsContent.Underlay>
+                    <WindowDrawnDecorationsContent.Overlay>
+                        <StackPanel Name="PART_CaptionButtons"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Height="{TemplateBinding TitleBarHeight}"
+                                    IsVisible="{TemplateBinding HasTitleBar}"
+                                    Orientation="Horizontal">
+                            <Button Name="PART_FullScreenButton"
+                                    Theme="{StaticResource VhilzCaptionButtonTheme}"
+                                    WindowDecorationProperties.ElementRole="FullScreenButton" />
+                            <Button Name="PART_MinimizeButton"
+                                    Theme="{StaticResource VhilzCaptionButtonTheme}"
+                                    WindowDecorationProperties.ElementRole="MinimizeButton" />
+                            <Button Name="PART_MaximizeButton"
+                                    Theme="{StaticResource VhilzCaptionButtonTheme}"
+                                    WindowDecorationProperties.ElementRole="MaximizeButton">
+                                <Grid>
+                                    <lucide:LucideIcon Name="PartMaximizeIcon" Kind="Maximize" Size="16"
+                                                       StrokeWidth="2" />
+                                    <lucide:LucideIcon Name="PartRestoreIcon" Kind="Shrink" Size="16" StrokeWidth="2"
+                                                       IsVisible="False" />
+                                </Grid>
+                            </Button>
+                            <Button Name="PART_CloseButton"
+                                    Theme="{StaticResource VhilzCaptionButtonTheme}"
+                                    WindowDecorationProperties.ElementRole="CloseButton">
+                                <lucide:LucideIcon Kind="X" Size="16" StrokeWidth="2" />
+                            </Button>
+                        </StackPanel>
+                    </WindowDrawnDecorationsContent.Overlay>
+                    <WindowDrawnDecorationsContent.FullscreenPopover>
+                        <DockPanel Height="{TemplateBinding DefaultTitleBarHeight}"
+                                   Background="{Binding $parent[vhz:VhilzWindow].TitleBarBackground}"
+                                   WindowDecorationProperties.ElementRole="TitleBar">
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                <Button Name="PART_PopoverFullScreenButton"
+                                        Theme="{StaticResource VhilzCaptionButtonTheme}"
+                                        WindowDecorationProperties.ElementRole="FullScreenButton">
+                                    <lucide:LucideIcon Kind="Expand" Size="16" StrokeWidth="2" />
+                                </Button>
+                                <Button Name="PART_PopoverCloseButton"
+                                        Theme="{StaticResource VhilzCaptionButtonTheme}"
+                                        WindowDecorationProperties.ElementRole="CloseButton">
+                                    <lucide:LucideIcon Kind="X" Size="16" StrokeWidth="2" />
+                                </Button>
+                            </StackPanel>
+                            <TextBlock VerticalAlignment="Center" Text="{TemplateBinding Title}" />
+                        </DockPanel>
+                    </WindowDrawnDecorationsContent.FullscreenPopover>
+                </WindowDrawnDecorationsContent>
+            </WindowDrawnDecorationsTemplate>
+        </Setter>
+        <Style Selector="^ /template/ Button#PART_CloseButton, ^ /template/ Button#PART_PopoverCloseButton">
+            <Setter Property="IsVisible" Value="{Binding $parent[vhz:VhilzWindow].IsCloseButtonVisible}" />
+        </Style>
+        <Style
+            Selector="^ /template/ Button#PART_MinimizeButton, ^ /template/ Button#PART_MaximizeButton, ^ /template/ Button#PART_FullScreenButton, ^ /template/ Button#PART_PopoverFullScreenButton">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="^:has-minimize /template/ Button#PART_MinimizeButton">
+            <Setter Property="IsVisible" Value="{Binding $parent[vhz:VhilzWindow].IsMinimizeButtonVisible}" />
+        </Style>
+        <Style Selector="^:has-maximize /template/ Button#PART_MaximizeButton">
+            <Setter Property="IsVisible" Value="{Binding $parent[vhz:VhilzWindow].IsRestoreButtonVisible}" />
+        </Style>
+        <Style
+            Selector="^:has-fullscreen /template/ Button#PART_FullScreenButton, ^:has-fullscreen /template/ Button#PART_PopoverFullScreenButton">
+            <Setter Property="IsVisible" Value="{Binding $parent[vhz:VhilzWindow].IsFullScreenButtonVisible}" />
+        </Style>
+        <Style Selector="^:maximized /template/ Button#PART_MaximizeButton">
+            <Style Selector="^ LucideIcon#PartMaximizeIcon">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+            <Style Selector="^ LucideIcon#PartRestoreIcon">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+        </Style>
+        <Style
+            Selector="^:fullscreen /template/ Border#PartTitleBar, ^:fullscreen /template/ StackPanel#PART_CaptionButtons">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

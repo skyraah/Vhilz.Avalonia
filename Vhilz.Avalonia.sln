@@ -1,8 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vhilz.Avalonia.Theme", "Vhilz.Avalonia.Theme\Vhilz.Avalonia.Theme.csproj", "{AEB0ACCF-603D-4599-9C94-46BA9BC17414}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vhilz.Avalonia", "Vhilz.Avalonia\Vhilz.Avalonia.csproj", "{AEB0ACCF-603D-4599-9C94-46BA9BC17414}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vhilz.Avalonia.Demo", "Vhilz.Avalonia.Demo\Vhilz.Avalonia.Demo.csproj", "{D960B77A-CE0E-43ED-AD91-13A857852BD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vhilz.Avalonia.Tests", "Vhilz.Avalonia.Tests\Vhilz.Avalonia.Tests.csproj", "{3C720513-5E5D-4848-B43C-5F6202701E21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +20,9 @@ Global
 		{D960B77A-CE0E-43ED-AD91-13A857852BD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D960B77A-CE0E-43ED-AD91-13A857852BD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D960B77A-CE0E-43ED-AD91-13A857852BD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C720513-5E5D-4848-B43C-5F6202701E21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C720513-5E5D-4848-B43C-5F6202701E21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C720513-5E5D-4848-B43C-5F6202701E21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C720513-5E5D-4848-B43C-5F6202701E21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

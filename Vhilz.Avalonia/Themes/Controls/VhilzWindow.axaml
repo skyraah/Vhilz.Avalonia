@@ -1,0 +1,51 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vhz="https://github.com/skyraah/Vhilz.Avalonia">
+    <!-- 只复用 Ursa 行为，模板与装饰外观均由 Vhilz 定义。 -->
+    <ControlTheme x:Key="VhilzWindowTheme" TargetType="vhz:VhilzWindow">
+        <Setter Property="WindowDecorationsTheme" Value="{DynamicResource VhilzWindowDecorationsTheme}" />
+        <Setter Property="vhz:OverlayDialogHost.IsModalStatusScope" Value="True" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="vhz:VhilzWindow">
+                <Panel>
+                    <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            IsHitTestVisible="False" />
+                    <VisualLayerManager Name="PART_VisualLayerManager"
+                                        Padding="{TemplateBinding OffScreenMargin}">
+                        <Panel>
+                            <Grid RowDefinitions="Auto,*">
+                                <vhz:TitleBar Name="PART_TitleBar"
+                                              Margin="{TemplateBinding TitleBarMargin}"
+                                              Padding="{TemplateBinding TitleBarPadding}"
+                                              Background="{TemplateBinding TitleBarBackground}"
+                                              IsVisible="{TemplateBinding IsTitleBarVisible}"
+                                              LeftContent="{TemplateBinding LeftContent}"
+                                              CenterContent="{TemplateBinding TitleBarContent}"
+                                              RightContent="{TemplateBinding RightContent}" />
+                                <ContentPresenter Name="PART_ContentPresenter"
+                                                  Grid.Row="1"
+                                                  Padding="{TemplateBinding Padding}"
+                                                  Content="{TemplateBinding Content}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </Grid>
+                            <vhz:OverlayDialogHost Name="PART_DialogHost"
+                                                   SafePadding="{TemplateBinding WindowDecorationMargin}"
+                                                   IsTopLevel="True"
+                                                   IsModalStatusReporter="True" />
+                        </Panel>
+                    </VisualLayerManager>
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <!-- 派生窗口也通过 VhilzWindow 的 StyleKey 自动使用这个主题。 -->
+    <ControlTheme x:Key="{x:Type vhz:VhilzWindow}"
+                  TargetType="vhz:VhilzWindow"
+                  BasedOn="{StaticResource VhilzWindowTheme}" />
+</ResourceDictionary>

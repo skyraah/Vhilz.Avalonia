@@ -1,0 +1,23 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Vhilz.Avalonia.Theme.VhilzTheme">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <!-- 同名资源随 Avalonia 原生主题变体切换。 -->
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceInclude x:Key="Light" Source="avares://Vhilz.Avalonia/Themes/Light.axaml" />
+                <ResourceInclude x:Key="Dark" Source="avares://Vhilz.Avalonia/Themes/Dark.axaml" />
+            </ResourceDictionary.ThemeDictionaries>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://Vhilz.Avalonia/Themes/Tokens.axaml" />
+                <ResourceInclude Source="avares://Vhilz.Avalonia/Themes/Controls/TitleBar.axaml" />
+                <ResourceInclude Source="avares://Vhilz.Avalonia/Themes/Controls/WindowDecorations.axaml" />
+                <ResourceInclude Source="avares://Vhilz.Avalonia/Themes/Controls/VhilzWindow.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+
+    <!-- Styles 根文件使用 StyleInclude，与 ResourceDictionary 分开加载。 -->
+    <StyleInclude Source="avares://Vhilz.Avalonia/Themes/Styles/CommonStyles.axaml" />
+</Styles>

@@ -1,9 +1,20 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Vhilz.Avalonia.Demo.MainWindow"
-        Title="Vhilz.Avalonia.Demo">
-    Welcome to Avalonia!
-</Window>
+<vhz:VhilzWindow xmlns="https://github.com/avaloniaui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:vhz="https://github.com/skyraah/Vhilz.Avalonia"
+                 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                 x:Class="Vhilz.Avalonia.Demo.MainWindow"
+                 ExtendClientAreaToDecorationsHint="True"
+                 Title="Vhilz.Avalonia.Demo">
+    <!-- 窗口使用 Vhilz 自有模板；预览工具中的 ComboBox 暂由 Demo 的 Fluent 主题提供外观。 -->
+    <StackPanel>
+        <TextBlock Text="Vhilz.Avalonia 开发入口" />
+        <ComboBox SelectedIndex="0" SelectionChanged="OnThemeSelectionChanged">
+            <ComboBoxItem Content="跟随系统" />
+            <ComboBoxItem Content="浅色" />
+            <ComboBoxItem Content="深色" />
+        </ComboBox>
+        <ContentControl x:Name="PreviewHost" />
+    </StackPanel>
+</vhz:VhilzWindow>

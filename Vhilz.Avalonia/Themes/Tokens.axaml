@@ -1,0 +1,8 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- 跨明暗不变的圆角、间距、动画时长等资源在此定义，资源 key 使用 Vhilz 前缀。 -->
+    <!-- 窗口结构默认值，可由应用资源覆盖。 -->
+    <x:Double x:Key="VhilzWindowTitleBarHeight">32</x:Double>
+    <x:Double x:Key="VhilzCaptionButtonWidth">46</x:Double>
+    <Thickness x:Key="VhilzWindowFrameThickness">4</Thickness>
+</ResourceDictionary>
