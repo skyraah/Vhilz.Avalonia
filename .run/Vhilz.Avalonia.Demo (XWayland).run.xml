@@ -1,9 +1,13 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration name="Vhilz.Avalonia.Demo (XWayland)" type="DotNetProject" factoryName=".NET Project" default="false">
-    <option name="EXE_PATH" value="" />
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Vhilz.Avalonia.Demo (XWayland)" type="DotNetProject" factoryName=".NET Project">
+    <option name="EXE_PATH" value="$PROJECT_DIR$/Vhilz.Avalonia.Demo/bin/Debug/net10.0/Vhilz.Avalonia.Demo.exe" />
     <option name="PROGRAM_PARAMETERS" value="" />
-    <option name="WORKING_DIRECTORY" value="" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Vhilz.Avalonia.Demo/bin/Debug/net10.0" />
     <option name="PASS_PARENT_ENVS" value="1" />
+    <envs>
+      <env name="XCURSOR_SIZE" value="30" />
+      <env name="XCURSOR_THEME" value="breeze_cursors" />
+    </envs>
     <option name="ENV_FILE_PATHS" value="" />
     <option name="REDIRECT_INPUT_PATH" value="" />
     <option name="MIXED_MODE_DEBUG" value="0" />
@@ -15,13 +19,9 @@
     <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
     <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
     <option name="PROJECT_KIND" value="DotNetCore" />
-    <option name="PROJECT_TFM" value="" />
+    <option name="PROJECT_TFM" value="net10.0" />
     <method v="2">
       <option name="Build" />
     </method>
-    <envs>
-      <env name="XCURSOR_THEME" value="breeze_cursors" />
-      <env name="XCURSOR_SIZE" value="30" />
-    </envs>
   </configuration>
 </component>
