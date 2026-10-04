@@ -1,30 +1,139 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:vhz="https://github.com/skyraah/Vhilz.Avalonia"
-                    xmlns:lucide="clr-namespace:Lucide.Avalonia;assembly=Lucide.Avalonia">
-    <!-- 装饰按钮只定义外观；点击、拖动、缩放由 Avalonia 的部件契约处理。 -->
-    <ControlTheme x:Key="VhilzCaptionButtonTheme" TargetType="Button">
+                    xmlns:media="using:Avalonia.Media"
+                    xmlns:lucide="clr-namespace:Lucide.Avalonia;assembly=Lucide.Avalonia"
+                    xmlns:acrylic="clr-namespace:Fluid.Avalonia.Acrylic;assembly=Fluid.Avalonia.Acrylic">
+
+    <!-- restore icon 16 DIP / 100% 下，像素对齐，特殊缩放需特殊处理 -->
+    <StreamGeometry x:Key="Vhilz.CaptionButton.Icon.Restore.Geometry">
+        M9.75 3.75h9.5a1 1 0 0 1 1 1v9.5
+        M4.75 8.25h10a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-10a1 1 0 0 1-1-1v-10a1 1 0 0 1 1-1z
+    </StreamGeometry>
+
+    <!-- 装饰按钮只定义外观；点击、拖动、缩放逻辑移交Avalonia -->
+    <vhz:CaptionTransitionConverter x:Key="Vhilz.CaptionButton.Motion.ParameterSelector.Converter" />
+    <ControlTheme x:Key="Vhilz.CaptionButton.Theme" TargetType="Button">
+
+        <!-- 按钮组背景透明 -->
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Width" Value="{DynamicResource VhilzCaptionButtonWidth}" />
+        <!-- 按钮宽度跟随公共token -->
+        <Setter Property="Width" Value="{DynamicResource Vhilz.CaptionButton.Width}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.CaptionButton.CornerRadius}" />
+        <Setter Property="Margin" Value="{DynamicResource Vhilz.CaptionButton.Margin}" />
+        <Style Selector="^.VhilzCaptionClose">
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Foreground"
+                                     Duration="{DynamicResource Vhilz.CaptionButton.Motion.Color.Default.Duration}"
+                                     Easing="{DynamicResource Vhilz.CaptionButton.Motion.Color.Default.Easing}" />
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <!-- 悬停时仅提升表面层次，保持图标前景色不变。 -->
+        <Style Selector="^:pointerover:not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.CaptionButton.PointerOver.BackgroundBrush}" />
+        </Style>
+        <Style Selector="^:pressed:not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.CaptionButton.Pressed.BackgroundBrush}" />
+        </Style>
+        <!-- 同一关闭语义供标题栏、全屏浮层和预览复用。 -->
+        <Style Selector="^.VhilzCaptionClose:pointerover:not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.CaptionButton.Close.PointerOver.BackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource Vhilz.CaptionButton.Close.InteractionForegroundBrush}" />
+        </Style>
+        <Style Selector="^.VhilzCaptionClose:pressed:not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.CaptionButton.Close.Pressed.BackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource Vhilz.CaptionButton.Close.InteractionForegroundBrush}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.CaptionButton.Disabled.Opacity}" />
+        </Style>
+        <Style Selector="^ /template/ acrylic|AcrylicSurface#PART_CaptionSurface">
+            <Setter Property="RenderTransform" Value="scale(1)" />
+        </Style>
+        <Style Selector="^:pressed:not(:disabled) /template/ acrylic|AcrylicSurface#PART_CaptionSurface">
+            <Setter Property="RenderTransform" Value="{DynamicResource Vhilz.CaptionButton.Surface.Pressed.RenderTransform}" />
+        </Style>
+
         <Setter Property="Template">
             <ControlTemplate TargetType="Button">
-                <Border Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        Padding="{TemplateBinding Padding}">
-                    <ContentPresenter Name="PART_ContentPresenter"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"
-                                      Content="{TemplateBinding Content}"
-                                      ContentTemplate="{TemplateBinding ContentTemplate}" />
-                </Border>
+                <!-- 保留完整点击区域，避免缩放时边缘失去命中而中断按压。 -->
+                <Panel Background="Transparent">
+                    <!-- FAA 1.4 的 TintColor 在 Alpha > 0 时完整替换色相；SurfaceColor 才能连续淡入。 -->
+                    <acrylic:AcrylicSurface x:Name="PART_CaptionSurface"
+                                            RenderTransformOrigin="50%,50%"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="{TemplateBinding CornerRadius}"
+                                            Padding="{TemplateBinding Padding}"
+                                            Margin="{TemplateBinding Margin}"
+                                            HorizontalContentAlignment="Stretch"
+                                            VerticalContentAlignment="Stretch"
+                                            HighlightEnabled="False"
+                                            RevealBorderEnabled="{DynamicResource Vhilz.CaptionButton.RevealBorder.IsEnabled}"
+                                            RevealBorderColor="{DynamicResource Vhilz.CaptionButton.RevealBorder.Color}"
+                                            RevealBorderWidth="{DynamicResource Vhilz.CaptionButton.RevealBorder.Width}"
+                                            RevealBorderRadius="{DynamicResource Vhilz.CaptionButton.RevealBorder.Radius}"
+                                            RevealBorderIntensity="{DynamicResource Vhilz.CaptionButton.RevealBorder.Intensity}"
+                                            RevealProximityDistance="{DynamicResource Vhilz.CaptionButton.RevealBorder.ProximityDistance}">
+                        <acrylic:AcrylicSurface.Transitions>
+                            <Transitions>
+                                <ColorTransition Property="SurfaceColor">
+                                    <ColorTransition.Duration>
+                                        <MultiBinding
+                                            Converter="{StaticResource Vhilz.CaptionButton.Motion.ParameterSelector.Converter}">
+                                            <Binding ElementName="PART_CaptionSurface"
+                                                     Path="((Button)TemplatedParent).Background" />
+                                            <DynamicResource ResourceKey="Vhilz.CaptionButton.Pressed.BackgroundBrush" />
+                                            <DynamicResource ResourceKey="Vhilz.CaptionButton.Close.Pressed.BackgroundBrush" />
+                                            <Binding ElementName="PART_CaptionSurface"
+                                                     Path="((Button)TemplatedParent).Classes" />
+                                            <DynamicResource ResourceKey="Vhilz.CaptionButton.Motion.Color.Default.Duration" />
+                                            <DynamicResource ResourceKey="Vhilz.CaptionButton.Motion.Background.ToPressed.Duration" />
+                                            <DynamicResource ResourceKey="Vhilz.CaptionButton.Close.Motion.Background.ToNormal.Duration" />
+                                        </MultiBinding>
+                                    </ColorTransition.Duration>
+                                    <ColorTransition.Easing>
+                                        <MultiBinding Converter="{StaticResource Vhilz.CaptionButton.Motion.ParameterSelector.Converter}">
+                                            <Binding ElementName="PART_CaptionSurface"
+                                                     Path="((Button)TemplatedParent).Background" />
+                                            <DynamicResource ResourceKey="Vhilz.CaptionButton.Pressed.BackgroundBrush" />
+                                            <DynamicResource ResourceKey="Vhilz.CaptionButton.Close.Pressed.BackgroundBrush" />
+                                            <Binding ElementName="PART_CaptionSurface"
+                                                     Path="((Button)TemplatedParent).Classes" />
+                                            <DynamicResource ResourceKey="Vhilz.CaptionButton.Motion.Color.Default.Easing" />
+                                            <DynamicResource ResourceKey="Vhilz.CaptionButton.Motion.Color.Default.Easing" />
+                                            <DynamicResource ResourceKey="Vhilz.CaptionButton.Close.Motion.Background.ToNormal.Easing" />
+                                        </MultiBinding>
+                                    </ColorTransition.Easing>
+                                </ColorTransition>
+                                <TransformOperationsTransition Property="RenderTransform"
+                                                               Duration="{DynamicResource Vhilz.CaptionButton.Surface.Motion.RenderTransform.Default.Duration}"
+                                                               Easing="{DynamicResource Vhilz.CaptionButton.Surface.Motion.RenderTransform.Default.Easing}" />
+                            </Transitions>
+                        </acrylic:AcrylicSurface.Transitions>
+                        <!-- 先订阅时长与缓动，再订阅颜色，确保新动画使用目标状态的参数。 -->
+                        <acrylic:AcrylicSurface.SurfaceColor>
+                            <Binding Path="((media:ISolidColorBrush)Background).Color"
+                                     RelativeSource="{RelativeSource TemplatedParent}"
+                                     FallbackValue="Transparent" TargetNullValue="Transparent" />
+                        </acrylic:AcrylicSurface.SurfaceColor>
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                    </acrylic:AcrylicSurface>
+                </Panel>
             </ControlTemplate>
         </Setter>
     </ControlTheme>
 
-    <ControlTheme x:Key="VhilzWindowDecorationsTheme" TargetType="WindowDrawnDecorations">
-        <Setter Property="DefaultTitleBarHeight" Value="{DynamicResource VhilzWindowTitleBarHeight}" />
-        <Setter Property="DefaultFrameThickness" Value="{DynamicResource VhilzWindowFrameThickness}" />
+    <ControlTheme x:Key="Vhilz.WindowDecorations.Theme" TargetType="WindowDrawnDecorations">
+        <Setter Property="DefaultTitleBarHeight" Value="{DynamicResource Vhilz.Window.TitleBar.Height}" />
+        <Setter Property="DefaultFrameThickness" Value="{DynamicResource Vhilz.Window.FrameThickness}" />
         <Setter Property="Template">
             <WindowDrawnDecorationsTemplate>
                 <WindowDrawnDecorationsContent>
@@ -33,6 +142,7 @@
                             <Border BorderThickness="{TemplateBinding FrameThickness}"
                                     BorderBrush="{Binding $parent[vhz:VhilzWindow].BorderBrush}"
                                     IsHitTestVisible="False" />
+
                             <Border Name="PartTitleBar"
                                     VerticalAlignment="Top"
                                     Height="{TemplateBinding TitleBarHeight}"
@@ -52,27 +162,47 @@
                                     Height="{TemplateBinding TitleBarHeight}"
                                     IsVisible="{TemplateBinding HasTitleBar}"
                                     Orientation="Horizontal">
+
+                            <!-- 全屏 -->
                             <Button Name="PART_FullScreenButton"
-                                    Theme="{StaticResource VhilzCaptionButtonTheme}"
-                                    WindowDecorationProperties.ElementRole="FullScreenButton" />
+                                    Theme="{StaticResource Vhilz.CaptionButton.Theme}"
+                                    WindowDecorationProperties.ElementRole="FullScreenButton">
+                                <lucide:LucideIcon Kind="Maximize" Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
+                                                   StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.StrokeWidth}" />
+                            </Button>
+
+                            <!-- 最小化 -->
                             <Button Name="PART_MinimizeButton"
-                                    Theme="{StaticResource VhilzCaptionButtonTheme}"
-                                    WindowDecorationProperties.ElementRole="MinimizeButton" />
+                                    Theme="{StaticResource Vhilz.CaptionButton.Theme}"
+                                    WindowDecorationProperties.ElementRole="MinimizeButton">
+                                <lucide:LucideIcon Kind="Minus" Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
+                                                   StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.StrokeWidth}" />
+                            </Button>
+
+                            <!-- 最大化和窗口化 -->
                             <Button Name="PART_MaximizeButton"
-                                    Theme="{StaticResource VhilzCaptionButtonTheme}"
+                                    Theme="{StaticResource Vhilz.CaptionButton.Theme}"
                                     WindowDecorationProperties.ElementRole="MaximizeButton">
                                 <Grid>
-                                    <lucide:LucideIcon Name="PartMaximizeIcon" Kind="Maximize" Size="16"
-                                                       StrokeWidth="2" />
-                                    <lucide:LucideIcon Name="PartRestoreIcon" Kind="Shrink" Size="16" StrokeWidth="2"
-                                                       IsVisible="False" />
+                                    <lucide:LucideIcon Name="PartMaximizeIcon" Kind="Square" Size="12"
+                                                       StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.StrokeWidth}" />
+                                    <vhz:CaptionGeometryIcon Name="PartRestoreIcon"
+                                                             Data="{DynamicResource Vhilz.CaptionButton.Icon.Restore.Geometry}"
+                                                             Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
+                                                             StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.Restore.StrokeWidth}"
+                                                             IsVisible="False" />
                                 </Grid>
                             </Button>
+
+                            <!-- 关闭按钮 -->
                             <Button Name="PART_CloseButton"
-                                    Theme="{StaticResource VhilzCaptionButtonTheme}"
+                                    Classes="VhilzCaptionClose"
+                                    Theme="{StaticResource Vhilz.CaptionButton.Theme}"
                                     WindowDecorationProperties.ElementRole="CloseButton">
-                                <lucide:LucideIcon Kind="X" Size="16" StrokeWidth="2" />
+                                <lucide:LucideIcon Kind="X" Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
+                                                   StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.StrokeWidth}" />
                             </Button>
+
                         </StackPanel>
                     </WindowDrawnDecorationsContent.Overlay>
                     <WindowDrawnDecorationsContent.FullscreenPopover>
@@ -81,14 +211,17 @@
                                    WindowDecorationProperties.ElementRole="TitleBar">
                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                 <Button Name="PART_PopoverFullScreenButton"
-                                        Theme="{StaticResource VhilzCaptionButtonTheme}"
+                                        Theme="{StaticResource Vhilz.CaptionButton.Theme}"
                                         WindowDecorationProperties.ElementRole="FullScreenButton">
-                                    <lucide:LucideIcon Kind="Expand" Size="16" StrokeWidth="2" />
+                                    <lucide:LucideIcon Kind="Expand" Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
+                                                       StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.StrokeWidth}" />
                                 </Button>
                                 <Button Name="PART_PopoverCloseButton"
-                                        Theme="{StaticResource VhilzCaptionButtonTheme}"
+                                        Classes="VhilzCaptionClose"
+                                        Theme="{StaticResource Vhilz.CaptionButton.Theme}"
                                         WindowDecorationProperties.ElementRole="CloseButton">
-                                    <lucide:LucideIcon Kind="X" Size="16" StrokeWidth="2" />
+                                    <lucide:LucideIcon Kind="X" Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
+                                                       StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.StrokeWidth}" />
                                 </Button>
                             </StackPanel>
                             <TextBlock VerticalAlignment="Center" Text="{TemplateBinding Title}" />
@@ -115,10 +248,10 @@
             <Setter Property="IsVisible" Value="{Binding $parent[vhz:VhilzWindow].IsFullScreenButtonVisible}" />
         </Style>
         <Style Selector="^:maximized /template/ Button#PART_MaximizeButton">
-            <Style Selector="^ LucideIcon#PartMaximizeIcon">
+            <Style Selector="^ lucide|LucideIcon#PartMaximizeIcon">
                 <Setter Property="IsVisible" Value="False" />
             </Style>
-            <Style Selector="^ LucideIcon#PartRestoreIcon">
+            <Style Selector="^ vhz|CaptionGeometryIcon#PartRestoreIcon">
                 <Setter Property="IsVisible" Value="True" />
             </Style>
         </Style>
@@ -127,4 +260,92 @@
             <Setter Property="IsVisible" Value="False" />
         </Style>
     </ControlTheme>
+
+    <!-- 预览宿主不生成窗口装饰，直接复用按钮主题和图标资源；这里的容器仅用于设计时展示。 -->
+    <Design.PreviewWith>
+        <Border Width="640" Padding="20">
+            <Border.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceInclude Source="/Themes/Resources/Tokens.axaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Dark">
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceInclude Source="/Themes/Resources/Dark.axaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                            <SolidColorBrush x:Key="Vhilz.Preview.WindowDecorations.BackgroundBrush">#18181B</SolidColorBrush>
+                            <SolidColorBrush x:Key="Vhilz.Preview.WindowDecorations.ForegroundBrush">#FAFAFA</SolidColorBrush>
+                        </ResourceDictionary>
+                        <ResourceDictionary x:Key="Light">
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceInclude Source="/Themes/Resources/Light.axaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                            <SolidColorBrush x:Key="Vhilz.Preview.WindowDecorations.BackgroundBrush">#F4F4F5</SolidColorBrush>
+                            <SolidColorBrush x:Key="Vhilz.Preview.WindowDecorations.ForegroundBrush">#18181B</SolidColorBrush>
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+                    <DataTemplate x:Key="Vhilz.Preview.WindowDecorations.Row.DataTemplate" x:DataType="x:String">
+                        <Border Padding="12"
+                                Background="{DynamicResource Vhilz.Preview.WindowDecorations.BackgroundBrush}"
+                                TextElement.Foreground="{DynamicResource Vhilz.Preview.WindowDecorations.ForegroundBrush}">
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="{Binding}" />
+                                <StackPanel Height="{DynamicResource Vhilz.Window.TitleBar.Height}"
+                                            Orientation="Horizontal">
+                                    <Button Theme="{StaticResource Vhilz.CaptionButton.Theme}">
+                                        <lucide:LucideIcon Kind="Maximize"
+                                                           Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
+                                                           StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.StrokeWidth}" />
+                                    </Button>
+                                    <Button Theme="{StaticResource Vhilz.CaptionButton.Theme}">
+                                        <lucide:LucideIcon Kind="Minus"
+                                                           Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
+                                                           StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.StrokeWidth}" />
+                                    </Button>
+                                    <Button Theme="{StaticResource Vhilz.CaptionButton.Theme}">
+                                        <lucide:LucideIcon Kind="Square" Size="12"
+                                                           StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.StrokeWidth}" />
+                                    </Button>
+                                    <Button Theme="{StaticResource Vhilz.CaptionButton.Theme}">
+                                        <vhz:CaptionGeometryIcon
+                                            Data="{DynamicResource Vhilz.CaptionButton.Icon.Restore.Geometry}"
+                                            Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
+                                            StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.Restore.StrokeWidth}" />
+                                    </Button>
+                                    <Button Theme="{StaticResource Vhilz.CaptionButton.Theme}">
+                                        <lucide:LucideIcon Kind="Expand"
+                                                           Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
+                                                           StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.StrokeWidth}" />
+                                    </Button>
+                                    <Button Theme="{StaticResource Vhilz.CaptionButton.Theme}"
+                                            Classes="VhilzCaptionClose">
+                                        <lucide:LucideIcon Kind="X"
+                                                           Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
+                                                           StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.StrokeWidth}" />
+                                    </Button>
+                                    <Button Theme="{StaticResource Vhilz.CaptionButton.Theme}"
+                                            Classes="VhilzCaptionClose" IsEnabled="False">
+                                        <lucide:LucideIcon Kind="X"
+                                                           Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
+                                                           StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.StrokeWidth}" />
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ResourceDictionary>
+            </Border.Resources>
+            <StackPanel Spacing="12">
+                <ThemeVariantScope RequestedThemeVariant="Dark">
+                    <ContentPresenter ContentTemplate="{StaticResource Vhilz.Preview.WindowDecorations.Row.DataTemplate}"
+                                      Content="暗色" />
+                </ThemeVariantScope>
+                <ThemeVariantScope RequestedThemeVariant="Light">
+                    <ContentPresenter ContentTemplate="{StaticResource Vhilz.Preview.WindowDecorations.Row.DataTemplate}"
+                                      Content="明色" />
+                </ThemeVariantScope>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
 </ResourceDictionary>

@@ -1,0 +1,46 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+                    xmlns:transform="using:Avalonia.Media.Transformation"
+                    xmlns:easing="using:Avalonia.Animation.Easings"
+                    xmlns:motion="using:SukiUI.Motion">
+    <!-- 跨明暗不变的圆角、间距、动画时长等资源在此定义，资源键采用 Vhilz 点分层级，规范见 docs/resource-key-naming.md。 -->
+
+    <!-- 窗口与操作按钮 -->
+
+    <x:Double x:Key="Vhilz.Window.TitleBar.Height">32</x:Double>
+    <x:Double x:Key="Vhilz.CaptionButton.Width">46</x:Double>
+    <x:Double x:Key="Vhilz.CaptionButton.Icon.Size">16</x:Double>
+    <x:Double x:Key="Vhilz.CaptionButton.Icon.StrokeWidth">2</x:Double>
+    <!-- Restore在默认 16 DIP 下为 1 DIP；独立于其他 Lucide 图标 -->
+    <x:Double x:Key="Vhilz.CaptionButton.Icon.Restore.StrokeWidth">1.5</x:Double>
+    <CornerRadius x:Key="Vhilz.CaptionButton.CornerRadius">3</CornerRadius>
+    <Thickness x:Key="Vhilz.CaptionButton.Margin">1,2,1,2</Thickness>
+    <Thickness x:Key="Vhilz.Window.FrameThickness">4</Thickness>
+    <SolidColorBrush x:Key="Vhilz.CaptionButton.Close.InteractionForegroundBrush">White</SolidColorBrush>
+    <x:Double x:Key="Vhilz.CaptionButton.Disabled.Opacity">0.4</x:Double>
+
+    <!-- 标题栏按钮的指针揭示描边；明暗主题分别显式定义颜色，其余数值按按钮尺寸从 FAA 默认值收紧。 -->
+    <!-- 启用指针揭示描边；FAA 默认关闭 -->
+    <sys:Boolean x:Key="Vhilz.CaptionButton.RevealBorder.IsEnabled">True</sys:Boolean>
+    <!-- 揭示描边宽度；FAA 默认为 2 -->
+    <x:Double x:Key="Vhilz.CaptionButton.RevealBorder.Width">1</x:Double>
+    <!-- 揭示描边半径；FAA 默认为 180 -->
+    <x:Double x:Key="Vhilz.CaptionButton.RevealBorder.Radius">55</x:Double>
+    <!-- 揭示描边强度；FAA 默认为 0.6 -->
+    <x:Double x:Key="Vhilz.CaptionButton.RevealBorder.Intensity">0.75</x:Double>
+    <!-- 指针接近该距离后浮现揭示描边；FAA 默认为 64 -->
+    <x:Double x:Key="Vhilz.CaptionButton.RevealBorder.ProximityDistance">15</x:Double>
+    <!-- 标题栏动画相关 -->
+    <!-- 标题栏按压仅缩放内部表面，保持窗口按钮的命中区域稳定。 -->
+    <transform:TransformOperations x:Key="Vhilz.CaptionButton.Surface.Pressed.RenderTransform">scale(0.94)</transform:TransformOperations>
+    <sys:TimeSpan x:Key="Vhilz.CaptionButton.Surface.Motion.RenderTransform.Default.Duration">0:0:0.16</sys:TimeSpan>
+    <motion:SukiSpringEaseOut x:Key="Vhilz.CaptionButton.Surface.Motion.RenderTransform.Default.Easing" />
+    <!-- 按钮染色采用无过冲缓动；与按压缩放的弹簧参数独立。 -->
+    <sys:TimeSpan x:Key="Vhilz.CaptionButton.Motion.Color.Default.Duration">0:0:0.12</sys:TimeSpan>
+    <sys:TimeSpan x:Key="Vhilz.CaptionButton.Motion.Background.ToPressed.Duration">0:0:0.08</sys:TimeSpan>
+    <easing:SineEaseInOut x:Key="Vhilz.CaptionButton.Motion.Color.Default.Easing" />
+    <!-- 关闭按钮红色退场留出更长的缓出尾段。 -->
+    <sys:TimeSpan x:Key="Vhilz.CaptionButton.Close.Motion.Background.ToNormal.Duration">0:0:0.4</sys:TimeSpan>
+    <easing:CubicEaseOut x:Key="Vhilz.CaptionButton.Close.Motion.Background.ToNormal.Easing" />
+</ResourceDictionary>

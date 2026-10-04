@@ -2,8 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:vhz="https://github.com/skyraah/Vhilz.Avalonia">
     <!-- 只复用 Ursa 行为，模板与装饰外观均由 Vhilz 定义。 -->
-    <ControlTheme x:Key="VhilzWindowTheme" TargetType="vhz:VhilzWindow">
-        <Setter Property="WindowDecorationsTheme" Value="{DynamicResource VhilzWindowDecorationsTheme}" />
+    <ControlTheme x:Key="Vhilz.Window.Theme" TargetType="vhz:VhilzWindow">
+        <Setter Property="WindowDecorationsTheme" Value="{DynamicResource Vhilz.WindowDecorations.Theme}" />
         <Setter Property="vhz:OverlayDialogHost.IsModalStatusScope" Value="True" />
         <Setter Property="Template">
             <ControlTemplate TargetType="vhz:VhilzWindow">
@@ -47,5 +47,5 @@
     <!-- 派生窗口也通过 VhilzWindow 的 StyleKey 自动使用这个主题。 -->
     <ControlTheme x:Key="{x:Type vhz:VhilzWindow}"
                   TargetType="vhz:VhilzWindow"
-                  BasedOn="{StaticResource VhilzWindowTheme}" />
+                  BasedOn="{StaticResource Vhilz.Window.Theme}" />
 </ResourceDictionary>

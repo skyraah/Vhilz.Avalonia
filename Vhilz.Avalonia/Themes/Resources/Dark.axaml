@@ -1,0 +1,11 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- 暗色基础色与语义画笔在此定义；与 Light.axaml 保持相同的资源 key。 -->
+    <!-- SurfaceColor 直接使用 Alpha；延续原 TintColor 约 75% 的叠色强度。 -->
+    <SolidColorBrush x:Key="Vhilz.CaptionButton.PointerOver.BackgroundBrush">#1BFFFFFF</SolidColorBrush>
+    <SolidColorBrush x:Key="Vhilz.CaptionButton.Pressed.BackgroundBrush">#12FFFFFF</SolidColorBrush>
+    <SolidColorBrush x:Key="Vhilz.CaptionButton.Close.PointerOver.BackgroundBrush">#BFE5484D</SolidColorBrush>
+    <SolidColorBrush x:Key="Vhilz.CaptionButton.Close.Pressed.BackgroundBrush">#BFB4232A</SolidColorBrush>
+    <!-- 指针揭示描边颜色；FAA 默认为白色，暗色表面沿用白色高光。 -->
+    <Color x:Key="Vhilz.CaptionButton.RevealBorder.Color">White</Color>
+</ResourceDictionary>

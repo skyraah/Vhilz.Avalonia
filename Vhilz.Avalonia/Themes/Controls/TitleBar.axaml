@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:vhz="https://github.com/skyraah/Vhilz.Avalonia">
     <!-- 自有结构模板；颜色、尺寸与状态样式在此扩展。 -->
-    <ControlTheme x:Key="VhilzTitleBarTheme" TargetType="vhz:TitleBar">
+    <ControlTheme x:Key="Vhilz.TitleBar.Theme" TargetType="vhz:TitleBar">
         <Setter Property="Template">
             <ControlTemplate TargetType="vhz:TitleBar">
                 <Border Background="{TemplateBinding Background}"
@@ -29,5 +29,5 @@
     </ControlTheme>
     <ControlTheme x:Key="{x:Type vhz:TitleBar}"
                   TargetType="vhz:TitleBar"
-                  BasedOn="{StaticResource VhilzTitleBarTheme}" />
+                  BasedOn="{StaticResource Vhilz.TitleBar.Theme}" />
 </ResourceDictionary>

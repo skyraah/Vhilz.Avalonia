@@ -8,6 +8,7 @@ using Avalonia.LogicalTree;
 using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
+using Lucide.Avalonia;
 using OverlayDialogHost = Ursa.Controls.OverlayDialogHost;
 using VhilzOverlayDialogHost = Vhilz.Avalonia.Theme.Controls.OverlayDialogHost;
 using Vhilz.Avalonia.Theme;
@@ -22,7 +23,7 @@ public class VhilzWindowTests
     public void DerivedWindowUsesRegisteredThemeAndItsSetters()
     {
         var theme = new VhilzTheme();
-        Assert.True(theme.TryGetResource("VhilzWindowTheme", null, out var resource));
+        Assert.True(theme.TryGetResource("Vhilz.Window.Theme", null, out var resource));
         var implementation = Assert.IsType<ControlTheme>(resource);
         Assert.Null(implementation.BasedOn);
         implementation.Setters.Add(new Setter(VhilzWindow.TitleBarPaddingProperty, new Thickness(12)));
@@ -101,7 +102,7 @@ public class VhilzWindowTests
     public void DecorationsUseOwnButtonThemesAndFrameworkPartContract()
     {
         var theme = new VhilzTheme();
-        Assert.True(theme.TryGetResource("VhilzWindowDecorationsTheme", null, out var resource));
+        Assert.True(theme.TryGetResource("Vhilz.WindowDecorations.Theme", null, out var resource));
         var decorations = Assert.IsType<ControlTheme>(resource);
         var templateSetter = Assert.Single(decorations.Setters.OfType<Setter>(),
             setter => setter.Property == WindowDrawnDecorations.TemplateProperty);
@@ -119,6 +120,58 @@ public class VhilzWindowTests
             var button = Assert.IsType<Button>(result.NameScope.Find(part));
             Assert.NotNull(button.Theme);
             Assert.Null(button.Theme.BasedOn);
+        }
+    }
+
+    [AvaloniaFact]
+    public void RestoreIconPreservesLucideScaleAndFollowsButtonForeground()
+    {
+        var theme = new VhilzTheme();
+        Assert.True(theme.TryGetResource("Vhilz.WindowDecorations.Theme", null, out var resource));
+        var decorations = Assert.IsType<ControlTheme>(resource);
+        var templateSetter = Assert.Single(decorations.Setters.OfType<Setter>(),
+            setter => setter.Property == WindowDrawnDecorations.TemplateProperty);
+        var template = Assert.IsAssignableFrom<IWindowDrawnDecorationsTemplate>(templateSetter.Value);
+        var result = template.Build();
+        var button = Assert.IsType<Button>(result.NameScope.Find("PART_MaximizeButton"));
+        var restore = Assert.IsType<CaptionGeometryIcon>(result.NameScope.Find("PartRestoreIcon"));
+        var minimizeButton = Assert.IsType<Button>(result.NameScope.Find("PART_MinimizeButton"));
+        var lucide = Assert.IsType<LucideIcon>(minimizeButton.Content);
+        // 单独承载装饰模板，避免依赖 Headless 平台是否提供原生窗口装饰。
+        var window = new Window { Content = result.Result.Overlay };
+        restore.IsVisible = true;
+        window.Show();
+        try
+        {
+            Assert.Equal(new Size(lucide.Size, lucide.Size), restore.Bounds.Size);
+            Assert.Equal(1.5, restore.StrokeWidth);
+            Assert.NotNull(restore.Data);
+            Assert.Empty(restore.GetVisualChildren());
+
+            foreach (var brush in new[] { Brushes.White, Brushes.Black })
+            {
+                button.Foreground = brush;
+                Assert.Same(brush, restore.Foreground);
+            }
+
+            // 尺寸共享；还原框线使用独立描边 Token，并允许应用覆盖。
+            window.Resources["Vhilz.CaptionButton.Icon.Size"] = 20d;
+            window.Resources["Vhilz.CaptionButton.Icon.StrokeWidth"] = 1.5d;
+            window.UpdateLayout();
+            Assert.Equal(20, lucide.Size);
+            Assert.Equal(new Size(lucide.Size, lucide.Size), restore.Bounds.Size);
+            Assert.Equal(1.5, lucide.StrokeWidth);
+            Assert.Equal(1.5, restore.StrokeWidth);
+            window.Resources["Vhilz.CaptionButton.Icon.Restore.StrokeWidth"] = 2.25d;
+            Assert.Equal(2.25, restore.StrokeWidth);
+            Assert.Equal(1.5, lucide.StrokeWidth);
+            var replacement = Geometry.Parse("M3 3h18v18H3z");
+            window.Resources["Vhilz.CaptionButton.Icon.Restore.Geometry"] = replacement;
+            Assert.Same(replacement, restore.Data);
+        }
+        finally
+        {
+            window.Close();
         }
     }
 

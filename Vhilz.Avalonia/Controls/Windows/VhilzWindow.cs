@@ -11,7 +11,7 @@ namespace Vhilz.Avalonia.Theme.Controls;
 /// 使用 Vhilz 自有主题的 Ursa 窗口，支持标题栏内容与内嵌对话框。
 /// </summary>
 /// <remarks>
-/// 标题栏三槽使用继承的 LeftContent、TitleBarContent、RightContent。
+/// 标题栏使用继承的 LeftContent、TitleBarContent、RightContent。
 /// 拖动、缩放和系统按钮行为复用 Ursa/Avalonia 的窗口装饰体系，通过 WindowDecorationsTheme 配置外观。
 /// 异步关闭确认沿用 UrsaWindow.CanClose；模板应绑定继承的各按钮可见性属性。
 /// </remarks>

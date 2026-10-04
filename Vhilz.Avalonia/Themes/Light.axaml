@@ -1,4 +1,0 @@
-<ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <!-- 明色基础色与语义画笔在此定义；与 Dark.axaml 保持相同的资源 key。 -->
-</ResourceDictionary>
