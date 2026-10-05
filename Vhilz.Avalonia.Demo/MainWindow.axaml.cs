@@ -21,6 +21,38 @@ public partial class MainWindow : VhilzWindow
         InitializeComponent();
         Opened += (_, _) => UpdateIconComparison();
         LayoutUpdated += (_, _) => UpdateIconMetrics();
+        Closing += (_, e) => {
+            if (PreventClose.IsChecked == true) {
+                e.Cancel = true;
+                WindowBehaviorStatus.Text = "关闭请求已取消；取消勾选后可关闭窗口。";
+            }
+        };
+    }
+
+    private async void OnOpenDialog(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not Button trigger) return;
+        trigger.IsEnabled = false;
+        try {
+            var accept = new Button { Content = "确认并返回" };
+            var content = new StackPanel {
+                Margin = new Thickness(20), Spacing = 12,
+                Children = { new TextBlock { Text = "关闭此窗口后，主窗口应恢复交互。" }, accept }
+            };
+            content.Styles.Add(new global::Avalonia.Themes.Fluent.FluentTheme());
+            var dialog = new VhilzWindow {
+                Title = "模态窗口", Width = 400, Height = 180,
+                ExtendClientAreaToDecorationsHint = true,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Content = content
+            };
+            accept.Click += (_, _) => dialog.Close(true);
+            var accepted = await dialog.ShowDialog<bool>(this);
+            WindowBehaviorStatus.Text = accepted ? "模态窗口已确认返回。" : "模态窗口已关闭。";
+        }
+        finally {
+            trigger.IsEnabled = true;
+        }
     }
 
     private void OnThemeSelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -37,6 +69,12 @@ public partial class MainWindow : VhilzWindow
     }
 
     private void OnIconComparisonChanged(object? sender, SelectionChangedEventArgs e) => UpdateIconComparison();
+
+    private void OnTitleAlignmentChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (sender is ComboBox selector)
+            TitleAlignment = selector.SelectedIndex == 1 ? TextAlignment.Center : TextAlignment.Left;
+    }
 
     private void OnCaptionPreviewClick(object? sender, RoutedEventArgs e)
     {

@@ -6,7 +6,7 @@
 
     <Application.Styles>
         <!-- 仅为预览工具中的原生 Avalonia 控件提供外观，Vhilz 控件使用自有主题。 -->
-        <FluentTheme />
+        <!-- <FluentTheme /> -->
         <vhz:VhilzTheme />
     </Application.Styles>
 </Application>
