@@ -17,7 +17,7 @@ public class CaptionColorRenderingTests {
     [AvaloniaFact]
     public void FirstVisibleColorStepDoesNotRecolorTheBackdropAbruptly() {
         var theme = new VhilzTheme();
-        Assert.True(theme.TryGetResource("Vhilz.CaptionButton.Theme", null, out var resource));
+        Assert.True(theme.TryGetResource(ResourceKeys.CaptionButton.Theme, null, out var resource));
         var button = new Button { Theme = Assert.IsType<ControlTheme>(resource), Width = 46, Height = 32 };
         var window = new Window { Content = button };
         window.Show();
@@ -42,7 +42,7 @@ public class CaptionColorRenderingTests {
     [AvaloniaFact]
     public void HoverEasingDoesNotSpendMostOfItsChangeAtTheStart() {
         var theme = new VhilzTheme();
-        Assert.True(theme.TryGetResource("Vhilz.CaptionButton.Theme", null, out var resource));
+        Assert.True(theme.TryGetResource(ResourceKeys.CaptionButton.Theme, null, out var resource));
         var button = new Button { Theme = Assert.IsType<ControlTheme>(resource) };
         var window = new Window { Content = button };
         window.Show();

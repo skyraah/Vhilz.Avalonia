@@ -1,0 +1,6 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- 使用独立探针键，避免测试意外依赖正式主题中的默认值。 -->
+    <CornerRadius x:Key="Probe.Radius">5</CornerRadius>
+    <StaticResource x:Key="Probe.Alias" ResourceKey="Probe.Radius" />
+</ResourceDictionary>
