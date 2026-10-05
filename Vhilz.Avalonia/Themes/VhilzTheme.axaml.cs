@@ -4,7 +4,7 @@ using Avalonia.Styling;
 namespace Vhilz.Avalonia.Theme;
 
 /// <summary>
-/// 加载 Vhilz 自有的明暗资源、通用资源与控件主题，不依赖 Ursa 的视觉主题。
+/// 加载 Vhilz 自有的明暗资源、通用资源与控件主题。
 /// </summary>
 public partial class VhilzTheme : Styles
 {

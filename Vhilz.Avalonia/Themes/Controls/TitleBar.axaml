@@ -3,6 +3,10 @@
                     xmlns:vhz="https://github.com/skyraah/Vhilz.Avalonia">
     <!-- 自有结构模板；颜色、尺寸与状态样式在此扩展。 -->
     <ControlTheme x:Key="Vhilz.TitleBar.Theme" TargetType="vhz:TitleBar">
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Window.TitleBar.ForegroundBrush}" />
+        <Style Selector="^.VhilzInactive">
+            <Setter Property="Foreground" Value="{DynamicResource Vhilz.Window.TitleBar.Inactive.ForegroundBrush}" />
+        </Style>
         <Setter Property="Template">
             <ControlTemplate TargetType="vhz:TitleBar">
                 <Border Background="{TemplateBinding Background}"
@@ -14,10 +18,29 @@
                         <ContentPresenter Name="PART_LeftContentPresenter"
                                           Content="{TemplateBinding LeftContent}"
                                           WindowDecorationProperties.ElementRole="User" />
-                        <ContentPresenter Name="PART_ContentPresenter"
-                                          Grid.Column="1"
-                                          Content="{TemplateBinding CenterContent}"
-                                          WindowDecorationProperties.ElementRole="User" />
+                        <Grid Grid.Column="1" ColumnDefinitions="*,Auto"
+                              ClipToBounds="True"
+                              WindowDecorationProperties.ElementRole="TitleBar">
+                            <!-- 文字仍属于拖动区；有限宽度保证长标题省略，不挤占右侧内容和窗口按钮。 -->
+                            <TextBlock Name="PART_WindowTitle"
+                                       Text="{Binding $parent[Window].Title}"
+                                       Margin="{DynamicResource Vhilz.Window.TitleBar.Title.Margin}"
+                                       VerticalAlignment="Center"
+                                       TextAlignment="{TemplateBinding TitleAlignment}"
+                                       IsHitTestVisible="False"
+                                       TextTrimming="CharacterEllipsis">
+                                <TextBlock.IsVisible>
+                                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                        <Binding Path="IsTitleVisible" RelativeSource="{RelativeSource TemplatedParent}" />
+                                        <Binding Path="$parent[Window].Title" Converter="{x:Static StringConverters.IsNotNullOrEmpty}" />
+                                    </MultiBinding>
+                                </TextBlock.IsVisible>
+                            </TextBlock>
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              Grid.Column="1"
+                                              Content="{TemplateBinding CenterContent}"
+                                              WindowDecorationProperties.ElementRole="User" />
+                        </Grid>
                         <ContentPresenter Name="PART_RightContentPresenter"
                                           Grid.Column="2"
                                           Content="{TemplateBinding RightContent}"

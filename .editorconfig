@@ -9,6 +9,7 @@ trim_trailing_whitespace = true
 
 [*.cs]
 dotnet_sort_system_directives_first = true
+csharp_new_line_before_open_brace = none
 
 [*.{sln,props,targets,csproj,axaml}]
 indent_size = 4

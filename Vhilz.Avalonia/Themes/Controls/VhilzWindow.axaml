@@ -1,13 +1,22 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:vhz="https://github.com/skyraah/Vhilz.Avalonia">
-    <!-- 只复用 Ursa 行为，模板与装饰外观均由 Vhilz 定义。 -->
+    <!-- 窗口行为由 Avalonia 提供，模板与装饰外观由 Vhilz 定义。 -->
     <ControlTheme x:Key="Vhilz.Window.Theme" TargetType="vhz:VhilzWindow">
+        <Setter Property="Background" Value="{DynamicResource Vhilz.Window.BackgroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Window.ForegroundBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Window.BorderBrush}" />
+        <Setter Property="TransparencyBackgroundFallback"
+                Value="{DynamicResource Vhilz.Window.TransparencyFallback.BackgroundBrush}" />
+        <Setter Property="TitleBarBackground" Value="{DynamicResource Vhilz.Window.TitleBar.BackgroundBrush}" />
         <Setter Property="WindowDecorationsTheme" Value="{DynamicResource Vhilz.WindowDecorations.Theme}" />
-        <Setter Property="vhz:OverlayDialogHost.IsModalStatusScope" Value="True" />
+        <Style Selector="^[IsActive=False]">
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Window.Inactive.BorderBrush}" />
+        </Style>
         <Setter Property="Template">
             <ControlTemplate TargetType="vhz:VhilzWindow">
-                <Panel>
+                <!-- 空内容也接收指针移动，供框架在全屏顶边唤出退出浮层。 -->
+                <Panel Background="Transparent">
                     <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
@@ -16,27 +25,51 @@
                     <VisualLayerManager Name="PART_VisualLayerManager"
                                         Padding="{TemplateBinding OffScreenMargin}">
                         <Panel>
-                            <Grid RowDefinitions="Auto,*">
-                                <vhz:TitleBar Name="PART_TitleBar"
-                                              Margin="{TemplateBinding TitleBarMargin}"
-                                              Padding="{TemplateBinding TitleBarPadding}"
-                                              Background="{TemplateBinding TitleBarBackground}"
-                                              IsVisible="{TemplateBinding IsTitleBarVisible}"
-                                              LeftContent="{TemplateBinding LeftContent}"
-                                              CenterContent="{TemplateBinding TitleBarContent}"
-                                              RightContent="{TemplateBinding RightContent}" />
+                            <Grid RowDefinitions="Auto,Auto,*">
+                                <!-- 同一高度同时驱动正文避让与装饰层的向下展开。 -->
+                                <Border Name="PART_FullscreenTitleBarInset" Height="0" IsHitTestVisible="False">
+                                    <Border.Transitions>
+                                        <Transitions>
+                                            <DoubleTransition Property="Height"
+                                                              Duration="{DynamicResource Vhilz.Duration.Normal}"
+                                                              Easing="{DynamicResource Vhilz.Easing.Decelerate}" />
+                                        </Transitions>
+                                    </Border.Transitions>
+                                </Border>
+                                <Border Name="PART_TitleBarInset"
+                                        Grid.Row="1"
+                                        Background="{TemplateBinding TitleBarBackground}">
+                                    <Border.IsVisible>
+                                        <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                            <Binding Path="IsTitleBarVisible"
+                                                     RelativeSource="{RelativeSource TemplatedParent}" />
+                                            <Binding Path="WindowState"
+                                                     RelativeSource="{RelativeSource TemplatedParent}"
+                                                     Converter="{x:Static ObjectConverters.NotEqual}"
+                                                     ConverterParameter="{x:Static WindowState.FullScreen}" />
+                                        </MultiBinding>
+                                    </Border.IsVisible>
+                                    <vhz:TitleBar Name="PART_TitleBar"
+                                                  MinHeight="{DynamicResource Vhilz.Window.TitleBar.Height}"
+                                                  Classes.VhilzInactive="{Binding !IsActive, RelativeSource={RelativeSource TemplatedParent}}"
+                                                  Margin="{TemplateBinding TitleBarMargin}"
+                                                  Padding="{TemplateBinding TitleBarPadding}"
+                                                  Background="{TemplateBinding TitleBarBackground}"
+                                                  IsVisible="{TemplateBinding IsTitleBarVisible}"
+                                                  IsTitleVisible="{TemplateBinding IsTitleVisible}"
+                                                  TitleAlignment="{TemplateBinding TitleAlignment}"
+                                                  LeftContent="{TemplateBinding LeftContent}"
+                                                  CenterContent="{TemplateBinding CenterContent}"
+                                                  RightContent="{TemplateBinding RightContent}" />
+                                </Border>
                                 <ContentPresenter Name="PART_ContentPresenter"
-                                                  Grid.Row="1"
+                                                  Grid.Row="2"
                                                   Padding="{TemplateBinding Padding}"
                                                   Content="{TemplateBinding Content}"
                                                   ContentTemplate="{TemplateBinding ContentTemplate}"
                                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
                             </Grid>
-                            <vhz:OverlayDialogHost Name="PART_DialogHost"
-                                                   SafePadding="{TemplateBinding WindowDecorationMargin}"
-                                                   IsTopLevel="True"
-                                                   IsModalStatusReporter="True" />
                         </Panel>
                     </VisualLayerManager>
                 </Panel>

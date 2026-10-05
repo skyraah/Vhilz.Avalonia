@@ -1,6 +1,24 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!-- 暗色基础色与语义画笔在此定义；与 Light.axaml 保持相同的资源 key。 -->
+    <!-- 共享用途色驱动控件画笔；控件键继续承担局部覆盖，独立状态颜色按各自用途维护。 -->
+    <Color x:Key="Vhilz.Color.Surface">#18181B</Color>
+    <Color x:Key="Vhilz.Color.Text">#FAFAFA</Color>
+    <Color x:Key="Vhilz.Color.TextSecondary">#E4E4E7</Color>
+    <Color x:Key="Vhilz.Color.TextMuted">#A1A1AA</Color>
+    <Color x:Key="Vhilz.Color.Border">#3F3F46</Color>
+    <Color x:Key="Vhilz.Color.BorderInactive">#27272A</Color>
+
+    <!-- 中性深灰作为初始配色；非激活只弱化装饰，不降低窗口正文的可读性。 -->
+    <SolidColorBrush x:Key="Vhilz.Window.BackgroundBrush" Color="{DynamicResource Vhilz.Color.Surface}" />
+    <SolidColorBrush x:Key="Vhilz.Window.ForegroundBrush" Color="{DynamicResource Vhilz.Color.Text}" />
+    <SolidColorBrush x:Key="Vhilz.Window.BorderBrush" Color="{DynamicResource Vhilz.Color.Border}" />
+    <SolidColorBrush x:Key="Vhilz.Window.Inactive.BorderBrush" Color="{DynamicResource Vhilz.Color.BorderInactive}" />
+    <SolidColorBrush x:Key="Vhilz.Window.TransparencyFallback.BackgroundBrush" Color="{DynamicResource Vhilz.Color.Surface}" />
+    <SolidColorBrush x:Key="Vhilz.Window.TitleBar.BackgroundBrush" Color="{DynamicResource Vhilz.Color.Surface}" />
+    <SolidColorBrush x:Key="Vhilz.Window.TitleBar.ForegroundBrush" Color="{DynamicResource Vhilz.Color.TextSecondary}" />
+    <SolidColorBrush x:Key="Vhilz.Window.TitleBar.Inactive.ForegroundBrush" Color="{DynamicResource Vhilz.Color.TextMuted}" />
+
     <!-- SurfaceColor 直接使用 Alpha；延续原 TintColor 约 75% 的叠色强度。 -->
     <SolidColorBrush x:Key="Vhilz.CaptionButton.PointerOver.BackgroundBrush">#1BFFFFFF</SolidColorBrush>
     <SolidColorBrush x:Key="Vhilz.CaptionButton.Pressed.BackgroundBrush">#12FFFFFF</SolidColorBrush>
@@ -8,4 +26,12 @@
     <SolidColorBrush x:Key="Vhilz.CaptionButton.Close.Pressed.BackgroundBrush">#BFB4232A</SolidColorBrush>
     <!-- 指针揭示描边颜色；FAA 默认为白色，暗色表面沿用白色高光。 -->
     <Color x:Key="Vhilz.CaptionButton.RevealBorder.Color">White</Color>
+
+    <!-- 语义画笔动态引用颜色，应用覆盖颜色后已有画笔继续更新。 -->
+    <SolidColorBrush x:Key="Vhilz.Brush.Surface" Color="{DynamicResource Vhilz.Color.Surface}" />
+    <SolidColorBrush x:Key="Vhilz.Brush.Text" Color="{DynamicResource Vhilz.Color.Text}" />
+    <SolidColorBrush x:Key="Vhilz.Brush.TextSecondary" Color="{DynamicResource Vhilz.Color.TextSecondary}" />
+    <SolidColorBrush x:Key="Vhilz.Brush.TextMuted" Color="{DynamicResource Vhilz.Color.TextMuted}" />
+    <SolidColorBrush x:Key="Vhilz.Brush.Border" Color="{DynamicResource Vhilz.Color.Border}" />
+    <SolidColorBrush x:Key="Vhilz.Brush.BorderInactive" Color="{DynamicResource Vhilz.Color.BorderInactive}" />
 </ResourceDictionary>
