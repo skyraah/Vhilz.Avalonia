@@ -10,6 +10,7 @@ namespace Vhilz.Avalonia.Theme.Controls;
 // 仅适配 Avalonia 12 的独立装饰层；内容区仍使用 FAA 的材质和指针广播。
 internal sealed partial class CaptionSurface : AcrylicSurface {
     private Interactive? _decorationRoot;
+    private Point? _rootPointerPosition;
     private Point _revealPosition;
     private double _revealProximityIntensity;
 
@@ -34,6 +35,7 @@ internal sealed partial class CaptionSurface : AcrylicSurface {
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e) {
+        DetachForegroundTransition();
         if (_decorationRoot is { } root) {
             root.RemoveHandler(PointerMovedEvent, OnRootPointerMoved);
             root.RemoveHandler(PointerExitedEvent, OnRootPointerExited);
@@ -41,6 +43,7 @@ internal sealed partial class CaptionSurface : AcrylicSurface {
         }
 
         _revealPosition = default;
+        _rootPointerPosition = null;
         _revealProximityIntensity = 0;
         base.OnDetachedFromVisualTree(e);
     }
@@ -79,17 +82,20 @@ internal sealed partial class CaptionSurface : AcrylicSurface {
     }
 
     private void OnRootPointerMoved(object? sender, PointerEventArgs e) {
+        _rootPointerPosition = e.GetPosition(_decorationRoot);
+        UpdateDecorationReveal();
+    }
+
+    private void UpdateDecorationReveal() {
+        if (_decorationRoot is null) return;
         var previousPosition = _revealPosition;
         var previousIntensity = _revealProximityIntensity;
-        _revealPosition = e.GetPosition(this);
-        var dx = Math.Max(0, Math.Max(-_revealPosition.X, _revealPosition.X - Bounds.Width));
-        var dy = Math.Max(0, Math.Max(-_revealPosition.Y, _revealPosition.Y - Bounds.Height));
-        var distance = Math.Sqrt(dx * dx + dy * dy);
-        _revealProximityIntensity = RevealProximityDistance > 0
-            ? Math.Clamp(1 - distance / RevealProximityDistance, 0, 1)
-            : distance == 0
-                ? 1
-                : 0;
+        // 保存根坐标，控件重新布局后再转换；鼠标不动也能更新接近范围。
+        var position = _rootPointerPosition is { } pointer ? _decorationRoot.TranslatePoint(pointer, this) : null;
+        _revealPosition = position ?? default;
+        _revealProximityIntensity = position is { } current
+            ? CalculateProximity(current, Bounds.Size, RevealProximityDistance)
+            : 0;
         // 无可见辉光时位置变化不影响像素；进入或离开有效范围才请求重绘。
         if (RevealBorderEnabled && (previousIntensity > 0 || _revealProximityIntensity > 0) &&
             (previousPosition != _revealPosition || previousIntensity != _revealProximityIntensity))
@@ -97,8 +103,14 @@ internal sealed partial class CaptionSurface : AcrylicSurface {
     }
 
     private void OnRootPointerExited(object? sender, PointerEventArgs e) {
-        if (_revealProximityIntensity == 0) return;
-        _revealProximityIntensity = 0;
-        if (RevealBorderEnabled) InvalidateVisual();
+        _rootPointerPosition = null;
+        UpdateDecorationReveal();
+    }
+
+    private static double CalculateProximity(Point position, Size size, double proximityDistance) {
+        var dx = Math.Max(0, Math.Max(-position.X, position.X - size.Width));
+        var dy = Math.Max(0, Math.Max(-position.Y, position.Y - size.Height));
+        var distance = Math.Sqrt(dx * dx + dy * dy);
+        return proximityDistance > 0 ? Math.Clamp(1 - distance / proximityDistance, 0, 1) : distance == 0 ? 1 : 0;
     }
 }

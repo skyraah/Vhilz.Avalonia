@@ -47,6 +47,8 @@
         <Setter Property="Width" Value="{DynamicResource Vhilz.CaptionButton.Width}" />
         <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
         <Setter Property="Margin" Value="{DynamicResource Vhilz.CaptionButton.Margin}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
 
         <!-- 悬停时仅提升表面层次，保持图标前景色不变。 -->
         <Style Selector="^:pointerover:not(:disabled)">
@@ -91,11 +93,7 @@
                     <!-- FAA 1.4 的 TintColor 在 Alpha > 0 时完整替换色相；SurfaceColor 才能连续淡入。 -->
                     <vhz:CaptionSurface x:Name="PART_CaptionSurface"
                                         RenderTransformOrigin="50%,50%"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
                                         CornerRadius="{TemplateBinding CornerRadius}"
-                                        Padding="{TemplateBinding Padding}"
-                                        Margin="{TemplateBinding Margin}"
                                         HorizontalContentAlignment="Stretch"
                                         VerticalContentAlignment="Stretch"
                                         HighlightEnabled="False"
@@ -121,15 +119,22 @@
                                      RelativeSource="{RelativeSource TemplatedParent}"
                                      FallbackValue="Transparent" TargetNullValue="Transparent" />
                         </acrylic:AcrylicSurface.SurfaceColor>
-                        <ContentPresenter Name="PART_ContentPresenter"
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        <!-- 普通画笔和非对称描边使用上游 Border，正文与装饰共用同一绘制契约。 -->
+                        <Border Background="{Binding $parent[vhz:CaptionSurface].NonSolidBackground}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        </Border>
                     </vhz:CaptionSurface>
                     <!-- 焦点轮廓独立于表面动画，键盘导航时不被按压缩放带走。 -->
                     <Border Name="PART_FocusRing" IsVisible="False" IsHitTestVisible="False"
-                            Margin="{TemplateBinding Margin}" CornerRadius="{TemplateBinding CornerRadius}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
                             BorderThickness="{DynamicResource Vhilz.Thickness.Focus}"
                             BorderBrush="{DynamicResource Vhilz.Brush.TextSecondary}" />
                 </Panel>
