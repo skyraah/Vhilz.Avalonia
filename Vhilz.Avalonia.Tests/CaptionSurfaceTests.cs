@@ -18,7 +18,9 @@ public class CaptionSurfaceTests {
         var window = new Window();
         window.Show();
         var root = Assert.IsAssignableFrom<Control>(window.GetVisualAncestors().Last());
-        var surface = new CaptionSurface { RevealBorderEnabled = true, RevealProximityDistance = 15 };
+        var surface = new CaptionSurface {
+            RevealBorderEnabled = true, RevealProximityDistance = 15, UseLayoutRounding = false
+        };
         var children = GetVisualChildren(root);
         // 复现装饰层与 Window 为视觉兄弟的结构，不把按钮搬入窗口内容区。
         children.Add(surface);
@@ -36,6 +38,15 @@ public class CaptionSurfaceTests {
             Assert.Equal(new RelativePoint(30, 20, RelativeUnit.Absolute), RenderReveal(surface).Center);
             Move(root, window, new Point(92.5, 10));
             Assert.Equal(0.5, surface.DecorationRevealIntensity);
+            // 指针不动，运行时参数与几何改变也必须立即使用新的接近范围。
+            surface.RevealProximityDistance = 30;
+            Assert.Equal(0.75, surface.DecorationRevealIntensity);
+            surface.Arrange(new Rect(107.5, 0, 46, 32));
+            Assert.Equal(new Point(-15, 10), surface.DecorationRevealPosition);
+            Assert.Equal(0.5, surface.DecorationRevealIntensity);
+            surface.Arrange(new Rect(100, 0, 46, 32));
+            surface.RevealProximityDistance = 15;
+            Assert.Equal(0.5, surface.DecorationRevealIntensity);
             Move(root, window, new Point(70, 10));
             Assert.Equal(0, surface.DecorationRevealIntensity);
 
@@ -46,6 +57,8 @@ public class CaptionSurfaceTests {
             Assert.Equal(1, surface.DecorationRevealIntensity);
             var exit = PointerEvent(root, root, InputElement.PointerExitedEvent, default);
             root.RaiseEvent(exit);
+            Assert.Equal(0, surface.DecorationRevealIntensity);
+            surface.RevealProximityDistance = 30;
             Assert.Equal(0, surface.DecorationRevealIntensity);
 
             children.Remove(surface);

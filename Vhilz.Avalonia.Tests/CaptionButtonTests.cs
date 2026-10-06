@@ -79,7 +79,7 @@ public class CaptionButtonTests {
             void OnClick(object? sender, global::Avalonia.Interactivity.RoutedEventArgs args) => clickCount++;
             button.Click += OnClick;
             // 状态色由 FAA 绘制，内容不再叠加实色背景。
-            var presenter = Assert.IsType<ContentPresenter>(surface.Content);
+            var presenter = Assert.IsType<ContentPresenter>(Assert.IsType<Border>(surface.Content).Child);
             Assert.Null(presenter.Background);
             Assert.Equal(Colors.Transparent, surface.TintColor);
             Assert.Equal(Colors.Transparent, surface.SurfaceColor);
