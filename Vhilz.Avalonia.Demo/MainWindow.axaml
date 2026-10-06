@@ -9,103 +9,163 @@
                  ExtendClientAreaToDecorationsHint="True"
                  Title="Vhilz Demo"
                  IsFullScreenButtonVisible="True"
-                 Background="Transparent"
                  TransparencyLevelHint="AcrylicBlur">
     <vhz:VhilzWindow.RightContent>
         <TextBlock Text="标题栏右侧内容" VerticalAlignment="Center" />
     </vhz:VhilzWindow.RightContent>
-    <!-- 窗口使用 Vhilz 自有模板；预览工具中的 ComboBox 暂由 Demo 的 Fluent 主题提供外观。 -->
-    <StackPanel>
-        <StackPanel.Styles>
+    <!-- 使用窗口主题背景保证明暗可读；全透明正文会直接露出不随主题切换的系统模糊底色。 -->
+    <!-- 窗口使用 Vhilz 自有模板；预览工具中的原生控件暂由 Demo 的 Fluent 主题提供外观。 -->
+    <Grid>
+        <Grid.Styles>
             <!-- 仅预览工具使用 Fluent；窗口和窗口按钮继续使用 Vhilz 主题。 -->
             <FluentTheme />
-        </StackPanel.Styles>
-        <TextBlock Text="Vhilz.Avalonia 开发入口" />
-        <ComboBox SelectedIndex="0" SelectionChanged="OnThemeSelectionChanged">
-            <ComboBoxItem Content="跟随系统" />
-            <ComboBoxItem Content="浅色" />
-            <ComboBoxItem Content="深色" />
-        </ComboBox>
-        <TextBlock Text="窗口配色预览：切换明暗主题；切到其他应用再返回，检查标题、边框和窗口按钮的非激活颜色，正文应保持不变。最大化、还原和全屏后再次检查。视觉效果待验收。"
-                   TextWrapping="Wrap" />
-        <TextBox PlaceholderText="窗口标题（清空可检查空标题）"
-                 Text="{Binding $parent[vhz:VhilzWindow].Title, Mode=TwoWay}" />
-        <CheckBox Content="显示窗口标题"
-                  IsChecked="{Binding $parent[vhz:VhilzWindow].IsTitleVisible, Mode=TwoWay}" />
-        <CheckBox Content="显示最小化按钮"
-                  IsChecked="{Binding $parent[vhz:VhilzWindow].IsMinimizeButtonVisible, Mode=TwoWay}" />
-        <CheckBox Content="显示全屏按钮"
-                  IsChecked="{Binding $parent[vhz:VhilzWindow].IsFullScreenButtonVisible, Mode=TwoWay}" />
-        <TextBlock Text="全屏检查：Windows 上进入、退出全屏应有接近最大化的窗口缩放过渡，退出后恢复原位置与尺寸；对比最大化、还原，并检查快速反向切换及明暗主题。全屏时鼠标移到最顶端，标题栏四周留 2 单位间距并向下展开，移出时平滑收回，正文同步移动；慢速移入、展开途中快速移出再移入，并重复唤出，正文不应闪烁或残留空白。展开后在退出全屏与关闭按钮之间反复移动，顶栏应保持展开。点击退出按钮或按 Esc 退出。标题栏不可拖动，动画观感待验收。"
-                   TextWrapping="Wrap" />
-        <CheckBox x:Name="PreventClose" Content="取消关闭请求（取消勾选后可正常关闭）" />
-        <Button Content="打开模态窗口" Click="OnOpenDialog" />
-        <TextBlock x:Name="WindowBehaviorStatus" Text="检查右侧内容与窗口按钮是否重叠；切换按钮显隐，再检查关闭取消和模态窗口返回。" TextWrapping="Wrap" />
-        <ComboBox SelectedIndex="0" SelectionChanged="OnTitleAlignmentChanged">
-            <ComboBoxItem Content="标题居左" />
-            <ComboBoxItem Content="标题居中（可用区域）" />
-        </ComboBox>
-        <TextBlock Text="标题预览：编辑上方标题，输入长文本后缩窄窗口；切换明暗主题并切换窗口焦点，检查左侧文字、省略号及右上角按钮。拖动标题文字区域、双击最大化，再检查全屏浮层标题。"
-                   TextWrapping="Wrap" />
-        <TextBlock Text="标题栏按钮检查：移开指针后应与标题栏底色一致；沿按钮边缘移动，辉光应跟随指针，接近相邻按钮时逐渐出现。切换明暗主题，并在最大化、还原及全屏浮层中检查。"
-                   TextWrapping="Wrap" />
-        <TextBlock Text="还原图标预览：最大化窗口后，检查右上角双窗口图标；切换明暗主题，再点击还原。"
-                   TextWrapping="Wrap" />
-        <ComboBox x:Name="IconComparisonSelector" SelectedIndex="0" SelectionChanged="OnIconComparisonChanged">
-            <ComboBoxItem Content="还原图标：像素对齐（默认）" />
-            <ComboBoxItem Content="还原图标：调整前的路径与线宽" />
-            <ComboBoxItem Content="Square：自定义绘制器，同尺寸" />
-            <ComboBoxItem Content="Square：Lucide 原控件，同尺寸" />
-        </ComboBox>
-        <TextBlock Text="最大化后切换前两项，对比调整前后的框线清晰度；切换后两项，对比同尺寸 Square。重点观察前后窗缝隙及悬停、按下时的边缘。视觉效果待实际验收。"
-                   TextWrapping="Wrap" />
-        <TextBlock x:Name="IconMetrics" TextWrapping="Wrap" />
-        <ContentControl x:Name="PreviewHost">
-            <StackPanel Spacing="8" Margin="0,12,0,0">
-                <TextBlock Text="标题栏按钮预览（点击仅记录状态，不操作窗口）" />
-                <StackPanel Orientation="Horizontal" Height="{DynamicResource Vhilz.Window.TitleBar.Height}">
-                    <Button Theme="{DynamicResource Vhilz.CaptionButton.Theme}"
-                            Click="OnCaptionPreviewClick" Tag="普通按钮" ToolTip.Tip="普通按钮">
-                        <lucide:LucideIcon Kind="Minus" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
-                    </Button>
-                    <Button Theme="{DynamicResource Vhilz.CaptionButton.Theme}" Classes="VhilzCaptionClose"
-                            Click="OnCaptionPreviewClick" Tag="关闭按钮" ToolTip.Tip="关闭按钮预览">
-                        <lucide:LucideIcon Kind="X" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
-                    </Button>
-                    <Button Theme="{DynamicResource Vhilz.CaptionButton.Theme}" IsEnabled="False"
-                            ToolTip.Tip="禁用的普通按钮">
-                        <lucide:LucideIcon Kind="Minus" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
-                    </Button>
-                    <Button Theme="{DynamicResource Vhilz.CaptionButton.Theme}" Classes="VhilzCaptionClose"
-                            IsEnabled="False" ToolTip.Tip="禁用的关闭按钮">
-                        <lucide:LucideIcon Kind="X" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
-                    </Button>
-                </StackPanel>
-                <TextBlock Text="彩色底图对照：观察高亮刚出现和即将消失时，底色是否突然变化。" TextWrapping="Wrap" />
-                <Border Padding="12" HorizontalAlignment="Left">
-                    <Border.Background>
-                        <!-- Transparent -->
-                        <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
-                        <GradientStop Color="#2369BE" Offset="0" />
-                        <GradientStop Color="#287A66" Offset="0.5" />
-                        <GradientStop Color="#A16539" Offset="1" />
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <StackPanel Orientation="Horizontal" Height="{DynamicResource Vhilz.Window.TitleBar.Height}">
-                        <Button Theme="{DynamicResource Vhilz.CaptionButton.Theme}" Foreground="White"
-                                Click="OnCaptionPreviewClick" Tag="彩色底图普通按钮" ToolTip.Tip="普通按钮预览">
-                            <lucide:LucideIcon Kind="Minus" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+        </Grid.Styles>
+        <ScrollViewer x:Name="InspectionScrollViewer" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Vhilz.Avalonia 开发入口" />
+                <ComboBox SelectedIndex="0" SelectionChanged="OnThemeSelectionChanged">
+                    <ComboBoxItem Content="跟随系统" />
+                    <ComboBoxItem Content="浅色" />
+                    <ComboBoxItem Content="深色" />
+                </ComboBox>
+                <TextBlock Text="修复检查" />
+                <TextBlock Text="看下面的小按钮。切换浅色和深色，再用鼠标和 Tab 试一下。" TextWrapping="Wrap" />
+                <CheckBox x:Name="ClosePreviewToggle" Content="使用关闭按钮样式" IsChecked="True" />
+                <WrapPanel>
+                    <StackPanel Margin="{DynamicResource Vhilz.CaptionButton.Group.Margin}">
+                        <TextBlock Text="渐变" />
+                        <Button x:Name="GradientContractPreview" Theme="{DynamicResource Vhilz.CaptionButton.Theme}"
+                                Height="{DynamicResource Vhilz.Window.TitleBar.Height}">
+                            <Button.Background>
+                                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
+                                    <GradientStop Color="#2369BE" Offset="0" />
+                                    <GradientStop Color="#287A66" Offset="1" />
+                                </LinearGradientBrush>
+                            </Button.Background>
+                            <lucide:LucideIcon Kind="Square" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
                         </Button>
-                        <Button Theme="{DynamicResource Vhilz.CaptionButton.Theme}" Classes="VhilzCaptionClose"
-                                Click="OnCaptionPreviewClick" Tag="彩色底图关闭按钮" ToolTip.Tip="关闭按钮预览">
+                    </StackPanel>
+                    <StackPanel Margin="{DynamicResource Vhilz.CaptionButton.Group.Margin}">
+                        <TextBlock Text="边框" />
+                        <Button x:Name="BorderContractPreview" Theme="{DynamicResource Vhilz.CaptionButton.Theme}"
+                                Height="{DynamicResource Vhilz.Window.TitleBar.Height}"
+                                BorderBrush="{DynamicResource Vhilz.Brush.TextSecondary}"
+                                BorderThickness="{DynamicResource Vhilz.Thickness.Focus}">
+                            <lucide:LucideIcon Kind="Square" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Margin="{DynamicResource Vhilz.CaptionButton.Group.Margin}">
+                        <TextBlock Text="靠左上" />
+                        <Button x:Name="AlignmentContractPreview" Theme="{DynamicResource Vhilz.CaptionButton.Theme}"
+                                Height="{DynamicResource Vhilz.Window.TitleBar.Height}"
+                                HorizontalContentAlignment="Left" VerticalContentAlignment="Top">
+                            <lucide:LucideIcon Kind="Square" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Margin="{DynamicResource Vhilz.CaptionButton.Group.Margin}">
+                        <TextBlock Text="外间距" />
+                        <!-- 展示应用显式设置 Margin，只改变外部间距，不缩小表面。 -->
+                        <Button x:Name="SpacingContractPreview" Theme="{DynamicResource Vhilz.CaptionButton.Theme}"
+                                Height="{DynamicResource Vhilz.Window.TitleBar.Height}" Margin="4">
+                            <lucide:LucideIcon Kind="Square" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Margin="{DynamicResource Vhilz.CaptionButton.Group.Margin}">
+                        <TextBlock Text="样式开关" />
+                        <Button x:Name="RoleContractPreview" Theme="{DynamicResource Vhilz.CaptionButton.Theme}"
+                                Height="{DynamicResource Vhilz.Window.TitleBar.Height}"
+                                Classes.VhilzCaptionClose="{Binding #ClosePreviewToggle.IsChecked}">
                             <lucide:LucideIcon Kind="X" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
                         </Button>
                     </StackPanel>
-                </Border>
-                <TextBlock x:Name="CaptionPreviewStatus"
-                           Text="切换明暗主题，检查 120 ms 悬停渐变，以及关闭按钮红色的 400 ms 缓出；快速移出再移入应连续衔接。检查按下缩小、松开回弹和图标渐变，禁用按钮应无按压动画。Tab 可切换焦点，检查独立轮廓是否清晰；应用可覆盖 Text.Window.* 资源本地化窗口按钮。视觉效果待验收。"
+                </WrapPanel>
+                <TextBlock Text="窗口配色预览：切换明暗主题；切到其他应用再返回，检查标题、边框和窗口按钮的非激活颜色，正文应保持不变。最大化、还原和全屏后再次检查。视觉效果待验收。"
                            TextWrapping="Wrap" />
+                <TextBox PlaceholderText="窗口标题（清空可检查空标题）"
+                         Text="{Binding $parent[vhz:VhilzWindow].Title, Mode=TwoWay}" />
+                <CheckBox Content="显示窗口标题"
+                          IsChecked="{Binding $parent[vhz:VhilzWindow].IsTitleVisible, Mode=TwoWay}" />
+                <CheckBox Content="显示最小化按钮"
+                          IsChecked="{Binding $parent[vhz:VhilzWindow].IsMinimizeButtonVisible, Mode=TwoWay}" />
+                <CheckBox Content="显示全屏按钮"
+                          IsChecked="{Binding $parent[vhz:VhilzWindow].IsFullScreenButtonVisible, Mode=TwoWay}" />
+                <TextBlock
+                    Text="全屏检查：Windows 上进入、退出全屏应有接近最大化的窗口缩放过渡，退出后恢复原位置与尺寸；对比最大化、还原，并检查快速反向切换及明暗主题。全屏时鼠标移到最顶端，标题栏四周留 2 单位间距并向下展开，移出时平滑收回，正文同步移动；慢速移入、展开途中快速移出再移入，并重复唤出，正文不应闪烁或残留空白。展开后在退出全屏与关闭按钮之间反复移动，顶栏应保持展开。点击退出按钮或按 Esc 退出。标题栏不可拖动，动画观感待验收。"
+                    TextWrapping="Wrap" />
+                <CheckBox x:Name="PreventClose" Content="取消关闭请求（取消勾选后可正常关闭）" />
+                <Button Content="打开模态窗口" Click="OnOpenDialog" />
+                <TextBlock x:Name="WindowBehaviorStatus" Text="检查右侧内容与窗口按钮是否重叠；切换按钮显隐，再检查关闭取消和模态窗口返回。"
+                           TextWrapping="Wrap" />
+                <ComboBox SelectedIndex="0" SelectionChanged="OnTitleAlignmentChanged">
+                    <ComboBoxItem Content="标题居左" />
+                    <ComboBoxItem Content="标题居中（可用区域）" />
+                </ComboBox>
+                <TextBlock Text="标题预览：编辑上方标题，输入长文本后缩窄窗口；切换明暗主题并切换窗口焦点，检查左侧文字、省略号及右上角按钮。拖动标题文字区域、双击最大化，再检查全屏浮层标题。"
+                           TextWrapping="Wrap" />
+                <TextBlock Text="标题栏按钮检查：移开指针后应与标题栏底色一致；沿按钮边缘移动，辉光应跟随指针，接近相邻按钮时逐渐出现。切换明暗主题，并在最大化、还原及全屏浮层中检查。"
+                           TextWrapping="Wrap" />
+                <TextBlock Text="还原图标预览：最大化窗口后，检查右上角双窗口图标；切换明暗主题，再点击还原。"
+                           TextWrapping="Wrap" />
+                <ComboBox x:Name="IconComparisonSelector" SelectedIndex="0" SelectionChanged="OnIconComparisonChanged">
+                    <ComboBoxItem Content="还原图标：像素对齐（默认）" />
+                    <ComboBoxItem Content="还原图标：调整前的路径与线宽" />
+                    <ComboBoxItem Content="Square：自定义绘制器，同尺寸" />
+                    <ComboBoxItem Content="Square：Lucide 原控件，同尺寸" />
+                </ComboBox>
+                <TextBlock Text="最大化后切换前两项，对比调整前后的框线清晰度；切换后两项，对比同尺寸 Square。重点观察前后窗缝隙及悬停、按下时的边缘。视觉效果待实际验收。"
+                           TextWrapping="Wrap" />
+                <Button Content="更新图标信息" Click="OnRefreshIconMetrics" />
+                <TextBlock x:Name="IconMetrics" TextWrapping="Wrap" />
+                <ContentControl x:Name="PreviewHost">
+                    <StackPanel Spacing="8" Margin="0,12,0,0">
+                        <TextBlock Text="标题栏按钮预览（点击仅记录状态，不操作窗口）" />
+                        <StackPanel Orientation="Horizontal" Height="{DynamicResource Vhilz.Window.TitleBar.Height}">
+                            <Button Theme="{DynamicResource Vhilz.CaptionButton.Theme}"
+                                    Click="OnCaptionPreviewClick" Tag="普通按钮" ToolTip.Tip="普通按钮">
+                                <lucide:LucideIcon Kind="Minus" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                            </Button>
+                            <Button Theme="{DynamicResource Vhilz.CaptionButton.Theme}" Classes="VhilzCaptionClose"
+                                    Click="OnCaptionPreviewClick" Tag="关闭按钮" ToolTip.Tip="关闭按钮预览">
+                                <lucide:LucideIcon Kind="X" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                            </Button>
+                            <Button Theme="{DynamicResource Vhilz.CaptionButton.Theme}" IsEnabled="False"
+                                    ToolTip.Tip="禁用的普通按钮">
+                                <lucide:LucideIcon Kind="Minus" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                            </Button>
+                            <Button Theme="{DynamicResource Vhilz.CaptionButton.Theme}" Classes="VhilzCaptionClose"
+                                    IsEnabled="False" ToolTip.Tip="禁用的关闭按钮">
+                                <lucide:LucideIcon Kind="X" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                            </Button>
+                        </StackPanel>
+                        <TextBlock Text="彩色底图对照：观察高亮刚出现和即将消失时，底色是否突然变化。" TextWrapping="Wrap" />
+                        <Border Padding="12" HorizontalAlignment="Left">
+                            <Border.Background>
+                                <!-- Transparent -->
+                                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
+                                    <GradientStop Color="#2369BE" Offset="0" />
+                                    <GradientStop Color="#287A66" Offset="0.5" />
+                                    <GradientStop Color="#A16539" Offset="1" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <StackPanel Orientation="Horizontal"
+                                        Height="{DynamicResource Vhilz.Window.TitleBar.Height}">
+                                <Button Theme="{DynamicResource Vhilz.CaptionButton.Theme}" Foreground="White"
+                                        Click="OnCaptionPreviewClick" Tag="彩色底图普通按钮" ToolTip.Tip="普通按钮预览">
+                                    <lucide:LucideIcon Kind="Minus"
+                                                       Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                                </Button>
+                                <Button Theme="{DynamicResource Vhilz.CaptionButton.Theme}" Classes="VhilzCaptionClose"
+                                        Click="OnCaptionPreviewClick" Tag="彩色底图关闭按钮" ToolTip.Tip="关闭按钮预览">
+                                    <lucide:LucideIcon Kind="X" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                                </Button>
+                            </StackPanel>
+                        </Border>
+                        <TextBlock x:Name="CaptionPreviewStatus"
+                                   Text="切换明暗主题，检查 120 ms 悬停渐变，以及关闭按钮红色的 400 ms 缓出；快速移出再移入应连续衔接。检查按下缩小、松开回弹和图标渐变，禁用按钮应无按压动画。Tab 可切换焦点，检查独立轮廓是否清晰；应用可覆盖 Text.Window.* 资源本地化窗口按钮。视觉效果待验收。"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                </ContentControl>
             </StackPanel>
-        </ContentControl>
-    </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </vhz:VhilzWindow>

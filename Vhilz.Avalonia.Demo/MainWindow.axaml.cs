@@ -20,7 +20,6 @@ public partial class MainWindow : VhilzWindow
     {
         InitializeComponent();
         Opened += (_, _) => UpdateIconComparison();
-        LayoutUpdated += (_, _) => UpdateIconMetrics();
         Closing += (_, e) => {
             if (PreventClose.IsChecked == true) {
                 e.Cancel = true;
@@ -69,6 +68,9 @@ public partial class MainWindow : VhilzWindow
     }
 
     private void OnIconComparisonChanged(object? sender, SelectionChangedEventArgs e) => UpdateIconComparison();
+
+    // 图标信息按需读取，避免诊断文字和整树查找进入动画的每次布局。
+    private void OnRefreshIconMetrics(object? sender, RoutedEventArgs e) => UpdateIconMetrics();
 
     private void OnTitleAlignmentChanged(object? sender, SelectionChangedEventArgs e)
     {
