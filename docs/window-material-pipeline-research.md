@@ -1,17 +1,64 @@
-> 调研参考；不是已实现能力或已批准架构。已完成 FAA 的隔离 Windows Native AOT 发布与基础初始化；实际材质、整窗合成与其他平台仍待实机验证。
+> 调研参考；不是已实现能力或已批准架构。已完成 FAA 的隔离 Windows Native AOT 发布与基础初始化；没有整窗真实桌面折射的实机验证。候选、降级与历史建议分别列出。
 
 # 整窗材质渲染管线调研
 
 本文区分三种能力：系统在窗口后绘制材质、应用可以读取并处理的背景像素，以及应用自身视觉树中的可采样内容。它们不能互相代替。以下平台结论来自官方文档与第一方协议源码；有关互操作、效果组合与维护成本的判断标为工程推断，不代表已完成集成。
 
-## 当前方向：系统窗口磨砂与 FAA 局部材质
+## 严格整窗桌面折射：候选与降级
 
-用户已进一步明确：设计语言是液态磨砂玻璃；粘连动效与光效比真实折射更重要。窗口模糊桌面，控件/容器模糊窗口内部内容；不要求多层玻璃逐层折射。FAA
+本次问题中的整窗液态玻璃，特指对窗口后方真实桌面及其他窗口像素产生位置变化的折射。仅有模糊、壁纸染色、边缘光，或者对应用内图像做折射，都不满足这个定义。此前讨论的“系统磨砂＋FAA”仍是降级选择，不能代替本次更严格的方案比较。
+
+目前已核资料中，没有经过本项目 NativeAOT 发布、真实窗口运行与桌面输入验证的即用成品。下面的“可按 AOT 设计”只说明有避开托管动态
+IL 的工程路径，不是已完成兼容认证。固定 C ABI native bridge 配合 source-generated `LibraryImport` 是 Windows/macOS
+的共同候选；native shader 编译与 .NET 动态 IL 是不同机制。[A1]、[A2]、[A3]、[A10]
+
+| 候选与平台                                                                             | 背景来源及目标状态                                                                                                                                                     | AOT / API                                                                                                                                                 | 优点与维护、性能影响                                                                                                                                      | 关键验证缺口                                                                                                                                                                      |
+|----------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Windows WGC＋自绘折射；句柄捕获从 Windows 10 1903 起，自身排除要求 2004 起             | 捕获显示器的 D3D 帧，排除自身顶层窗口后，按窗口坐标采样；输入正确时可实现自由法线、模糊、色散等真实桌面折射。[W6]、[W9]、[W16]                                         | 捕获、D3D 与 affinity 是公开 API；可用静态互操作或 native bridge 设计为 AOT，尚未发布该后端                                                               | 算法自由，可与应用内材质共享算法；需维护捕获帧池、图形同步、HDR、跨屏与设备丢失。异步捕获增加延迟，纹理导入/复制增加带宽；无边框另有授权与打包条件        | 不隐藏窗口时是否正确取得其遮挡的动态背景；排除主窗不自动排除其他弹窗；GPU 输入、移动延迟与完整 AOT 运行。Affinity 也会影响其他支持该规则的录屏/截图输出，可能使本应用不出现在其中 |
+| macOS ScreenCaptureKit＋自绘折射；核心过滤 API 从 macOS 12.3 起                        | 显示器捕获可明确排除应用/窗口，输出 IOSurface 支撑的像素缓冲；输入正确时可执行同类自绘桌面折射。[M4]、[M10]                                                            | Apple 公开 API＋Objective-C++ 固定 C ABI，AOT 工程路径明确；没有本项目 macOS 发布证据                                                                     | 公开过滤契约比单纯屏幕裁剪明确，可控制材质算法；需处理 Screen Recording 权限/系统选择流程、native 打包、帧所有权、色彩空间和 GPU 同步                     | 后方动画/视频在遮挡时是否持续正确；Retina/跨屏坐标、纹理导入、延迟与 AOT 实机。核心 API 的 12.3 最低版本不等于当前官方示例所需的 macOS 15                                         |
+| Windows HostBackdrop＋公开 Transform2D；Win32 公开启用标志从 Windows 11 Build 22000 起 | HostBackdrop 采样本窗口绘制前的背景；公开仿射变换可研究真实背景缩放、平移、倾斜。属于简化折射候选，尚未验证组合；不等于沿边缘法线变化的完整液态玻璃。[W2]、[W3]、[W14] | OS API 公开，可按 AOT 设计；直接操作 Avalonia 持有的原生树可能需要私有适配，另建宿主也需验证层次                                                          | 可避免应用自建捕获流；效果留在合成器内。但公开效果集合有限，不支持任意 shader，也不能读回 HostBackdrop 给 FAA/Skia。[W13]、[W15] 原生宿主维护高于普通主题 | HostBackdrop 与 Transform2D 的源绑定、坐标、采样边界、裁剪及整窗接入；分片仿射模拟更复杂折射时的接缝与成本                                                                        |
+| macOS 26 NSGlassEffectView / Container 原生路线                                        | 系统动态玻璃有公开 API；已核资料没有 behindWindow 模式的桌面采样契约。覆盖客户区大小不能证明会折射桌面；严格目标状态待定。[M3]、[M6]、[M8]                             | 公开 AppKit＋固定 native bridge，可按 AOT 设计；未做 macOS AOT 发布                                                                                       | 原生外观、共享采样与融合不必自行复制算法；无需自建捕获。仍需维护 AppKit 主线程、签名、释放与 Avalonia 视图包装；大面积 GPU 成本未测                       | 真实桌面/其他窗口输入优先验证，然后才是 Avalonia contentView、透明度、标题栏、全屏与焦点。不得把 NSVisualEffectView.behindWindow 的契约套到新类上                                 |
+| Windows 私有 Composition shader / LiquidGlassWinUI 类路线                              | 自定义 HLSL 已实现 UV 位移等数学，但所核源码输入为 CreateBackdropBrush，Demo 整窗仍是 Mica；未证明 HostBackdrop 桌面输入。[G2]、[G3]、[G6]                             | Demo 配置 PublishAot=true，native Hook 不必依赖 .NET JIT；未在本会话发布。固定 RVA、私有 ABI/vtable、IAT 与 inline patch 明确不是公开扩展契约。[G4]、[G7] | 可在原生 GPU 链中表达自由 shader，减少应用读回；shader 多遍采样仍有成本。版本、架构与 GPU 维护负担最高，错配可导致 native 崩溃                            | 确切 Windows App SDK 2.2.0 / x64 兼容；Microsoft.UI.Composition 与 Avalonia 的 Windows.UI.Composition 不可直接交换对象；实际窗后输入、宿主与 AOT 运行均待验证。[G1]、[G5]、[V8]   |
+
+Desktop Duplication 也是公开桌面 GPU 输入，但没有已核的自身 HWND
+过滤契约。未证明自身排除和被遮挡背景正确性前，只保留为低优先输入候选，不能仅凭“有桌面纹理”判定整窗目标成立。[W18] Linux
+按用户要求不提供整窗桌面折射；Wayland Portal/PipeWire 与 X11 的差异不扩展为本次实现范围。
+
+### 明确不满足桌面折射的降级
+
+| 降级                                                          | 实际背景                       | AOT / 公开性与代价                                                                                                                                | 保留和丢失的能力                                          |
+|---------------------------------------------------------------|--------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------|
+| Windows Acrylic / Blur；macOS NSVisualEffectView.behindWindow | 桌面及后方窗口进入系统模糊     | 优先 Avalonia 公开窗口透明度请求与公开系统能力；支持范围依 OS/后端。无需应用持续捕获，维护相对较低；完整项目 AOT 未验证。[W1]、[W2]、[M2]         | 保留窗后磨砂与透明层次，没有位置折射                      |
+| Windows Mica / Mica Alt                                       | 主要是桌面壁纸、主题与激活状态 | Windows 11 的公开 DWM 路径可静态调用；系统管理材质，Mica 只采样壁纸一次以控制成本。[W1]、[W4]                                                     | 保留系统融合的外观；没有实时后方窗口图像，亦没有其折射    |
+| FAA 应用内玻璃；可配合上述系统底材                            | 应用自己的可采样视觉内容       | FAA 1.4.0 已有隔离 win-x64 AOT 发布与初始化证据，仍有四条裁剪警告；完整材质运行未验证。局部采样范围可控，重复整窗快照仍可能昂贵。[F2]、[F3]、[F4] | 保留应用内模糊/折射、交互与光效；系统桌面不自动进入其输入 |
+| 应用管理背景图或静态壁纸＋自绘 shader                         | 应用提供的图像                 | 固定模型与 Skia runtime effect 可按 AOT 设计；免捕获、便于缓存，仍有滤镜 GPU 成本                                                                 | 可折射该图像；不能响应后方其他窗口，不能冒充真实桌面折射  |
+| 稳定雾面实色＋边缘与局部动效                                  | 无桌面采样                     | 普通主题绘制；平台维护和资源负担最低                                                                                                              | 保留明暗层次与反馈，作为 Linux 和能力不可用时的基本回退   |
+
+`CompositionMaterial.Avalonia` 当前不能作为即用 AOT 降级库：其 DynamicMethod/Reflection.Emit 路径需要改造，且固定 Avalonia
+12.1.1 的私有宿主不等于本项目 12.1.3 可兼容。即使完成改造，也不会自动获得桌面位移折射。[C3]、[C4]、[C8]
+
+### 调查与回退优先级
+
+先用有辨识度且持续移动的窗后图像验证输入：Windows 分别核 HostBackdrop＋非恒等仿射变换和 WGC＋自身排除；macOS 26
+核新原生玻璃是否真的采样桌面，不能成立时再评估 ScreenCaptureKit。需要自由液态变形的 Windows 公开路线，优先研究捕获＋自绘；私有
+Hook 放在这些候选之后，不将它设为默认后端。
+
+输入成立后再验证不 fork Avalonia 的清晰前景与原生层次、各 RID NativeAOT 发布、明暗主题及实际材质。随后测量高
+DPI/4K、窗口拖动、跨屏、HDR、设备丢失、权限撤销与资源回收。4K RGBA8 单纹理约 31.6 MiB，60 fps 每帧复制一次约 2
+GB/s；这是数量级估算，不是性能实测。
+
+建议能力回退为“已验证的桌面折射 → 系统窗后模糊 → 平台合适的 Mica 或稳定实色”。FAA
+的应用内材质独立保留，不能作为桌面折射失败后的同等替代。所有视觉与性能候选仍待用户实机验收；已有 AOT 证据不构成替换 FAA
+的理由。本次仅补核资料与维护本文，未实施生产代码、依赖、架构或 Git 提交/推送。
+
+## 已讨论的降级方向：系统窗口磨砂与 FAA 局部材质
+
+此前用户曾明确：设计语言是液态磨砂玻璃；粘连动效与光效比真实折射更重要。窗口模糊桌面，控件/容器模糊窗口内部内容；不要求多层玻璃逐层折射。FAA
 优先保留，只有确认其 AOT 不支持或存在无法合理修复的缺陷后，才重新评估自研。用户所说的“上游”是 FAA 来源的
 LiquidGlassAvaloniaUI 仓库，非 Avalonia 控件基类。
 
-这组澄清替代下文此前整窗真实折射与自有 GlassScene 优先的推荐。先使用 Avalonia 系统窗口背景能力与 FAA，不为当前目标引入屏幕捕获、原生
-shader Hook 或自研玻璃渲染；这些更高要求的技术资料仅保留为历史参考。AOT 优先、不 fork Avalonia、PC 三平台与明暗主题同步仍然适用。
+这组澄清曾收窄实现方向；本次重新比较严格整窗桌面折射后，将系统窗口背景能力与 FAA 明确列为降级与局部材质。尚未授权引入屏幕捕获、原生
+shader Hook 或自研玻璃渲染。AOT 优先、不 fork Avalonia、PC 三平台与明暗主题同步仍然适用。
 
 ### 两种模糊可以形成层次，但背景输入不同
 
@@ -101,14 +148,15 @@ LiquidGlassSurface 的模板同样如此，不应误报为 FAA 丢失原仓库�
 
 ## 历史参考：整窗与多层真实折射目标
 
-> 下列路线按此前更高折射目标调研。当前推荐以本文开头的系统磨砂＋FAA 为准，自研、捕获和 Hook 尚未采用。
+> 下列包含此前多层与自研目标的研究记录。当前严格桌面折射比较以本文开头为准；多层互折射不是本次新要求，自研、捕获和 Hook
+> 尚未采用。
 
 
 
 早期候选按以下边界评估：NativeAOT 优先，不 fork Avalonia；可以维护自有玻璃库，使用方式接近 FAA；macOS 可以采用原生材质，Windows
 独立实现，Linux 不要求整窗玻璃。目标包含窗口与控件的玻璃、叠层折射及接近 Apple
-的视觉。对这个更高目标，“系统底材＋独立自绘高光”的组合不足以覆盖完整连续折射，只能作为降级路线；对当前液态磨砂目标，系统底材＋FAA
-已重新成为优先候选。
+的视觉。对这个更高目标，“系统底材＋独立自绘高光”的组合不足以覆盖完整连续折射，只能作为降级路线；对先前收窄的液态磨砂目标，系统底材＋FAA
+曾重新成为优先候选。本次严格桌面折射比较不沿用该能力判断。
 
 这些明确要求优先于仓库此前“限于应用内采样、全平台一致效果”的探索边界；本文评估扩展后的候选，但没有实施依赖变更或架构迁移。Avalonia
 fork 已排除，不能作为后续遇到接入障碍时的默认补救。
@@ -163,7 +211,8 @@ FAA，也不能把其应用内背景效果推导成桌面折射已完成。
 
 当时的推荐是 **A 作为自有 Lib 的共用基础，E 作为 macOS 原生增强；Windows 是否达到真正桌面整窗折射，由 B 的背景原型决定。C
 保留为独立实验后端，D 是降级。** Linux 仅提供 A 的应用内玻璃，按用户要求不承诺整窗桌面玻璃。若 Windows
-必须同时无需捕获、真实窗后折射，则目前只有继续调查 C 一类私有路线的候选，没有已经证明满足全部约束的现成方案。
+必须同时无需捕获、自由法线驱动的真实窗后折射，C 仍是未验证的私有候选，没有已经证明满足全部约束的现成方案。本次补核的公开
+HostBackdrop＋仿射变换可以另行验证简化背景重采样，不能继续把所有无需捕获的背景变换都归为私有路线。
 
 原生优先与统一算法是两个不同方向：允许 macOS 与 Windows
 分别维护后，应该统一使用接口、主题与窗口行为，并按实际能力声明差异，不强求共用采样实现。若用户把“每个平台都进行连续二次折射”设为硬指标，macOS
@@ -414,6 +463,76 @@ Avalonia 的 compositor，也没有据此形成可直接互换 brush/visual/text
 此外，微软要求捕获帧归还池后不要继续持有该 frame 或底层 surface，HDR 捕获需匹配浮点格式或做 tone mapping；尺寸变化与 device
 lost 需要重建 frame pool。[W6] 这些是独立视频/捕获系统的生命周期负担，不是为主题 brush 增加一个纹理 setter 就能消除的细节。
 
+## 本轮补充：Windows 公开输入与效果契约
+
+本节按本轮严格定义补核：整窗液态玻璃必须对窗口后方真实桌面及其他窗口的像素进行重采样。模糊、Mica
+和应用内背景折射均不能代替这项能力；下列原生组合和捕获路线仍是待验证候选，并未在本仓库实现或运行。
+
+### HostBackdrop 可供原生效果使用，但不能导出给自有 shader
+
+`CreateHostBackdropBrush()` 返回的公开类型仍是 `CompositionBackdropBrush`，并不是一个另有纹理导出方法的
+`CompositionHostBackdropBrush`。它让合成器采样本窗口绘制之前的区域，官方明确规定 **“The app cannot read the pixel data
+back.”**。[W3] 因此，本轮没有找到将它的桌面输入导出为 Skia/D3D 自有 shader 纹理的公开契约。将已有 D3D surface 接入
+Composition 的能力，方向与此相反，不能证明可以把 HostBackdrop 转成应用可读取的 texture。
+
+**公开原生 API 仍有简化位移候选。** `Windows.UI.Composition.Compositor.CreateEffectFactory` 的官方支持表明确列出
+`Transform2DEffect`，支持以 3×2 矩阵进行缩放、平移、旋转和错切。[W14] `CompositionBackdropBrush` 可以通过
+`SetSourceParameter` 作为效果图的源。[W5] 因而 **HostBackdrop＋二维仿射变换**
+可作为直接在原生合成器中重采样真实窗后背景的组合候选：若实机证明源绑定与坐标语义成立，它符合简化背景折射的定义，但不等于沿玻璃边缘法线变化的自由位移算法。本轮所读文档没有给出该组合的专门运行示例，也未找到对
+HostBackdrop 输入施加 Transform2D 的明文禁止；这只是公开 API 组合推断，不能报告成已运行支持。需要验证裁剪、采样边界、窗口移动/DPI
+与整窗覆盖，分片变换的接缝和成本另行评估。
+
+自由 shader 路线的限制则是明确的：`CompositionEffectBrush` 文档写出 **“Custom shaders cannot be specified.”**；Win2D
+`DisplacementMapEffect` 标记 `[NoComposition]`，说明受 Win2D 支持但不受 `Windows.UI.Composition` 支持。[W15]、[W13] 不能把任意
+Direct2D/Win2D shader 的存在当作其能读取 HostBackdrop 的证据。LiquidGlassWinUI 固定提交的自定义 HLSL 通道绕过了这项限制，但依赖私有
+ABI/Hook，且当前 `CreateBackdropBrush()` 输入仍不是桌面 HostBackdrop；前文源码结论不变。[G2]、[G4]
+
+### WGC 的可读像素与排除自身是两项独立契约
+
+公开 `IGraphicsCaptureItemInterop.CreateForMonitor(HMONITOR)` 和 `CreateForWindow(HWND)` 都从 Windows 10 1903 / Build
+18362 起支持，分别创建显示器或单窗口捕获对象。[W16]、[W17] 它们不要求传入 Picker 的选择结果，因此不能声称所有 Win32 WGC
+捕获都强制走系统 Picker。`CreateForWindow` 捕获的是指定窗口，不能拿捕获自己窗口的结果冒充自己窗后的桌面；整窗背景候选应先评估显示器捕获、坐标裁剪和自身排除。捕获帧确实含可处理的
+`Direct3D11CaptureFrame.Surface`，但 Skia 纹理导入、同步和复制成本尚未验证。[W6]
+
+`SetWindowDisplayAffinity(WDA_EXCLUDEFROMCAPTURE)` 的精确边界为：只接受属于当前进程的顶层窗口；仅在 DWM 合成桌面时工作；该值从
+Windows 10 2004 起受支持，旧版本按 `WDA_MONITOR` 行为处理。两者不同：`WDA_MONITOR` 使窗口在非显示器输出中呈现无内容，
+`WDA_EXCLUDEFROMCAPTURE` 则使窗口根本不出现。[W9]
+因而它比简单遮黑更接近排除反馈所需的能力，应先验证，不能因为存在遮挡就直接否定路线；但文档仍未承诺取得“该窗口从未存在时，所有被遮挡窗口持续正确绘制”的完整背景。窗口仍显示时，后方视频/动画、遮挡优化、透明材质及设备切换是否正确，须由原型证明。应用自己的其他顶层窗口和弹窗也不能因主窗口设置了一次
+affinity 就假定全部被排除。
+
+无边框捕获也不能默认成立。WGC 常规流程由系统显示黄色捕获边框；关闭边框的公开 `IsBorderRequired=false` 契约要求先调用
+`GraphicsCaptureAccess.RequestAccessAsync(Borderless)` 取得用户同意，并声明包清单中的 `graphicsCaptureWithoutBorder`
+能力。用户拒绝时，setter 可以成功但会被忽略；若其他应用要求同一源显示边框，边框仍会出现。[W6]、[W8] 该属性官方最低版本为 Build
+20348 / `UniversalApiContract` v12，不能套用 WGC 本体的更早最低版本。普通 Avalonia
+的具体打包、能力声明和授权流程本轮未验证，不能承诺无提示、无边框。帧池归还后不得保留 frame 或底层 surface 引用，尺寸变化和
+device lost 需重建帧池。[W6]
+
+### Desktop Duplication 与 AOT 判断
+
+Desktop Duplication 是公开 DXGI 路线，提供当前桌面图像的 GPU
+surface、脏区和移动区；原始接口的官方说明是完整桌面图像，而不是某个窗口下面的独立背景。[W18] 本轮未找到其自身提供按 HWND
+排除窗口的过滤接口。它是否能与本机 `WDA_EXCLUDEFROMCAPTURE`
+组合正确排除自身并保留动态背景，尚未验证；若不能，反馈和遮挡缺口仍在，因此保留为低优先候选，不能仅凭“已有桌面纹理”判为整窗折射方案。
+
+上述公开 native API 可通过固定 C ABI 桥接或已验证的静态互操作按 NativeAOT 设计，但这不等于已有 Avalonia
+接入库通过了发布及材质运行。AOT、背景正确性、公开 API 和最终外观必须分别验证。相较 WGC，原生
+HostBackdrop＋仿射效果有机会减少应用自行管理的捕获帧与纹理搬运，代价是效果能力受限且仍需处理 Avalonia 的原生宿主层次；相较两者，私有
+Hook 可表达更自由的 shader，但版本维护与崩溃风险更高。这些是管线结构推断，本轮没有新的性能实测、AOT 发布或视觉验收。
+
+补充一手来源：
+
+- [W14：Microsoft — Windows.UI.Composition.Compositor.CreateEffectFactory，Transform2DEffect 支持表](https://learn.microsoft.com/en-us/uwp/api/windows.ui.composition.compositor.createeffectfactory)
+- [W15：Microsoft — CompositionEffectBrush，禁止指定 custom shader](https://learn.microsoft.com/en-us/uwp/api/windows.ui.composition.compositioneffectbrush)
+- [W16：Microsoft — IGraphicsCaptureItemInterop.CreateForMonitor](https://learn.microsoft.com/en-us/windows/win32/api/windows.graphics.capture.interop/nf-windows-graphics-capture-interop-igraphicscaptureiteminterop-createformonitor)
+- [W17：Microsoft — IGraphicsCaptureItemInterop.CreateForWindow](https://learn.microsoft.com/en-us/windows/win32/api/windows.graphics.capture.interop/nf-windows-graphics-capture-interop-igraphicscaptureiteminterop-createforwindow)
+- [W18：Microsoft — Desktop Duplication API](https://learn.microsoft.com/en-us/windows/win32/direct3ddxgi/desktop-dup-api)
+
+[W14]: https://learn.microsoft.com/en-us/uwp/api/windows.ui.composition.compositor.createeffectfactory
+[W15]: https://learn.microsoft.com/en-us/uwp/api/windows.ui.composition.compositioneffectbrush
+[W16]: https://learn.microsoft.com/en-us/windows/win32/api/windows.graphics.capture.interop/nf-windows-graphics-capture-interop-igraphicscaptureiteminterop-createformonitor
+[W17]: https://learn.microsoft.com/en-us/windows/win32/api/windows.graphics.capture.interop/nf-windows-graphics-capture-interop-igraphicscaptureiteminterop-createforwindow
+[W18]: https://learn.microsoft.com/en-us/windows/win32/direct3ddxgi/desktop-dup-api
+
 ## macOS：原生玻璃、融合与整窗的不同边界
 
 `NSVisualEffectView.BlendingMode.behindWindow` 公开承诺混合和模糊桌面/其他窗口；Avalonia 12.1.3 的原生
@@ -489,8 +608,8 @@ SDK/C#/WinRT 投影或 native bridge 做独立验证。引入这些依赖、桥�
 可在同一产品中组合“共用自定义材质”和“可选原生系统底材”，但需要分别声明它们的能力。系统底材可以提供桌面相关的原生视觉；它不自动成为共用
 shader 可以采样的输入。自定义折射应明确采样的是应用内背景、应用管理的图像，还是经过授权取得的捕获源，不能用术语模糊其区别。
 
-如果目标包含无需捕获流程、相同可控算法、AOT 与多平台维护，不能把屏幕捕获设为默认的主题实现前提。若另立目标研究 Windows
-原生效果图、macOS 原生 Liquid Glass 或桌面捕获增强，应把它们视为独立能力提供者并做具体原型；失败时应具有稳定降级。这里是可行性判断与候选范围，不是批准采用某条架构。
+如果目标包含无需捕获流程、相同可控算法、AOT 与多平台维护，不能把屏幕捕获设为默认的主题实现前提。本次已经将 Windows
+原生效果图、macOS 原生 Liquid Glass 和桌面捕获列入候选比较，但它们仍是独立能力提供者，需要具体原型与稳定降级。这里是可行性判断与候选范围，不是批准采用某条架构。
 
 未验证范围包括：原生材质与 Avalonia 的实际合成层次、任意折射效果图、Mica/Acrylic 捕获结果、纹理导入与零拷贝、本仓库完整 Demo
 及其他平台 RID 的 Native
@@ -547,6 +666,7 @@ FAA 隔离 Windows Native AOT 发布与基础初始化，不以
 - [M2：Apple — NSVisualEffectView.BlendingMode.behindWindow](https://developer.apple.com/documentation/appkit/nsvisualeffectview/blendingmode-swift.enum/behindwindow)
 - [M3：Apple — NSGlassEffectView，macOS 26 起公开](https://developer.apple.com/documentation/appkit/nsglasseffectview)
 - [M4：Apple — Capturing screen content in macOS，官方示例](https://developer.apple.com/documentation/screencapturekit/capturing-screen-content-in-macos)
+- [M10：Apple — SCContentFilter.init (display:excludingApplications:exceptingWindows:)，公开排除应用契约与 macOS 12.3 最低版本](https://developer.apple.com/documentation/screencapturekit/sccontentfilter/init(display:excludingapplications:exceptingwindows:))
 - [M5：Apple — SCContentSharingPicker](https://developer.apple.com/documentation/screencapturekit/sccontentsharingpicker)
 - [L1：xdg-desktop-portal 第一方 — ScreenCast 接口 XML](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.ScreenCast.xml)
 - [L2：Wayland 官方 — Architecture](https://wayland.freedesktop.org/architecture.html)
@@ -645,6 +765,7 @@ FAA 隔离 Windows Native AOT 发布与基础初始化，不以
 [M7]: https://developer.apple.com/documentation/appkit/nsglasseffectcontainerview
 [M8]: https://developer.apple.com/documentation/appkit/nsglasseffectview/contentview
 [M9]: https://developer.apple.com/design/human-interface-guidelines/materials
+[M10]: https://developer.apple.com/documentation/screencapturekit/sccontentfilter/init(display:excludingapplications:exceptingwindows:)
 [V8]: https://github.com/AvaloniaUI/Avalonia/blob/8eeda4f6f546165b3f72e63c9f42247abb306905/src/Windows/Avalonia.Win32/WinRT/Composition/WinUiCompositorConnection.cs
 [V9]: https://github.com/AvaloniaUI/Avalonia/blob/8eeda4f6f546165b3f72e63c9f42247abb306905/src/Avalonia.Base/Platform/IMacOSTopLevelPlatformHandle.cs
 [V10]: https://github.com/AvaloniaUI/Avalonia/blob/8eeda4f6f546165b3f72e63c9f42247abb306905/native/Avalonia.Native/src/OSX/AvnView.mm
