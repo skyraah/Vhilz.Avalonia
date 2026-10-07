@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Vhilz.Avalonia.Tests;
 
-public class CaptionGeometryIconTests
+public class GeometryIconTests
 {
     [AvaloniaTheory]
     [InlineData(12)]
@@ -18,7 +18,7 @@ public class CaptionGeometryIconTests
     public void DrawingCommandsMatchInstalledLucideAtTheSameSize(double size)
     {
         var lucide = new LucideIcon { Kind = LucideIconKind.Square, Size = size };
-        var custom = new CaptionGeometryIcon
+        var custom = new GeometryIcon
         {
             Data = Geometry.Parse(LucideIconKind.Square.GetGeometryData()),
             Size = size
@@ -37,7 +37,7 @@ public class CaptionGeometryIconTests
     [AvaloniaFact]
     public void DefaultSizeAndClearedGeometryFollowDirectDrawingContract()
     {
-        var custom = new CaptionGeometryIcon
+        var custom = new GeometryIcon
         {
             Data = Geometry.Parse(LucideIconKind.Square.GetGeometryData()),
             Foreground = Brushes.White
