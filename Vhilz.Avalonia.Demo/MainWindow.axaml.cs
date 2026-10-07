@@ -15,6 +15,7 @@ namespace Vhilz.Avalonia.Demo;
 public partial class MainWindow : VhilzWindow
 {
     private Control? _comparisonIcon;
+    private int _buttonPreviewClickCount;
 
     public MainWindow()
     {
@@ -84,6 +85,11 @@ public partial class MainWindow : VhilzWindow
             CaptionPreviewStatus.Text = $"{button.Tag}预览：点击已触发。";
     }
 
+    private void OnButtonPreviewClick(object? sender, RoutedEventArgs e) {
+        if (sender is Button button)
+            ButtonPreviewStatus.Text = $"{button.Tag}：已触发 {++_buttonPreviewClickCount} 次点击。";
+    }
+
     private void UpdateIconComparison()
     {
         var restore = FindRestoreIcon();
@@ -122,7 +128,7 @@ public partial class MainWindow : VhilzWindow
         else
         {
             LucideIcon comparison = mode == 2
-                ? new CaptionGeometryIcon { Data = Geometry.Parse(LucideIconKind.Square.GetGeometryData()) }
+                ? new GeometryIcon { Data = Geometry.Parse(LucideIconKind.Square.GetGeometryData()) }
                 : new LucideIcon { Kind = LucideIconKind.Square };
             comparison.Bind(LucideIcon.SizeProperty, new Binding(nameof(restore.Size)) { Source = restore });
             comparison.Bind(LucideIcon.StrokeWidthProperty, new Binding(nameof(restore.StrokeWidth)) { Source = restore });
@@ -137,9 +143,9 @@ public partial class MainWindow : VhilzWindow
         UpdateIconMetrics();
     }
 
-    private CaptionGeometryIcon? FindRestoreIcon() =>
+    private GeometryIcon? FindRestoreIcon() =>
         // Avalonia 12 将窗口与装饰放在同一个 TopLevelHost 下，装饰不是窗口的视觉子项。
-        (this.GetVisualAncestors().LastOrDefault() ?? this).GetVisualDescendants().OfType<CaptionGeometryIcon>()
+        (this.GetVisualAncestors().LastOrDefault() ?? this).GetVisualDescendants().OfType<GeometryIcon>()
             .FirstOrDefault(icon => icon.Name == "PartRestoreIcon");
 
     private void UpdateIconMetrics()

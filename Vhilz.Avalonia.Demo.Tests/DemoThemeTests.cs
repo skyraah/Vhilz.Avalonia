@@ -7,11 +7,54 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
+using Vhilz.Avalonia.Theme;
+using Vhilz.Avalonia.Theme.Controls;
 using Xunit;
 
 namespace Vhilz.Avalonia.Demo.Tests;
 
 public class DemoThemeTests {
+    [AvaloniaFact]
+    public void PublicIconsLoadFromXamlAndFollowThemeChanges() {
+        var window = new MainWindow();
+        window.Show();
+        try {
+            Assert.True(typeof(GeometryIcon).IsPublic);
+            Assert.True(typeof(SvgIcon).IsPublic);
+            var geometry = window.FindControl<GeometryIcon>("GeometryIconPreview")!;
+            var svg = window.FindControl<SvgIcon>("SvgIconPreview")!;
+            var multicolor = window.FindControl<SvgIcon>("MulticolorSvgIconPreview")!;
+            Assert.NotNull(geometry.Data);
+            Assert.NotNull(svg.Picture);
+            Assert.NotNull(multicolor.Picture);
+            Assert.Equal(32, multicolor.Picture.CullRect.Width);
+            Assert.Equal(24, multicolor.Picture.CullRect.Height);
+
+            foreach (var variant in new[] { ThemeVariant.Dark, ThemeVariant.Light, ThemeVariant.Dark }) {
+                window.RequestedThemeVariant = variant;
+                window.UpdateLayout();
+                var foreground = Assert.IsAssignableFrom<ISolidColorBrush>(
+                    window.FindResource(variant, ResourceKeys.Brush.Text));
+                Assert.Equal(foreground.Color, Assert.IsAssignableFrom<ISolidColorBrush>(geometry.Foreground).Color);
+                Assert.Equal(foreground.Color, svg.CurrentColor);
+                Assert.Equal(foreground.Color, multicolor.CurrentColor);
+            }
+
+            var geometryButton = window.FindControl<Button>("GeometryIconButtonPreview")!;
+            var svgButton = window.FindControl<Button>("SvgIconButtonPreview")!;
+            geometryButton.Foreground = svgButton.Foreground = Brushes.Red;
+            Assert.Equal(Brushes.Red, Assert.IsType<GeometryIcon>(geometryButton.Content).Foreground);
+            Assert.Equal(Colors.Red, Assert.IsType<SvgIcon>(svgButton.Content).CurrentColor);
+            Assert.False(Assert.IsType<GeometryIcon>(window.FindControl<Button>("GeometryIconDisabledPreview")!.Content)
+                .IsEffectivelyEnabled);
+            Assert.False(Assert.IsType<SvgIcon>(window.FindControl<Button>("SvgIconDisabledPreview")!.Content)
+                .IsEffectivelyEnabled);
+        }
+        finally {
+            window.Close();
+        }
+    }
+
     [AvaloniaTheory]
     [InlineData(false)]
     [InlineData(true)]
