@@ -8,7 +8,7 @@
 
 | 类型 | 已实现的用途 |
 | --- | --- |
-| Color / Brush | Surface、Text、TextSecondary、TextMuted、Border、BorderInactive；Brush 另有 OnDanger |
+| Color / Brush | Surface、Control、ControlHover、ControlPressed、Text、TextSecondary、TextMuted、Border、BorderInactive；Brush 另有 OnDanger |
 | Radius | Small，沿用现有 5 DIP；其他圆角档位尚未确认 |
 | Duration | Fast=80、Normal=160、Slow=220 ms |
 | Easing | Standard、Decelerate、Spring；Spring 仍使用获准保留的 SukiUI |

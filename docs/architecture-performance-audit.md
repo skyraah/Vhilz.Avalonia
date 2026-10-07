@@ -101,7 +101,7 @@ Button 的外部布局已经消费 Margin；模板又把同一 Margin 传给内�
 
 ### F05 / P2：固定 16 ms 定时器没有与 Avalonia 动画节拍协同
 
-**状态：调度与 Resize 成本由源码确认，实际帧率待测。** 位置：[WindowsFullscreenTransition.cs](../Vhilz.Avalonia/Controls/Windows/WindowsFullscreenTransition.cs) 第 43、149–160、170–184 行。
+**状态：调度与 Resize 成本由源码确认，实际帧率待测。** 位置：[WindowsFullscreenTransition.cs](../Vhilz.Avalonia/Platforms/Windows/WindowsFullscreenTransition.cs)（原路径 `Controls/Windows/WindowsFullscreenTransition.cs` 第 43、149–160、170–184 行，行号为审计时记录）。
 
 该路径使用 `DispatcherTimer(DispatcherPriority.Render)`，每帧调用 `SetWindowPos`。核对实际 Avalonia 12.1.3 的 `DispatcherTimer.FireTick()`：Tick 返回后才 Restart，下一期限是当前时刻加 Interval。实际间隔因此包含回调/同步布局成本和队列延迟；Render 优先级并不使它成为显示刷新时钟。
 
@@ -134,7 +134,7 @@ Height 的 DoubleTransition 改变 Grid 的 Auto 行，正文所在星号行随�
 
 ### F07 / P2：全屏适配依赖当前上游消息、私有父容器与处理顺序
 
-**状态：具体依赖由源码确认；DPI 和无边框组合结果待实机。** 位置：[WindowsFullscreenTransition.cs](../Vhilz.Avalonia/Controls/Windows/WindowsFullscreenTransition.cs) 第 59–70、113–127 行；[FullscreenTitleBarController.cs](../Vhilz.Avalonia/Controls/Windows/FullscreenTitleBarController.cs) 第 42–66、119–125 行。
+**状态：具体依赖由源码确认；DPI 和无边框组合结果待实机。** 位置：[WindowsFullscreenTransition.cs](../Vhilz.Avalonia/Platforms/Windows/WindowsFullscreenTransition.cs)（原路径 `Controls/Windows/WindowsFullscreenTransition.cs` 第 59–70、113–127 行，行号为审计时记录）；[FullscreenTitleBarController.cs](../Vhilz.Avalonia/Controls/Windows/FullscreenTitleBarController.cs) 第 42–66、119–125 行。
 
 这里有三项明确兼容边界：
 
