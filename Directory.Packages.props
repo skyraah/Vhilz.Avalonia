@@ -13,6 +13,7 @@
         <PackageVersion Include="Lucide.Avalonia" Version="0.2.24" />
         <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
         <PackageVersion Include="SukiUI.Motion" Version="7.0.2-nightly20261002.475" />
+        <PackageVersion Include="Svg.Controls.Skia.Avalonia" Version="12.0.0.10" />
         <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
         <PackageVersion Include="xunit.v3" Version="3.2.2" />
     </ItemGroup>

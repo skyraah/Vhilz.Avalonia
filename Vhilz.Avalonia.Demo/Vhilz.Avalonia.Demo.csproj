@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <ApplicationManifest>Platforms/Windows/app.manifest</ApplicationManifest>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,5 +17,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Vhilz.Avalonia\Vhilz.Avalonia.csproj" />
+      <AvaloniaResource Include="Assets/**/*.svg" />
     </ItemGroup>
 </Project>
