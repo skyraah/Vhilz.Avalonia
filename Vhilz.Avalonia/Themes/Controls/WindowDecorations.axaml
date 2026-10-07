@@ -40,7 +40,8 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.TextSecondary}" />
         <!-- 非激活状态只影响常态；关闭按钮交互时仍保留白色图标。 -->
-        <Style Selector="^[(vhz|DecorationRegistration.IsInactive)=True]:not(:pointerover):not(:pressed), ^[(vhz|DecorationRegistration.IsInactive)=True]:disabled">
+        <Style
+            Selector="^[(vhz|DecorationRegistration.IsInactive)=True]:not(:pointerover):not(:pressed), ^[(vhz|DecorationRegistration.IsInactive)=True]:disabled">
             <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.TextMuted}" />
         </Style>
         <!-- 按钮宽度跟随公共token -->
@@ -200,7 +201,8 @@
                                     AutomationProperties.Name="{DynamicResource Vhilz.Text.Window.Fullscreen}"
                                     Theme="{StaticResource Vhilz.CaptionButton.Theme}"
                                     WindowDecorationProperties.ElementRole="FullScreenButton">
-                                <lucide:LucideIcon Kind="Maximize2" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                                <lucide:LucideIcon Kind="Maximize2"
+                                                   Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
                             </Button>
 
                             <!-- 最小化 -->
@@ -217,13 +219,14 @@
                                     Theme="{StaticResource Vhilz.CaptionButton.Theme}"
                                     WindowDecorationProperties.ElementRole="MaximizeButton">
                                 <Grid>
-                                    <lucide:LucideIcon Name="PartMaximizeIcon" Kind="Square" Size="{DynamicResource Vhilz.CaptionButton.Icon.Maximize.Size}"
+                                    <lucide:LucideIcon Name="PartMaximizeIcon" Kind="Square"
+                                                       Size="{DynamicResource Vhilz.CaptionButton.Icon.Maximize.Size}"
                                                        StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.StrokeWidth}" />
-                                    <vhz:CaptionGeometryIcon Name="PartRestoreIcon"
-                                                             Data="{DynamicResource Vhilz.CaptionButton.Icon.Restore.Geometry}"
-                                                             Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
-                                                             StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.Restore.StrokeWidth}"
-                                                             IsVisible="False" />
+                                    <vhz:GeometryIcon Name="PartRestoreIcon"
+                                                      Data="{DynamicResource Vhilz.CaptionButton.Icon.Restore.Geometry}"
+                                                      Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
+                                                      StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.Restore.StrokeWidth}"
+                                                      IsVisible="False" />
                                 </Grid>
                             </Button>
 
@@ -250,17 +253,19 @@
                             <DockPanel.RenderTransform>
                                 <TranslateTransform />
                             </DockPanel.RenderTransform>
-                            <StackPanel vhz:DecorationRegistration.IsInactive="{Binding !$parent[vhz:VhilzWindow].IsActive, FallbackValue=False}"
-                                        DockPanel.Dock="Right" Orientation="Horizontal">
+                            <StackPanel
+                                vhz:DecorationRegistration.IsInactive="{Binding !$parent[vhz:VhilzWindow].IsActive, FallbackValue=False}"
+                                DockPanel.Dock="Right" Orientation="Horizontal">
                                 <Button Name="PART_PopoverFullScreenButton"
-                                    AutomationProperties.Name="{DynamicResource Vhilz.Text.Window.ExitFullscreen}"
+                                        AutomationProperties.Name="{DynamicResource Vhilz.Text.Window.ExitFullscreen}"
                                         ToolTip.Tip="{DynamicResource Vhilz.Text.Window.ExitFullscreen}"
                                         Theme="{StaticResource Vhilz.CaptionButton.Theme}"
                                         WindowDecorationProperties.ElementRole="FullScreenButton">
-                                    <lucide:LucideIcon Kind="Minimize2" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                                    <lucide:LucideIcon Kind="Minimize2"
+                                                       Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
                                 </Button>
                                 <Button Name="PART_PopoverCloseButton"
-                                    AutomationProperties.Name="{DynamicResource Vhilz.Text.Window.Close}"
+                                        AutomationProperties.Name="{DynamicResource Vhilz.Text.Window.Close}"
                                         Classes="VhilzCaptionClose"
                                         Theme="{StaticResource Vhilz.CaptionButton.Theme}"
                                         WindowDecorationProperties.ElementRole="CloseButton">
@@ -297,7 +302,7 @@
             <Style Selector="^ lucide|LucideIcon#PartMaximizeIcon">
                 <Setter Property="IsVisible" Value="False" />
             </Style>
-            <Style Selector="^ vhz|CaptionGeometryIcon#PartRestoreIcon">
+            <Style Selector="^ vhz|GeometryIcon#PartRestoreIcon">
                 <Setter Property="IsVisible" Value="True" />
             </Style>
         </Style>
@@ -315,22 +320,6 @@
                     <ResourceDictionary.MergedDictionaries>
                         <ResourceInclude Source="/Themes/Resources/Tokens.axaml" />
                     </ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary.ThemeDictionaries>
-                        <ResourceDictionary x:Key="Dark">
-                            <ResourceDictionary.MergedDictionaries>
-                                <ResourceInclude Source="/Themes/Resources/Dark.axaml" />
-                            </ResourceDictionary.MergedDictionaries>
-                            <SolidColorBrush x:Key="Vhilz.Preview.WindowDecorations.BackgroundBrush">#18181B</SolidColorBrush>
-                            <SolidColorBrush x:Key="Vhilz.Preview.WindowDecorations.ForegroundBrush">#FAFAFA</SolidColorBrush>
-                        </ResourceDictionary>
-                        <ResourceDictionary x:Key="Light">
-                            <ResourceDictionary.MergedDictionaries>
-                                <ResourceInclude Source="/Themes/Resources/Light.axaml" />
-                            </ResourceDictionary.MergedDictionaries>
-                            <SolidColorBrush x:Key="Vhilz.Preview.WindowDecorations.BackgroundBrush">#F4F4F5</SolidColorBrush>
-                            <SolidColorBrush x:Key="Vhilz.Preview.WindowDecorations.ForegroundBrush">#18181B</SolidColorBrush>
-                        </ResourceDictionary>
-                    </ResourceDictionary.ThemeDictionaries>
                     <DataTemplate x:Key="Vhilz.Preview.WindowDecorations.Row.DataTemplate" x:DataType="x:String">
                         <Border Padding="12"
                                 Background="{DynamicResource Vhilz.Preview.WindowDecorations.BackgroundBrush}"
@@ -340,31 +329,37 @@
                                 <StackPanel Height="{DynamicResource Vhilz.Window.TitleBar.Height}"
                                             Orientation="Horizontal">
                                     <Button Theme="{StaticResource Vhilz.CaptionButton.Theme}">
-                                        <lucide:LucideIcon Kind="Maximize" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                                        <lucide:LucideIcon Kind="Maximize"
+                                                           Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
                                     </Button>
                                     <Button Theme="{StaticResource Vhilz.CaptionButton.Theme}">
-                                        <lucide:LucideIcon Kind="Minus" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                                        <lucide:LucideIcon Kind="Minus"
+                                                           Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
                                     </Button>
                                     <Button Theme="{StaticResource Vhilz.CaptionButton.Theme}">
-                                        <lucide:LucideIcon Kind="Square" Size="{DynamicResource Vhilz.CaptionButton.Icon.Maximize.Size}"
+                                        <lucide:LucideIcon Kind="Square"
+                                                           Size="{DynamicResource Vhilz.CaptionButton.Icon.Maximize.Size}"
                                                            StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.StrokeWidth}" />
                                     </Button>
                                     <Button Theme="{StaticResource Vhilz.CaptionButton.Theme}">
-                                        <vhz:CaptionGeometryIcon
+                                        <vhz:GeometryIcon
                                             Data="{DynamicResource Vhilz.CaptionButton.Icon.Restore.Geometry}"
                                             Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
                                             StrokeWidth="{DynamicResource Vhilz.CaptionButton.Icon.Restore.StrokeWidth}" />
                                     </Button>
                                     <Button Theme="{StaticResource Vhilz.CaptionButton.Theme}">
-                                        <lucide:LucideIcon Kind="Expand" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                                        <lucide:LucideIcon Kind="Expand"
+                                                           Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
                                     </Button>
                                     <Button Theme="{StaticResource Vhilz.CaptionButton.Theme}"
                                             Classes="VhilzCaptionClose">
-                                        <lucide:LucideIcon Kind="X" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                                        <lucide:LucideIcon Kind="X"
+                                                           Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
                                     </Button>
                                     <Button Theme="{StaticResource Vhilz.CaptionButton.Theme}"
                                             Classes="VhilzCaptionClose" IsEnabled="False">
-                                        <lucide:LucideIcon Kind="X" Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
+                                        <lucide:LucideIcon Kind="X"
+                                                           Theme="{StaticResource Vhilz.CaptionButton.Icon.Theme}" />
                                     </Button>
                                 </StackPanel>
                             </StackPanel>
@@ -373,12 +368,31 @@
                 </ResourceDictionary>
             </Border.Resources>
             <StackPanel Spacing="12">
+                <!-- 每行独立持有配色资源，使画笔内部的动态颜色引用跟随该行主题。 -->
                 <ThemeVariantScope RequestedThemeVariant="Dark">
+                    <ThemeVariantScope.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceInclude Source="/Themes/Resources/Dark.axaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                            <SolidColorBrush x:Key="Vhilz.Preview.WindowDecorations.BackgroundBrush">#18181B</SolidColorBrush>
+                            <SolidColorBrush x:Key="Vhilz.Preview.WindowDecorations.ForegroundBrush">#FAFAFA</SolidColorBrush>
+                        </ResourceDictionary>
+                    </ThemeVariantScope.Resources>
                     <ContentPresenter
                         ContentTemplate="{StaticResource Vhilz.Preview.WindowDecorations.Row.DataTemplate}"
                         Content="暗色" />
                 </ThemeVariantScope>
                 <ThemeVariantScope RequestedThemeVariant="Light">
+                    <ThemeVariantScope.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceInclude Source="/Themes/Resources/Light.axaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                            <SolidColorBrush x:Key="Vhilz.Preview.WindowDecorations.BackgroundBrush">#F4F4F5</SolidColorBrush>
+                            <SolidColorBrush x:Key="Vhilz.Preview.WindowDecorations.ForegroundBrush">#18181B</SolidColorBrush>
+                        </ResourceDictionary>
+                    </ThemeVariantScope.Resources>
                     <ContentPresenter
                         ContentTemplate="{StaticResource Vhilz.Preview.WindowDecorations.Row.DataTemplate}"
                         Content="明色" />

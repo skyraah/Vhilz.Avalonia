@@ -11,6 +11,7 @@
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="/Themes/Resources/Tokens.axaml" />
+                <ResourceInclude Source="avares://Vhilz.Avalonia/Themes/Controls/Button.axaml" />
                 <ResourceInclude Source="avares://Vhilz.Avalonia/Themes/Controls/TitleBar.axaml" />
                 <ResourceInclude Source="avares://Vhilz.Avalonia/Themes/Controls/WindowDecorations.axaml" />
                 <ResourceInclude Source="avares://Vhilz.Avalonia/Themes/Controls/VhilzWindow.axaml" />

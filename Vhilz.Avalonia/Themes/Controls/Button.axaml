@@ -1,5 +1,113 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <!-- Add Resources Here -->
+    <ControlTheme x:Key="Vhilz.Button.Theme" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="Padding" Value="12,6" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FocusAdorner" Value="{x:Null}" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="Button">
+                <Panel>
+                    <ContentPresenter x:Name="PART_ContentPresenter"
+                                      Background="{TemplateBinding Background}"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      CornerRadius="{TemplateBinding CornerRadius}"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Padding="{TemplateBinding Padding}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      RecognizesAccessKey="True">
+                        <ContentPresenter.Transitions>
+                            <Transitions>
+                                <BrushTransition Property="Background"
+                                                 Duration="{DynamicResource Vhilz.Duration.Fast}"
+                                                 Easing="{DynamicResource Vhilz.Easing.Standard}" />
+                            </Transitions>
+                        </ContentPresenter.Transitions>
+                    </ContentPresenter>
+                    <Border x:Name="PART_FocusRing" IsVisible="False" IsHitTestVisible="False"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            BorderBrush="{DynamicResource Vhilz.Brush.Text}"
+                            BorderThickness="{DynamicResource Vhilz.Thickness.Focus}" />
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^[IsDefault=True]">
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.TextSecondary}" />
+        </Style>
+        <Style Selector="^:pointerover:not(:disabled), ^:flyout-open:not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlHover}" />
+        </Style>
+        <Style Selector="^:pressed:not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlPressed}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
+        </Style>
+        <Style Selector="^:focus-visible:not(:disabled) /template/ Border#PART_FocusRing">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type Button}" TargetType="Button" BasedOn="{StaticResource Vhilz.Button.Theme}" />
+    <Design.PreviewWith>
+        <Border Width="640" Padding="20">
+            <Border.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceInclude Source="/Themes/Resources/Tokens.axaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                    <DataTemplate x:Key="Vhilz.Preview.Button.Row.DataTemplate" x:DataType="x:String">
+                        <Border Padding="16"
+                                Background="{DynamicResource Vhilz.Brush.Surface}"
+                                TextElement.Foreground="{DynamicResource Vhilz.Brush.Text}">
+                            <StackPanel Spacing="12">
+                                <TextBlock Text="{Binding}" />
+                                <StackPanel Orientation="Horizontal" Spacing="12">
+                                    <Button Theme="{StaticResource Vhilz.Button.Theme}" Content="按钮" />
+                                    <Button Theme="{StaticResource Vhilz.Button.Theme}" Content="较长的按钮文本" />
+                                    <Button Theme="{StaticResource Vhilz.Button.Theme}" Content="禁用" IsEnabled="False" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ResourceDictionary>
+            </Border.Resources>
+            <StackPanel Spacing="12">
+                <!-- 每行独立持有配色资源，使画笔内部的动态颜色引用跟随该行主题。 -->
+                <ThemeVariantScope RequestedThemeVariant="Dark">
+                    <ThemeVariantScope.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceInclude Source="/Themes/Resources/Dark.axaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </ThemeVariantScope.Resources>
+                    <ContentPresenter Content="暗色"
+                                      ContentTemplate="{StaticResource Vhilz.Preview.Button.Row.DataTemplate}" />
+                </ThemeVariantScope>
+                <ThemeVariantScope RequestedThemeVariant="Light">
+                    <ThemeVariantScope.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceInclude Source="/Themes/Resources/Light.axaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </ThemeVariantScope.Resources>
+                    <ContentPresenter Content="明色"
+                                      ContentTemplate="{StaticResource Vhilz.Preview.Button.Row.DataTemplate}" />
+                </ThemeVariantScope>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
 </ResourceDictionary>
-

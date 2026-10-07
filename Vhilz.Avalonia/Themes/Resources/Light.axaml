@@ -3,6 +3,9 @@
     <!-- 明色基础色与语义画笔在此定义；与 Dark.axaml 保持相同的资源 key。 -->
     <!-- 共享用途色驱动控件画笔；控件键继续承担局部覆盖，独立状态颜色按各自用途维护。 -->
     <Color x:Key="Vhilz.Color.Surface">#FAFAFA</Color>
+    <Color x:Key="Vhilz.Color.Control">#F4F4F5</Color>
+    <Color x:Key="Vhilz.Color.ControlHover">#E4E4E7</Color>
+    <Color x:Key="Vhilz.Color.ControlPressed">#D4D4D8</Color>
     <Color x:Key="Vhilz.Color.Text">#18181B</Color>
     <Color x:Key="Vhilz.Color.TextSecondary">#27272A</Color>
     <Color x:Key="Vhilz.Color.TextMuted">#71717A</Color>
@@ -13,10 +16,12 @@
     <SolidColorBrush x:Key="Vhilz.Window.ForegroundBrush" Color="{DynamicResource Vhilz.Color.Text}" />
     <SolidColorBrush x:Key="Vhilz.Window.BorderBrush" Color="{DynamicResource Vhilz.Color.Border}" />
     <SolidColorBrush x:Key="Vhilz.Window.Inactive.BorderBrush" Color="{DynamicResource Vhilz.Color.BorderInactive}" />
-    <SolidColorBrush x:Key="Vhilz.Window.TransparencyFallback.BackgroundBrush" Color="{DynamicResource Vhilz.Color.Surface}" />
+    <SolidColorBrush x:Key="Vhilz.Window.TransparencyFallback.BackgroundBrush"
+                     Color="{DynamicResource Vhilz.Color.Surface}" />
     <SolidColorBrush x:Key="Vhilz.Window.TitleBar.BackgroundBrush" Color="{DynamicResource Vhilz.Color.Surface}" />
     <SolidColorBrush x:Key="Vhilz.Window.TitleBar.ForegroundBrush" Color="{DynamicResource Vhilz.Color.TextSecondary}" />
-    <SolidColorBrush x:Key="Vhilz.Window.TitleBar.Inactive.ForegroundBrush" Color="{DynamicResource Vhilz.Color.TextMuted}" />
+    <SolidColorBrush x:Key="Vhilz.Window.TitleBar.Inactive.ForegroundBrush"
+                     Color="{DynamicResource Vhilz.Color.TextMuted}" />
 
     <!-- SurfaceColor 直接使用 Alpha；延续原 TintColor 约 75% 的叠色强度。 -->
     <SolidColorBrush x:Key="Vhilz.CaptionButton.PointerOver.BackgroundBrush">#0F000000</SolidColorBrush>
@@ -28,6 +33,9 @@
 
     <!-- 语义画笔动态引用颜色，应用覆盖颜色后已有画笔继续更新。 -->
     <SolidColorBrush x:Key="Vhilz.Brush.Surface" Color="{DynamicResource Vhilz.Color.Surface}" />
+    <SolidColorBrush x:Key="Vhilz.Brush.Control" Color="{DynamicResource Vhilz.Color.Control}" />
+    <SolidColorBrush x:Key="Vhilz.Brush.ControlHover" Color="{DynamicResource Vhilz.Color.ControlHover}" />
+    <SolidColorBrush x:Key="Vhilz.Brush.ControlPressed" Color="{DynamicResource Vhilz.Color.ControlPressed}" />
     <SolidColorBrush x:Key="Vhilz.Brush.Text" Color="{DynamicResource Vhilz.Color.Text}" />
     <SolidColorBrush x:Key="Vhilz.Brush.TextSecondary" Color="{DynamicResource Vhilz.Color.TextSecondary}" />
     <SolidColorBrush x:Key="Vhilz.Brush.TextMuted" Color="{DynamicResource Vhilz.Color.TextMuted}" />

@@ -6,7 +6,7 @@
     <!-- 窗口与操作按钮 -->
 
     <x:Double x:Key="Vhilz.Window.TitleBar.Height">32</x:Double>
-    <Thickness x:Key="Vhilz.Window.FullscreenTitleBar.Margin">2</Thickness>
+    <Thickness x:Key="Vhilz.Window.FullscreenTitleBar.Margin">6,3</Thickness>
     <Thickness x:Key="Vhilz.Window.TitleBar.Title.Margin">12,0,12,0</Thickness>
     <x:Double x:Key="Vhilz.CaptionButton.Width">40</x:Double>
     <x:Double x:Key="Vhilz.CaptionButton.Icon.Size">16</x:Double>
@@ -14,7 +14,7 @@
     <!-- Restore在默认 16 DIP 下为 1 DIP；独立于其他 Lucide 图标 -->
     <x:Double x:Key="Vhilz.CaptionButton.Icon.Restore.StrokeWidth">1.5</x:Double>
     <CornerRadius x:Key="Vhilz.Radius.Small">5</CornerRadius>
-    <Thickness x:Key="Vhilz.CaptionButton.Margin">1,2,1,2</Thickness>
+    <Thickness x:Key="Vhilz.CaptionButton.Margin">3,2</Thickness>
     <Thickness x:Key="Vhilz.Window.FrameThickness">4</Thickness>
     <!-- 档位已获本轮授权；120/400ms 仍是按钮专属参数。圆角沿用现有值。 -->
     <x:TimeSpan x:Key="Vhilz.Duration.Fast">0:0:0.080</x:TimeSpan>
@@ -28,7 +28,7 @@
     <!-- 焦点轮廓沿用 1 DIP 描边；正式观感仍由 Demo 验收。 -->
     <Thickness x:Key="Vhilz.Thickness.Focus">1</Thickness>
     <x:Double x:Key="Vhilz.CaptionButton.Icon.Maximize.Size">12</x:Double>
-    <Thickness x:Key="Vhilz.CaptionButton.Group.Margin">2,1</Thickness>
+    <Thickness x:Key="Vhilz.CaptionButton.Group.Margin">6,3</Thickness>
     <!-- 默认中文只作回退；应用可在资源宿主覆盖这些键进行本地化。 -->
     <x:String x:Key="Vhilz.Text.Window.Fullscreen">全屏</x:String>
     <x:String x:Key="Vhilz.Text.Window.ExitFullscreen">退出全屏（Esc）</x:String>
