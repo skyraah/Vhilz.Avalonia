@@ -169,7 +169,7 @@ public class VhilzWindowTests {
         var template = Assert.IsAssignableFrom<IWindowDrawnDecorationsTemplate>(templateSetter.Value);
         var result = template.Build();
         var button = Assert.IsType<Button>(result.NameScope.Find("PART_MaximizeButton"));
-        var restore = Assert.IsType<CaptionGeometryIcon>(result.NameScope.Find("PartRestoreIcon"));
+        var restore = Assert.IsType<GeometryIcon>(result.NameScope.Find("PartRestoreIcon"));
         var minimizeButton = Assert.IsType<Button>(result.NameScope.Find("PART_MinimizeButton"));
         var lucide = Assert.IsType<LucideIcon>(minimizeButton.Content);
         // 单独承载装饰模板，避免依赖 Headless 平台是否提供原生窗口装饰。

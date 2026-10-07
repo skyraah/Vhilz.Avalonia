@@ -12,17 +12,18 @@ using Avalonia.LogicalTree;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using Vhilz.Avalonia.Theme.Controls;
+using Vhilz.Avalonia.Theme.Platforms;
 using Xunit;
 
 namespace Vhilz.Avalonia.Tests;
 
 public class FullscreenWindowTests {
     [AvaloniaFact]
-    public void HeadlessDoesNotAttachWindowsAnimation() {
+    public void HeadlessDoesNotAttachNativeAnimation() {
         var window = CreateWindow();
         window.Show();
         try {
-            Assert.Null(WindowsFullscreenTransition.TryAttach(window));
+            Assert.Null(FullscreenTransition.TryAttach(window));
             window.WindowState = WindowState.FullScreen;
             Assert.Equal(WindowState.FullScreen, window.WindowState);
             window.WindowState = WindowState.Normal;
@@ -86,16 +87,16 @@ public class FullscreenWindowTests {
             Assert.True(exit.IsEffectivelyVisible);
             Assert.True(exit.Bounds.Height > 0);
             var popover = decorations.Content.FullscreenPopover!;
-            Assert.Equal(new Thickness(2), popover.Margin);
-            Assert.Equal(new Point(2, 2), popover.TranslatePoint(default, window)!.Value);
-            Assert.Equal(window.Bounds.Width - 4, popover.Bounds.Width);
+            Assert.Equal(new Thickness(6, 3), popover.Margin);
+            Assert.Equal(new Point(6, 3), popover.TranslatePoint(default, window)!.Value);
+            Assert.Equal(window.Bounds.Width - 12, popover.Bounds.Width);
             var content = (Control)window.Content!;
-            Assert.Equal(popover.Bounds.Height + 4, content.TranslatePoint(default, window)!.Value.Y);
+            Assert.Equal(popover.Bounds.Height + 6, content.TranslatePoint(default, window)!.Value.Y);
             window.Resources[ResourceKeys.Window.TitleBar.Height] = 48d;
             window.UpdateLayout();
             Assert.Equal(48, popover.Bounds.Height);
-            Assert.Equal(window.Bounds.Width - 4, popover.Bounds.Width);
-            Assert.Equal(52, content.TranslatePoint(default, window)!.Value.Y);
+            Assert.Equal(window.Bounds.Width - 12, popover.Bounds.Width);
+            Assert.Equal(54, content.TranslatePoint(default, window)!.Value.Y);
             window.IsFullScreenButtonVisible = false;
             Assert.True(exit.IsEffectivelyVisible);
             Assert.NotEqual(WindowDecorationsElementRole.TitleBar,
@@ -146,7 +147,7 @@ public class FullscreenWindowTests {
             window.MouseMove(new Point(300, 0));
             window.UpdateLayout();
             Advance(0);
-            Assert.Equal(-popover.Bounds.Height - 2, popover.TranslatePoint(default, window)!.Value.Y);
+            Assert.Equal(-popover.Bounds.Height - popover.Margin.Bottom, popover.TranslatePoint(default, window)!.Value.Y);
             Assert.Equal(0, ContentTop());
             window.MouseMove(new Point(301, 1));
             Advance(80);
@@ -154,7 +155,7 @@ public class FullscreenWindowTests {
             AssertSynchronized();
             Advance(200);
             Assert.Equal(Extent(), ContentTop());
-            Assert.Equal(2, popover.TranslatePoint(default, window)!.Value.Y);
+            Assert.Equal(popover.Margin.Top, popover.TranslatePoint(default, window)!.Value.Y);
 
             window.MouseMove(new Point(300, 200));
             Advance(200);

@@ -4,6 +4,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
+using Vhilz.Avalonia.Theme.Platforms;
 
 namespace Vhilz.Avalonia.Theme.Controls;
 
@@ -32,12 +33,12 @@ public class VhilzWindow : Window {
     private Border? _titleBarInset;
     private Control? _captionButtons;
     private readonly FullscreenTitleBarController _fullscreenTitleBar;
-    private WindowsFullscreenTransition? _fullscreenTransition;
+    private IFullscreenTransition? _fullscreenTransition;
 
     /// <summary>初始化窗口标题栏布局同步。</summary>
     public VhilzWindow() {
         _fullscreenTitleBar = new FullscreenTitleBarController(this);
-        Opened += (_, _) => _fullscreenTransition ??= WindowsFullscreenTransition.TryAttach(this);
+        Opened += (_, _) => _fullscreenTransition ??= FullscreenTransition.TryAttach(this);
         Closed += (_, _) => {
             _fullscreenTitleBar.ObserveFullscreenPopover(null);
             _fullscreenTitleBar.SetInset(null);

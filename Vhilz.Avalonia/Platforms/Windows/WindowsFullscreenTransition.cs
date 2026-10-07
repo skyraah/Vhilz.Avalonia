@@ -1,4 +1,3 @@
-using Vhilz.Avalonia.Theme;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Avalonia;
@@ -7,12 +6,12 @@ using Avalonia.Controls;
 using Avalonia.Controls.Platform;
 using Avalonia.Threading;
 
-namespace Vhilz.Avalonia.Theme.Controls;
+namespace Vhilz.Avalonia.Theme.Platforms.Windows;
 
 /// <summary>
 /// 为 Win32 的即时全屏边界变更补充插值；全屏状态、目标矩形与恢复位置仍由 Avalonia 决定。
 /// </summary>
-internal sealed partial class WindowsFullscreenTransition : IDisposable {
+internal sealed partial class WindowsFullscreenTransition : IFullscreenTransition {
     private const uint WindowPosChanging = 0x0046;
     private const uint DpiChanged = 0x02E0;
     private const uint SizeChanged = 0x0005;
@@ -119,7 +118,7 @@ internal sealed partial class WindowsFullscreenTransition : IDisposable {
         return 0;
     }
 
-    internal void BeforeStateChange() {
+    public void BeforeStateChange() {
         if (!_timer.IsEnabled || _applyingFrame) return;
         // 平台在进入全屏前读取恢复矩形；先提交上一目标，避免把中间帧保存为恢复尺寸。
         // 新动画仍从屏幕上的中间帧开始，反向操作保持连续。
@@ -127,7 +126,7 @@ internal sealed partial class WindowsFullscreenTransition : IDisposable {
         Complete();
     }
 
-    internal void BeforeHide() {
+    public void BeforeHide() {
         _interruptedBounds = null;
         Complete();
     }
