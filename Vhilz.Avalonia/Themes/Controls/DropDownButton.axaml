@@ -1,0 +1,74 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <x:Double x:Key="Vhilz.Width.DropDownButtonGlyph">12</x:Double>
+    <x:Double x:Key="Vhilz.Height.DropDownButtonGlyph">12</x:Double>
+    <Thickness x:Key="Vhilz.Margin.DropDownButtonGlyphEnd">0,0,10,0</Thickness>
+    <ControlTheme x:Key="Vhilz.DropDownButton.Theme" TargetType="DropDownButton">
+        <Setter Property="MinHeight" Value="{DynamicResource Vhilz.Height.Control}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
+        <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Control}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Border}" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="{DynamicResource Vhilz.Padding.Control}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Name="RootBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            ClipToBounds="True"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid Name="InnerGrid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              Grid.Column="0"
+                                              Padding="{TemplateBinding Padding}"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            <PathIcon Name="DropDownGlyph"
+                                      Grid.Column="1"
+                                      Width="{DynamicResource Vhilz.Width.DropDownButtonGlyph}"
+                                      Height="{DynamicResource Vhilz.Height.DropDownButtonGlyph}"
+                                      Margin="{DynamicResource Vhilz.Margin.DropDownButtonGlyphEnd}"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center"
+                                      IsHitTestVisible="False"
+                                      UseLayoutRounding="False" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="RecognizesAccessKey" Value="True" />
+        </Style>
+        <Style Selector="^ /template/ PathIcon#DropDownGlyph">
+            <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+            <Setter Property="Data" Value="M1939 486L2029 576L1024 1581L19 576L109 486L1024 1401L1939 486Z" />
+        </Style>
+        <Style Selector="^:pointerover:not(:pressed):not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlHover}" />
+        </Style>
+        <Style Selector="^:pressed:not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlPressed}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
+        </Style>
+        <Style Selector="^:focus-visible:not(:disabled)">
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Focus}" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type DropDownButton}"
+                  TargetType="DropDownButton"
+                  BasedOn="{StaticResource Vhilz.DropDownButton.Theme}" />
+</ResourceDictionary>

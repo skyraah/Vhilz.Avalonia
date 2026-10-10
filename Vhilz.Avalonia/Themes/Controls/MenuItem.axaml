@@ -1,0 +1,151 @@
+<!-- 基于 Avalonia 12.1.3 官方模板保留原生部件与绑定；外观使用 Vhilz 语义资源。-->
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:conv="using:Avalonia.Controls.Converters"
+                    xmlns:sys="using:System">
+    <x:Double x:Key="Vhilz.MenuItem.ColumnDefinition.Width">20</x:Double>
+    <x:Double x:Key="Vhilz.MenuItem.ColumnDefinition.Width2">5</x:Double>
+    <Thickness x:Key="Vhilz.MenuItem.ToggleIconPresenter.Margin">3</Thickness>
+    <x:Double x:Key="Vhilz.MenuItem.ToggleIconPresenter.Width">16</x:Double>
+    <x:Double x:Key="Vhilz.MenuItem.ToggleIconPresenter.Height">16</x:Double>
+    <x:Double x:Key="Vhilz.MenuItem.IconPresenter.Width">16</x:Double>
+    <x:Double x:Key="Vhilz.MenuItem.IconPresenter.Height">16</x:Double>
+    <Thickness x:Key="Vhilz.MenuItem.IconPresenter.Margin">3</Thickness>
+    <Thickness x:Key="Vhilz.MenuItem.RightArrow.Margin">10,0,0,0</Thickness>
+    <Thickness x:Key="Vhilz.MenuItem.ItemsPresenter.Margin">2</Thickness>
+    <Thickness x:Key="Vhilz.MenuItem.Ellipse.Margin">4</Thickness>
+    <x:Double x:Key="Vhilz.MenuItem.Ellipse.Width">8</x:Double>
+    <x:Double x:Key="Vhilz.MenuItem.Ellipse.Height">8</x:Double>
+    <conv:PlatformKeyGestureConverter x:Key="Vhilz.MenuItem.KeyGestureConverter" />
+    <ControlTheme x:Key="Vhilz.MenuItem.Theme" TargetType="MenuItem">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="Padding" Value="{DynamicResource Vhilz.Padding.Item}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Focus}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="root"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{DynamicResource Vhilz.MenuItem.ColumnDefinition.Width}" />
+                            <ColumnDefinition Width="{DynamicResource Vhilz.MenuItem.ColumnDefinition.Width2}" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGT" />
+                            <ColumnDefinition Width="{DynamicResource Vhilz.MenuItem.ColumnDefinition.Width}" />
+                        </Grid.ColumnDefinitions>
+                        <ContentControl Grid.Column="0"
+                                        x:Name="PART_ToggleIconPresenter"
+                                        IsVisible="False"
+                                        Margin="{DynamicResource Vhilz.MenuItem.ToggleIconPresenter.Margin}"
+                                        Width="{DynamicResource Vhilz.MenuItem.ToggleIconPresenter.Width}"
+                                        Height="{DynamicResource Vhilz.MenuItem.ToggleIconPresenter.Height}" />
+                        <ContentControl Grid.Column="0"
+                                        Name="PART_IconPresenter"
+                                        Width="{DynamicResource Vhilz.MenuItem.IconPresenter.Width}"
+                                        Height="{DynamicResource Vhilz.MenuItem.IconPresenter.Height}"
+                                        Margin="{DynamicResource Vhilz.MenuItem.IconPresenter.Margin}"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Content="{TemplateBinding Icon}" />
+                        <ContentPresenter Name="PART_HeaderPresenter"
+                                          Grid.Column="2"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"
+                                          Content="{TemplateBinding Header}"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}">
+                            <ContentPresenter.DataTemplates>
+                                <DataTemplate DataType="sys:String">
+                                    <AccessText Text="{Binding}" />
+                                </DataTemplate>
+                            </ContentPresenter.DataTemplates>
+                        </ContentPresenter>
+                        <TextBlock x:Name="PART_InputGestureText"
+                                   Grid.Column="3"
+                                   VerticalAlignment="Center"
+                                   Text="{TemplateBinding InputGesture, Converter={StaticResource Vhilz.MenuItem.KeyGestureConverter}}" />
+                        <Path Name="rightArrow"
+                              Grid.Column="4"
+                              Margin="{DynamicResource Vhilz.MenuItem.RightArrow.Margin}"
+                              VerticalAlignment="Center"
+                              Data="M0,0L4,3.5 0,7z"
+                              Fill="{DynamicResource Vhilz.Brush.Text}" />
+                        <Popup Name="PART_Popup"
+                               IsLightDismissEnabled="False"
+                               IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
+                               Placement="RightEdgeAlignedTop">
+                            <Border Background="{DynamicResource Vhilz.Brush.Popup}"
+                                    BorderBrush="{DynamicResource Vhilz.Brush.Border}"
+                                    BorderThickness="{DynamicResource Vhilz.Thickness.Border}"
+                                    CornerRadius="{DynamicResource Vhilz.Radius.Small}"
+                                    Padding="{DynamicResource Vhilz.Padding.Popup}"
+                                    BoxShadow="{DynamicResource Vhilz.Shadow.Popup}">
+                                <ScrollViewer Theme="{StaticResource Vhilz.ScrollViewer.Menu.Theme}">
+                                    <ItemsPresenter Name="PART_ItemsPresenter"
+                                                    Margin="{DynamicResource Vhilz.MenuItem.ItemsPresenter.Margin}"
+                                                    Grid.IsSharedSizeScope="True"
+                                                    ItemsPanel="{TemplateBinding ItemsPanel}" />
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:separator">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Separator />
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="^:empty /template/ Path#rightArrow">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="^:toggle /template/ ContentControl#PART_ToggleIconPresenter, ^:radio /template/ ContentControl#PART_ToggleIconPresenter">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+        <Style Selector="^:toggle /template/ ContentControl#PART_IconPresenter, ^:radio /template/ ContentControl#PART_IconPresenter">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="^:checked:toggle /template/ ContentControl#PART_ToggleIconPresenter">
+            <Setter Property="Content">
+                <Template>
+                    <Path VerticalAlignment="Center"
+                          Data="F1M10,1.2L4.7,9.1 4.5,9.1 0,5.2 1.3,3.5 4.3,6.1 8.3,0 10,1.2z"
+                          Fill="{Binding $parent[MenuItem].Foreground}" />
+                </Template>
+            </Setter>
+        </Style>
+        <Style Selector="^:checked:radio /template/ ContentControl#PART_ToggleIconPresenter">
+            <Setter Property="Content">
+                <Template>
+                    <Ellipse Fill="{Binding $parent[MenuItem].Foreground}"
+                             Margin="{DynamicResource Vhilz.MenuItem.Ellipse.Margin}"
+                             Width="{DynamicResource Vhilz.MenuItem.Ellipse.Width}"
+                             Height="{DynamicResource Vhilz.MenuItem.Ellipse.Height}" />
+                </Template>
+            </Setter>
+        </Style>
+        <Style Selector="^:selected:not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Selection}" />
+            <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.OnSelection}" />
+        </Style>
+        <Style Selector="^:pointerover:not(:selected):not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlHover}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
+        </Style>
+        <Style Selector="^:focus-visible:not(:disabled)">
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Focus}" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type MenuItem}" TargetType="MenuItem" BasedOn="{StaticResource Vhilz.MenuItem.Theme}" />
+</ResourceDictionary>

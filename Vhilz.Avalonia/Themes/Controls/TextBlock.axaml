@@ -1,0 +1,17 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <x:Double x:Key="Vhilz.TextBlock.Title.FontSize">24</x:Double>
+    <ControlTheme x:Key="Vhilz.TextBlock.Theme" TargetType="TextBlock">
+        <Style Selector="^.VhilzTextTitle">
+            <Setter Property="FontSize" Value="{DynamicResource Vhilz.TextBlock.Title.FontSize}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="^.VhilzTextSecondary">
+            <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.TextSecondary}" />
+        </Style>
+        <Style Selector="^.VhilzTextCaption">
+            <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Caption}" />
+            <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.TextMuted}" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type TextBlock}" TargetType="TextBlock" BasedOn="{StaticResource Vhilz.TextBlock.Theme}" />
+</ResourceDictionary>

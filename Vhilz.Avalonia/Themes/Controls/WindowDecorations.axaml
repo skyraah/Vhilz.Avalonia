@@ -3,7 +3,6 @@
                     xmlns:vhz="https://github.com/skyraah/Vhilz.Avalonia"
                     xmlns:media="using:Avalonia.Media"
                     xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-                    xmlns:transform="using:Avalonia.Media.Transformation"
                     xmlns:lucide="clr-namespace:Lucide.Avalonia;assembly=Lucide.Avalonia"
                     xmlns:acrylic="clr-namespace:Fluid.Avalonia.Acrylic;assembly=Fluid.Avalonia.Acrylic">
 
@@ -15,8 +14,10 @@
     <x:Double x:Key="Vhilz.CaptionButton.RevealBorder.Intensity">0.75</x:Double>
     <x:Double x:Key="Vhilz.CaptionButton.RevealBorder.ProximityDistance">15</x:Double>
 
-    <!-- 按压只缩放内部表面，保持窗口按钮的命中区域稳定。 -->
-    <transform:TransformOperations x:Key="Vhilz.CaptionButton.Surface.Pressed.RenderTransform">scale(0.94)</transform:TransformOperations>
+    <!-- 保留标题栏按钮原有的独立覆盖键；默认值取公共按压反馈。 -->
+    <StaticResource x:Key="Vhilz.CaptionButton.Surface.Pressed.RenderTransform"
+                    ResourceKey="Vhilz.Transform.PressFeedback" />
+
     <!-- 按钮染色采用无过冲缓动；与按压缩放的弹簧参数独立。 -->
     <sys:TimeSpan x:Key="Vhilz.CaptionButton.Duration.Color">0:0:0.12</sys:TimeSpan>
     <!-- 关闭按钮红色退场留出更长的缓出尾段。 -->

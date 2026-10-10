@@ -1,0 +1,45 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Thickness x:Key="Vhilz.Padding.TableViewRow">0</Thickness>
+    <ControlTheme x:Key="Vhilz.TableViewRow.Theme" TargetType="TableViewRow">
+        <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="{DynamicResource Vhilz.Padding.TableViewRow}" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+                    <TableViewCellsPresenter Name="PART_CellsPresenter" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:selected">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Selection}" />
+            <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.OnSelection}" />
+        </Style>
+        <Style Selector="^:pointerover:not(:selected):not(:pressed):not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlHover}" />
+        </Style>
+        <Style Selector="^:selected:pointerover:not(:pressed):not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlHover}" />
+        </Style>
+        <Style Selector="^:pressed:not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlPressed}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
+        </Style>
+        <Style Selector="^:focus-visible:not(:disabled)">
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Focus}" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type TableViewRow}"
+                  TargetType="TableViewRow"
+                  BasedOn="{StaticResource Vhilz.TableViewRow.Theme}" />
+</ResourceDictionary>

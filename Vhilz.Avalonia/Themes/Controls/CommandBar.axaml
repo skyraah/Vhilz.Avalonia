@@ -1,0 +1,322 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <x:Double x:Key="Vhilz.Width.CommandBarIcon">16</x:Double>
+    <x:Double x:Key="Vhilz.Width.CommandBarButton">68</x:Double>
+    <x:Double x:Key="Vhilz.Width.CommandBarCompactButton">40</x:Double>
+    <x:Double x:Key="Vhilz.Width.CommandBarSeparator">1</x:Double>
+    <x:Double x:Key="Vhilz.Height.CommandBarIcon">16</x:Double>
+    <x:Double x:Key="Vhilz.Height.CommandBarOverflowSeparator">1</x:Double>
+    <x:Double x:Key="Vhilz.Width.CommandBarIcon0">160</x:Double>
+    <x:Double x:Key="Vhilz.Height.CommandBarButton">40</x:Double>
+    <x:Double x:Key="Vhilz.Height.CommandBarOverflowItem">36</x:Double>
+    <x:Double x:Key="Vhilz.Height.CommandBarSeparator">24</x:Double>
+    <x:Double x:Key="Vhilz.Height.CommandBarToolbar">48</x:Double>
+    <Thickness x:Key="Vhilz.Padding.CommandBarOverflowButton">12,0</Thickness>
+    <Thickness x:Key="Vhilz.Padding.CommandBarPopup">4</Thickness>
+    <Thickness x:Key="Vhilz.Padding.CommandBarButton">8,4</Thickness>
+    <Thickness x:Key="Vhilz.Padding.CommandBarPopup_0">4,0</Thickness>
+    <Thickness x:Key="Vhilz.Margin.CommandBarOverflowIcon">4,0,10,0</Thickness>
+    <Thickness x:Key="Vhilz.Margin.CommandBarSeparator">8,4</Thickness>
+    <Thickness x:Key="Vhilz.Margin.CommandBarOverflowSeparator">4,4</Thickness>
+    <x:Double x:Key="Vhilz.Spacing.CommandBarIconLabel">4</x:Double>
+    <x:Double x:Key="Vhilz.Spacing.CommandBarItems">2</x:Double>
+    <ControlTheme x:Key="Vhilz.CommandBarButton.Theme" TargetType="CommandBarButton">
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Focus}" />
+        <Setter Property="Padding" Value="{DynamicResource Vhilz.Padding.CommandBarButton}" />
+        <Setter Property="Width" Value="{DynamicResource Vhilz.Width.CommandBarButton}" />
+        <Setter Property="MinHeight" Value="{DynamicResource Vhilz.Height.CommandBarButton}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border x:Name="PART_Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                    <StackPanel x:Name="PART_LayoutRoot"
+                                Spacing="{DynamicResource Vhilz.Spacing.CommandBarIconLabel}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                        <ContentPresenter x:Name="PART_IconPresenter"
+                                          Content="{TemplateBinding Icon}"
+                                          Foreground="{TemplateBinding Foreground}"
+                                          HorizontalAlignment="Center" />
+                        <TextBlock x:Name="PART_Label"
+                                   Text="{TemplateBinding Label}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontSize="{DynamicResource Vhilz.FontSize.Caption}"
+                                   HorizontalAlignment="Center"
+                                   TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^[IsCompact=True] /template/ TextBlock#PART_Label">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="^[LabelPosition=Right] /template/ StackPanel#PART_LayoutRoot">
+            <Setter Property="Orientation" Value="Horizontal" />
+        </Style>
+        <Style Selector="^[LabelPosition=Right] /template/ TextBlock#PART_Label">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="^[IsInOverflow=True] /template/ StackPanel#PART_LayoutRoot">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Orientation" Value="Horizontal" />
+            <Setter Property="Spacing" Value="0" />
+        </Style>
+        <Style Selector="^[IsInOverflow=True] /template/ TextBlock#PART_Label">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="^[IsCompact=True]">
+            <Setter Property="Width" Value="{DynamicResource Vhilz.Width.CommandBarCompactButton}" />
+        </Style>
+        <Style Selector="^[LabelPosition=Right]">
+            <Setter Property="Width" Value="NaN" />
+            <Setter Property="MinWidth" Value="{DynamicResource Vhilz.Width.CommandBarCompactButton}" />
+        </Style>
+        <Style Selector="^[LabelPosition=Right] /template/ ContentPresenter#PART_IconPresenter">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="^[IsInOverflow=True]">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="Width" Value="NaN" />
+            <Setter Property="MinHeight" Value="{DynamicResource Vhilz.Height.CommandBarOverflowItem}" />
+        </Style>
+        <Style Selector="^[IsInOverflow=True] /template/ ContentPresenter#PART_IconPresenter">
+            <Setter Property="Width" Value="{DynamicResource Vhilz.Width.CommandBarIcon}" />
+            <Setter Property="Height" Value="{DynamicResource Vhilz.Height.CommandBarIcon}" />
+            <Setter Property="Margin" Value="{DynamicResource Vhilz.Margin.CommandBarOverflowIcon}" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="^:pointerover:not(:pressed):not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlHover}" />
+        </Style>
+        <Style Selector="^:pressed:not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlPressed}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
+        </Style>
+        <Style Selector="^:focus-visible:not(:disabled)">
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Focus}" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="Vhilz.CommandBarToggleButton.Theme" TargetType="CommandBarToggleButton">
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Focus}" />
+        <Setter Property="Padding" Value="{DynamicResource Vhilz.Padding.CommandBarButton}" />
+        <Setter Property="Width" Value="{DynamicResource Vhilz.Width.CommandBarButton}" />
+        <Setter Property="MinHeight" Value="{DynamicResource Vhilz.Height.CommandBarButton}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border x:Name="PART_Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                    <StackPanel x:Name="PART_LayoutRoot"
+                                Spacing="{DynamicResource Vhilz.Spacing.CommandBarIconLabel}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                        <ContentPresenter x:Name="PART_IconPresenter"
+                                          Content="{TemplateBinding Icon}"
+                                          Foreground="{TemplateBinding Foreground}"
+                                          HorizontalAlignment="Center" />
+                        <TextBlock x:Name="PART_Label"
+                                   Text="{TemplateBinding Label}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontSize="{DynamicResource Vhilz.FontSize.Caption}"
+                                   HorizontalAlignment="Center"
+                                   TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^[IsCompact=True]">
+            <Setter Property="Width" Value="{DynamicResource Vhilz.Width.CommandBarCompactButton}" />
+        </Style>
+        <Style Selector="^[LabelPosition=Right]">
+            <Setter Property="Width" Value="NaN" />
+            <Setter Property="MinWidth" Value="{DynamicResource Vhilz.Width.CommandBarCompactButton}" />
+        </Style>
+        <Style Selector="^[LabelPosition=Right] /template/ ContentPresenter#PART_IconPresenter">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="^[IsInOverflow=True]">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="Width" Value="NaN" />
+            <Setter Property="MinHeight" Value="{DynamicResource Vhilz.Height.CommandBarOverflowItem}" />
+        </Style>
+        <Style Selector="^[IsInOverflow=True] /template/ ContentPresenter#PART_IconPresenter">
+            <Setter Property="Width" Value="{DynamicResource Vhilz.Width.CommandBarIcon}" />
+            <Setter Property="Height" Value="{DynamicResource Vhilz.Height.CommandBarIcon}" />
+            <Setter Property="Margin" Value="{DynamicResource Vhilz.Margin.CommandBarOverflowIcon}" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="^[IsCompact=True] /template/ TextBlock#PART_Label">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="^[LabelPosition=Right] /template/ StackPanel#PART_LayoutRoot">
+            <Setter Property="Orientation" Value="Horizontal" />
+        </Style>
+        <Style Selector="^[LabelPosition=Right] /template/ TextBlock#PART_Label">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="^[IsInOverflow=True] /template/ StackPanel#PART_LayoutRoot">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Orientation" Value="Horizontal" />
+            <Setter Property="Spacing" Value="0" />
+        </Style>
+        <Style Selector="^[IsInOverflow=True] /template/ TextBlock#PART_Label">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="^:checked">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Selection}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
+        </Style>
+        <Style Selector="^:pointerover:not(:checked):not(:pressed):not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlHover}" />
+        </Style>
+        <Style Selector="^:pressed:not(:checked):not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlPressed}" />
+        </Style>
+        <Style Selector="^:checked:pointerover:not(:pressed):not(:disabled), ^:checked:pressed:not(:disabled)">
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Primary}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
+        </Style>
+        <Style Selector="^:focus-visible:not(:disabled)">
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Focus}" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="Vhilz.CommandBarSeparator.Theme" TargetType="CommandBarSeparator">
+        <Setter Property="Width" Value="{DynamicResource Vhilz.Width.CommandBarSeparator}" />
+        <Setter Property="MinHeight" Value="{DynamicResource Vhilz.Height.CommandBarSeparator}" />
+        <Setter Property="Margin" Value="{DynamicResource Vhilz.Margin.CommandBarSeparator}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{DynamicResource Vhilz.Brush.Border}"
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
+                        MinHeight="{TemplateBinding MinHeight}" />
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^[IsInOverflow=True]">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Width" Value="NaN" />
+            <Setter Property="Height" Value="{DynamicResource Vhilz.Height.CommandBarOverflowSeparator}" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="Margin" Value="{DynamicResource Vhilz.Margin.CommandBarOverflowSeparator}" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="Vhilz.CommandBar.Theme" TargetType="CommandBar">
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Control}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Border}" />
+        <Setter Property="MinHeight" Value="{DynamicResource Vhilz.Height.CommandBarToolbar}" />
+        <Setter Property="Padding" Value="{DynamicResource Vhilz.Padding.CommandBarPopup_0}" />
+        <Setter Property="ItemWidthBottom" Value="70" />
+        <Setter Property="ItemWidthRight" Value="102" />
+        <Setter Property="ItemWidthCollapsed" Value="42" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}"
+                        MinHeight="{TemplateBinding MinHeight}">
+                    <Panel>
+                        <DockPanel KeyboardNavigation.TabNavigation="Cycle">
+                            <Button x:Name="PART_OverflowButton"
+                                    DockPanel.Dock="Right"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Padding="{DynamicResource Vhilz.Padding.CommandBarOverflowButton}"
+                                    MinWidth="{DynamicResource Vhilz.Width.CommandBarCompactButton}"
+                                    VerticalAlignment="Stretch"
+                                    IsVisible="{TemplateBinding IsOverflowButtonVisible}">
+                                <PathIcon Width="{DynamicResource Vhilz.Width.CommandBarIcon}"
+                                          Height="{DynamicResource Vhilz.Height.CommandBarIcon}"
+                                          Foreground="{TemplateBinding Foreground}"
+                                          Data="M6,10A2,2 0 0,0 4,12A2,2 0 0,0 6,14A2,2 0 0,0 8,12A2,2 0 0,0 6,10M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10M18,10A2,2 0 0,0 16,12A2,2 0 0,0 18,14A2,2 0 0,0 20,12A2,2 0 0,0 18,10Z" />
+                            </Button>
+                            <ContentPresenter x:Name="PART_ContentPresenter"
+                                              Content="{TemplateBinding Content}"
+                                              DockPanel.Dock="Left"
+                                              VerticalAlignment="Center" />
+                            <ItemsControl x:Name="PART_PrimaryCommands"
+                                          ItemsSource="{Binding VisiblePrimaryCommands, RelativeSource={RelativeSource TemplatedParent}}"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Stretch"
+                                          ClipToBounds="True">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Spacing="{DynamicResource Vhilz.Spacing.CommandBarItems}" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </DockPanel>
+                        <Popup x:Name="PART_OverflowPopup"
+                               IsOpen="{TemplateBinding IsOpen, Mode=TwoWay}"
+                               PlacementTarget="{Binding #PART_OverflowButton}"
+                               Placement="Bottom"
+                               IsLightDismissEnabled="True"
+                               WindowManagerAddShadowHint="True">
+                            <Border Background="{DynamicResource Vhilz.Brush.Popup}"
+                                    CornerRadius="{DynamicResource Vhilz.Radius.Small}"
+                                    BorderBrush="{DynamicResource Vhilz.Brush.Border}"
+                                    BorderThickness="{DynamicResource Vhilz.Thickness.Border}"
+                                    Padding="{DynamicResource Vhilz.Padding.CommandBarPopup}"
+                                    MinWidth="{DynamicResource Vhilz.Width.CommandBarIcon0}">
+                                <ItemsControl x:Name="PART_OverflowPresenter"
+                                              ItemsSource="{Binding OverflowItems, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Spacing="{DynamicResource Vhilz.Spacing.CommandBarItems}" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </Border>
+                        </Popup>
+                    </Panel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type CommandBarButton}"
+                  TargetType="CommandBarButton"
+                  BasedOn="{StaticResource Vhilz.CommandBarButton.Theme}" />
+    <ControlTheme x:Key="{x:Type CommandBarToggleButton}"
+                  TargetType="CommandBarToggleButton"
+                  BasedOn="{StaticResource Vhilz.CommandBarToggleButton.Theme}" />
+    <ControlTheme x:Key="{x:Type CommandBarSeparator}"
+                  TargetType="CommandBarSeparator"
+                  BasedOn="{StaticResource Vhilz.CommandBarSeparator.Theme}" />
+    <ControlTheme x:Key="{x:Type CommandBar}" TargetType="CommandBar" BasedOn="{StaticResource Vhilz.CommandBar.Theme}" />
+</ResourceDictionary>

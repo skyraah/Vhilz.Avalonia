@@ -1,0 +1,229 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <x:Double x:Key="Vhilz.Expander.Chevron.Thickness">1.5</x:Double>
+    <ControlTheme x:Key="Vhilz.Expander.Header.Theme" TargetType="ToggleButton">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Padding" Value="{DynamicResource Vhilz.Padding.Control}" />
+        <Setter Property="MinHeight" Value="{DynamicResource Vhilz.Height.Control}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="FocusAdorner" Value="{x:Null}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        Name="PART_HeaderBorder"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <Border Grid.Column="0"
+                                Width="20"
+                                Height="20"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                            <Path HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Name="PART_Chevron"
+                                  Data="M 1 1 L 5 5 L 1 9"
+                                  Stroke="{DynamicResource Vhilz.Brush.TextSecondary}"
+                                  StrokeThickness="{DynamicResource Vhilz.Expander.Chevron.Thickness}" />
+                        </Border>
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          Grid.Column="1"
+                                          Padding="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Background="Transparent"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{Binding $parent[Expander].HeaderTemplate}" />
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover:not(:pressed):not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlHover}" />
+        </Style>
+        <Style Selector="^:pressed:not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlPressed}" />
+        </Style>
+        <Style Selector="^:focus-visible:not(:disabled)">
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Focus}" />
+            <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Focus}" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="Vhilz.Expander.Header.Up.Theme"
+                  BasedOn="{StaticResource Vhilz.Expander.Header.Theme}"
+                  TargetType="ToggleButton">
+        <Style Selector="^ /template/ Path#PART_Chevron">
+            <Setter Property="RenderTransform">
+                <RotateTransform Angle="-90" />
+            </Setter>
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="Vhilz.Expander.Header.Down.Theme"
+                  BasedOn="{StaticResource Vhilz.Expander.Header.Theme}"
+                  TargetType="ToggleButton">
+        <Style Selector="^ /template/ Path#PART_Chevron">
+            <Setter Property="RenderTransform">
+                <RotateTransform Angle="90" />
+            </Setter>
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="Vhilz.Expander.Header.Left.Theme"
+                  BasedOn="{StaticResource Vhilz.Expander.Header.Theme}"
+                  TargetType="ToggleButton">
+        <Style Selector="^ /template/ Path#PART_Chevron">
+            <Setter Property="RenderTransform">
+                <RotateTransform Angle="180" />
+            </Setter>
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="Vhilz.Expander.Header.Right.Theme"
+                  BasedOn="{StaticResource Vhilz.Expander.Header.Theme}"
+                  TargetType="ToggleButton">
+        <Style Selector="^ /template/ Path#PART_Chevron">
+            <Setter Property="RenderTransform">
+                <RotateTransform Angle="0" />
+            </Setter>
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type Expander}" TargetType="Expander">
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="Padding" Value="{DynamicResource Vhilz.Padding.Control}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Border}" />
+        <Style Selector="^[ExpandDirection=Down]">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid RowDefinitions="Auto,*">
+                            <ToggleButton Name="PART_toggle"
+                                          Grid.Row="0"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          Content="{TemplateBinding Header}"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
+                                          Theme="{StaticResource Vhilz.Expander.Header.Right.Theme}" />
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              Grid.Row="1"
+                                              Padding="{TemplateBinding Padding}"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              IsVisible="{TemplateBinding IsExpanded}" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+            <Style Selector="^:expanded /template/ ToggleButton#PART_toggle">
+                <Setter Property="Theme" Value="{StaticResource Vhilz.Expander.Header.Down.Theme}" />
+            </Style>
+        </Style>
+        <Style Selector="^[ExpandDirection=Up]">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid RowDefinitions="*,Auto">
+                            <ToggleButton Name="PART_toggle"
+                                          Grid.Row="1"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          Content="{TemplateBinding Header}"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
+                                          Theme="{StaticResource Vhilz.Expander.Header.Right.Theme}" />
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              Grid.Row="0"
+                                              Padding="{TemplateBinding Padding}"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              IsVisible="{TemplateBinding IsExpanded}" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+            <Style Selector="^:expanded /template/ ToggleButton#PART_toggle">
+                <Setter Property="Theme" Value="{StaticResource Vhilz.Expander.Header.Up.Theme}" />
+            </Style>
+        </Style>
+        <Style Selector="^[ExpandDirection=Right]">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid ColumnDefinitions="Auto,*">
+                            <ToggleButton Name="PART_toggle"
+                                          Grid.Column="0"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          Content="{TemplateBinding Header}"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
+                                          Theme="{StaticResource Vhilz.Expander.Header.Left.Theme}" />
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              Grid.Column="1"
+                                              Padding="{TemplateBinding Padding}"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              IsVisible="{TemplateBinding IsExpanded}" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+            <Style Selector="^:expanded /template/ ToggleButton#PART_toggle">
+                <Setter Property="Theme" Value="{StaticResource Vhilz.Expander.Header.Right.Theme}" />
+            </Style>
+        </Style>
+        <Style Selector="^[ExpandDirection=Left]">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <ToggleButton Name="PART_toggle"
+                                          Grid.Column="1"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          Content="{TemplateBinding Header}"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
+                                          Theme="{StaticResource Vhilz.Expander.Header.Right.Theme}" />
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              Grid.Column="0"
+                                              Padding="{TemplateBinding Padding}"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              IsVisible="{TemplateBinding IsExpanded}" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+            <Style Selector="^:expanded /template/ ToggleButton#PART_toggle">
+                <Setter Property="Theme" Value="{StaticResource Vhilz.Expander.Header.Left.Theme}" />
+            </Style>
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

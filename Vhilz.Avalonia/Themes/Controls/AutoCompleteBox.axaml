@@ -1,0 +1,71 @@
+<!-- 基于 Avalonia 12.1.3 官方模板保留原生部件与绑定；外观使用 Vhilz 语义资源。-->
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Thickness x:Key="Vhilz.AutoCompleteBox.FocusVisual.Margin">-2</Thickness>
+    <ControlTheme x:Key="Vhilz.AutoCompleteBox.Theme" TargetType="AutoCompleteBox">
+        <Setter Property="PlaceholderForeground" Value="{DynamicResource Vhilz.Brush.TextMuted}" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Input}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Border}" />
+        <Setter Property="MinHeight" Value="{DynamicResource Vhilz.Height.Control}" />
+        <Setter Property="Padding" Value="{DynamicResource Vhilz.Padding.Control}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <Panel>
+                        <TextBox Name="PART_TextBox"
+                                 Padding="{TemplateBinding Padding}"
+                                 Background="{TemplateBinding Background}"
+                                 BorderBrush="{TemplateBinding BorderBrush}"
+                                 BorderThickness="{TemplateBinding BorderThickness}"
+                                 CornerRadius="{TemplateBinding CornerRadius}"
+                                 CaretIndex="{TemplateBinding CaretIndex, Mode=TwoWay}"
+                                 ClearSelectionOnLostFocus="{TemplateBinding ClearSelectionOnLostFocus}"
+                                 DataValidationErrors.Errors="{TemplateBinding (DataValidationErrors.Errors)}"
+                                 PlaceholderText="{TemplateBinding PlaceholderText}"
+                                 PlaceholderForeground="{TemplateBinding PlaceholderForeground}"
+                                 MaxLength="{TemplateBinding MaxLength}"
+                                 InnerLeftContent="{TemplateBinding InnerLeftContent}"
+                                 InnerRightContent="{TemplateBinding InnerRightContent}" />
+                        <Popup Name="PART_Popup"
+                               MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                               MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                               IsLightDismissEnabled="True"
+                               PlacementTarget="{TemplateBinding}">
+                            <Border Background="{DynamicResource Vhilz.Brush.Popup}"
+                                    BorderBrush="{DynamicResource Vhilz.Brush.Border}"
+                                    BorderThickness="{DynamicResource Vhilz.Thickness.Border}"
+                                    CornerRadius="{DynamicResource Vhilz.Radius.Small}"
+                                    Padding="{DynamicResource Vhilz.Padding.Popup}"
+                                    BoxShadow="{DynamicResource Vhilz.Shadow.Popup}">
+                                <ListBox Name="PART_SelectingItemsControl"
+                                         Background="{TemplateBinding Background}"
+                                         BorderThickness="0"
+                                         Foreground="{TemplateBinding Foreground}"
+                                         ItemTemplate="{TemplateBinding ItemTemplate}"
+                                         ScrollViewer.IsScrollChainingEnabled="False"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                         ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                            </Border>
+                        </Popup>
+                    </Panel>
+                    <Border Name="FocusVisual"
+                            BorderBrush="{DynamicResource Vhilz.Brush.Focus}"
+                            BorderThickness="{DynamicResource Vhilz.Thickness.Focus}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Margin="{DynamicResource Vhilz.AutoCompleteBox.FocusVisual.Margin}"
+                            IsVisible="False"
+                            IsHitTestVisible="False" />
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:focus-within:not(:disabled) /template/ Border#FocusVisual">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type AutoCompleteBox}"
+                  TargetType="AutoCompleteBox"
+                  BasedOn="{StaticResource Vhilz.AutoCompleteBox.Theme}" />
+</ResourceDictionary>

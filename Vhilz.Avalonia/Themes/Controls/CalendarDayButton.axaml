@@ -1,0 +1,74 @@
+<!--
+  // (c) Copyright Microsoft Corporation.
+  // This source is subject to the Microsoft Public License (Ms-PL).
+  // Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+  // All other rights reserved.-->
+<!-- 基于 Avalonia 12.1.3 官方模板保留原生部件与绑定；外观使用 Vhilz 语义资源。-->
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ControlTheme x:Key="Vhilz.CalendarDayButton.Theme" TargetType="CalendarDayButton">
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Focus}" />
+        <Setter Property="MinWidth" Value="{DynamicResource Vhilz.Height.Control}" />
+        <Setter Property="MinHeight" Value="{DynamicResource Vhilz.Height.Control}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      CornerRadius="{TemplateBinding CornerRadius}"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center" />
+                    <Border Name="FocusVisual"
+                            IsHitTestVisible="False"
+                            IsVisible="False"
+                            BorderBrush="{DynamicResource Vhilz.Brush.Focus}"
+                            BorderThickness="{DynamicResource Vhilz.Thickness.Focus}"
+                            CornerRadius="{TemplateBinding CornerRadius}" />
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:inactive">
+            <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.TextMuted}" />
+        </Style>
+        <Style Selector="^:today">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Control}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
+        </Style>
+        <Style Selector="^:selected">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Primary}" />
+            <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.OnPrimary}" />
+        </Style>
+        <Style Selector="^:blackout">
+            <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.TextMuted}" />
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
+        </Style>
+        <Style Selector="^:pointerover:not(:selected):not(:disabled):not(:blackout)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlHover}" />
+        </Style>
+        <Style Selector="^:pressed:not(:selected):not(:disabled):not(:blackout)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlPressed}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
+        </Style>
+        <Style Selector="^:dayfocused:not(:disabled) /template/ Border#FocusVisual">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type CalendarDayButton}"
+                  TargetType="CalendarDayButton"
+                  BasedOn="{StaticResource Vhilz.CalendarDayButton.Theme}" />
+</ResourceDictionary>

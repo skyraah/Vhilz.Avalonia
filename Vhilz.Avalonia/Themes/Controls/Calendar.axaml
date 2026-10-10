@@ -1,0 +1,30 @@
+<!--
+  // (c) Copyright Microsoft Corporation.
+  // This source is subject to the Microsoft Public License (Ms-PL).
+  // Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+  // All other rights reserved.-->
+<!-- 基于 Avalonia 12.1.3 官方模板保留原生部件与绑定；外观使用 Vhilz 语义资源。-->
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ControlTheme x:Key="Vhilz.Calendar.Theme" TargetType="Calendar">
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Border}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Surface}" />
+        <Setter Property="HeaderBackground" Value="Transparent" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <StackPanel Name="PART_Root" HorizontalAlignment="Center" ClipToBounds="True">
+                    <CalendarItem Name="PART_CalendarItem"
+                                  Background="{TemplateBinding Background}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                  CornerRadius="{TemplateBinding CornerRadius}"
+                                  HeaderBackground="{TemplateBinding HeaderBackground}" />
+                </StackPanel>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type Calendar}" TargetType="Calendar" BasedOn="{StaticResource Vhilz.Calendar.Theme}" />
+</ResourceDictionary>

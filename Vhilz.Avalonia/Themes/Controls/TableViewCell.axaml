@@ -1,0 +1,23 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Thickness x:Key="Vhilz.Padding.TableViewCell">8</Thickness>
+    <ControlTheme x:Key="Vhilz.TableViewCell.Theme" TargetType="TableViewCell">
+        <Setter Property="Padding" Value="{DynamicResource Vhilz.Padding.TableViewCell}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ContentPresenter Name="PART_ContentPresenter"
+                                  Content="{TemplateBinding Content}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Padding="{TemplateBinding Padding}"
+                                  Background="{TemplateBinding Background}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                  CornerRadius="{TemplateBinding CornerRadius}"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type TableViewCell}"
+                  TargetType="TableViewCell"
+                  BasedOn="{StaticResource Vhilz.TableViewCell.Theme}" />
+</ResourceDictionary>

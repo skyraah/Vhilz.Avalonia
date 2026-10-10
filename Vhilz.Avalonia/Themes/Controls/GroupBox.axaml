@@ -1,0 +1,75 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls">
+    <Thickness x:Key="Vhilz.Padding.GroupBoxHeaderGap">3,0,3,0</Thickness>
+    <converters:BorderGapMaskConverter x:Key="Vhilz.Converter.GroupBoxBorderGap" />
+    <ControlTheme x:Key="Vhilz.GroupBox.Theme" TargetType="GroupBox">
+        <Setter Property="Padding" Value="{DynamicResource Vhilz.Padding.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Border}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid x:Name="RootGrid"
+                      UseLayoutRounding="true"
+                      ColumnDefinitions="6,Auto,*,6"
+                      RowDefinitions="Auto,Auto,*,6">
+                    <Border Grid.Row="1"
+                            Grid.RowSpan="3"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="4"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="Transparent"
+                            Background="{TemplateBinding Background}" />
+                    <Border Grid.Row="1"
+                            Grid.RowSpan="3"
+                            Grid.ColumnSpan="4"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                        <Border.OpacityMask>
+                            <MultiBinding Converter="{StaticResource Vhilz.Converter.GroupBoxBorderGap}"
+                                          ConverterParameter="6">
+                                <Binding ElementName="Header" Path="Bounds.Width" />
+                                <Binding RelativeSource="{RelativeSource Self}" Path="Bounds.Width" />
+                                <Binding RelativeSource="{RelativeSource Self}" Path="Bounds.Height" />
+                            </MultiBinding>
+                        </Border.OpacityMask>
+                    </Border>
+                    <Border x:Name="Header"
+                            Padding="{DynamicResource Vhilz.Padding.GroupBoxHeaderGap}"
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Grid.Column="1">
+                        <ContentPresenter Name="PART_HeaderPresenter"
+                                          Content="{TemplateBinding Header}"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          UseLayoutRounding="{TemplateBinding UseLayoutRounding}" />
+                    </Border>
+                    <ContentPresenter Grid.Row="2"
+                                      Grid.Column="1"
+                                      Grid.ColumnSpan="2"
+                                      Name="PART_ContentPresenter"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      UseLayoutRounding="{TemplateBinding UseLayoutRounding}"
+                                      Margin="{TemplateBinding Padding}" />
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="RecognizesAccessKey" Value="True" />
+        </Style>
+        <Style Selector="^ /template/ ContentPresenter#PART_HeaderPresenter">
+            <Setter Property="RecognizesAccessKey" Value="True" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type GroupBox}" TargetType="GroupBox" BasedOn="{StaticResource Vhilz.GroupBox.Theme}" />
+</ResourceDictionary>

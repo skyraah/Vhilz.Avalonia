@@ -1,0 +1,92 @@
+<!-- 基于 Avalonia 12.1.3 官方模板保留原生部件与绑定；外观使用 Vhilz 语义资源。-->
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="using:System">
+    <Thickness x:Key="Vhilz.Menu.ItemsPresenter.Margin">2</Thickness>
+    <ControlTheme x:Key="Vhilz.Menu.TopLevelItem.Theme" TargetType="MenuItem">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="Padding" Value="{DynamicResource Vhilz.Padding.Item}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Focus}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="root"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    <Panel>
+                        <ContentPresenter Name="PART_HeaderPresenter"
+                                          Margin="{TemplateBinding Padding}"
+                                          Content="{TemplateBinding Header}"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}">
+                            <ContentPresenter.DataTemplates>
+                                <DataTemplate DataType="sys:String">
+                                    <AccessText Text="{Binding}" />
+                                </DataTemplate>
+                            </ContentPresenter.DataTemplates>
+                        </ContentPresenter>
+                        <Popup Name="PART_Popup"
+                               IsLightDismissEnabled="True"
+                               IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
+                               Placement="BottomEdgeAlignedLeft"
+                               OverlayInputPassThroughElement="{Binding $parent[Menu]}">
+                            <Border Background="{DynamicResource Vhilz.Brush.Popup}"
+                                    BorderBrush="{DynamicResource Vhilz.Brush.Border}"
+                                    BorderThickness="{DynamicResource Vhilz.Thickness.Border}"
+                                    CornerRadius="{DynamicResource Vhilz.Radius.Small}"
+                                    Padding="{DynamicResource Vhilz.Padding.Popup}"
+                                    BoxShadow="{DynamicResource Vhilz.Shadow.Popup}">
+                                <ScrollViewer Theme="{StaticResource Vhilz.ScrollViewer.Menu.Theme}">
+                                    <ItemsPresenter Name="PART_ItemsPresenter"
+                                                    Margin="{DynamicResource Vhilz.Menu.ItemsPresenter.Margin}"
+                                                    Grid.IsSharedSizeScope="True"
+                                                    ItemsPanel="{TemplateBinding ItemsPanel}" />
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Panel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:empty /template/ Path#rightArrow">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="^:selected:not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Selection}" />
+            <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.OnSelection}" />
+        </Style>
+        <Style Selector="^:pointerover:not(:selected):not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlHover}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
+        </Style>
+        <Style Selector="^:focus-visible:not(:disabled)">
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Focus}" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="Vhilz.Menu.Theme" TargetType="Menu">
+        <Setter Property="ItemContainerTheme" Value="{StaticResource Vhilz.Menu.TopLevelItem.Theme}" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Padding="{TemplateBinding Padding}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    <ItemsPresenter Name="PART_ItemsPresenter"
+                                    ItemsPanel="{TemplateBinding ItemsPanel}"
+                                    KeyboardNavigation.TabNavigation="Continue" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type Menu}" TargetType="Menu" BasedOn="{StaticResource Vhilz.Menu.Theme}" />
+</ResourceDictionary>

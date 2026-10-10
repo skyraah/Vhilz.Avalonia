@@ -42,4 +42,26 @@
     <SolidColorBrush x:Key="Vhilz.Brush.TextMuted" Color="{DynamicResource Vhilz.Color.TextMuted}" />
     <SolidColorBrush x:Key="Vhilz.Brush.Border" Color="{DynamicResource Vhilz.Color.Border}" />
     <SolidColorBrush x:Key="Vhilz.Brush.BorderInactive" Color="{DynamicResource Vhilz.Color.BorderInactive}" />
+    <!-- 输入、选择和弹层的候选语义色；两种主题保持相同键及类型。 -->
+    <Color x:Key="Vhilz.Color.Primary">#FAFAFA</Color>
+    <SolidColorBrush x:Key="Vhilz.Brush.Primary" Color="{DynamicResource Vhilz.Color.Primary}" />
+    <Color x:Key="Vhilz.Color.PrimaryHover">#E4E4E7</Color>
+    <SolidColorBrush x:Key="Vhilz.Brush.PrimaryHover" Color="{DynamicResource Vhilz.Color.PrimaryHover}" />
+    <Color x:Key="Vhilz.Color.PrimaryPressed">#D4D4D8</Color>
+    <SolidColorBrush x:Key="Vhilz.Brush.PrimaryPressed" Color="{DynamicResource Vhilz.Color.PrimaryPressed}" />
+    <Color x:Key="Vhilz.Color.OnPrimary">#18181B</Color>
+    <SolidColorBrush x:Key="Vhilz.Brush.OnPrimary" Color="{DynamicResource Vhilz.Color.OnPrimary}" />
+    <Color x:Key="Vhilz.Color.Input">#202023</Color>
+    <SolidColorBrush x:Key="Vhilz.Brush.Input" Color="{DynamicResource Vhilz.Color.Input}" />
+    <Color x:Key="Vhilz.Color.Popup">#202023</Color>
+    <SolidColorBrush x:Key="Vhilz.Brush.Popup" Color="{DynamicResource Vhilz.Color.Popup}" />
+    <Color x:Key="Vhilz.Color.Selection">#3F3F46</Color>
+    <SolidColorBrush x:Key="Vhilz.Brush.Selection" Color="{DynamicResource Vhilz.Color.Selection}" />
+    <Color x:Key="Vhilz.Color.OnSelection">#FAFAFA</Color>
+    <SolidColorBrush x:Key="Vhilz.Brush.OnSelection" Color="{DynamicResource Vhilz.Color.OnSelection}" />
+    <Color x:Key="Vhilz.Color.Danger">#F87171</Color>
+    <SolidColorBrush x:Key="Vhilz.Brush.Danger" Color="{DynamicResource Vhilz.Color.Danger}" />
+    <Color x:Key="Vhilz.Color.Focus">#A1A1AA</Color>
+    <SolidColorBrush x:Key="Vhilz.Brush.Focus" Color="{DynamicResource Vhilz.Color.Focus}" />
+    <BoxShadows x:Key="Vhilz.Shadow.Popup">0 4 16 0 #40000000</BoxShadows>
 </ResourceDictionary>

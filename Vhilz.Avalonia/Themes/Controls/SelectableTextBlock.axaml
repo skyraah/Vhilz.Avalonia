@@ -1,0 +1,16 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <MenuFlyout x:Key="Vhilz.SelectableTextBlock.ContextFlyout" Placement="Bottom">
+        <MenuItem x:Name="Vhilz.SelectableTextBlock.ContextFlyoutCopyItem"
+                  Header="{DynamicResource Vhilz.Text.TextFlyoutCopyText}"
+                  Command="{Binding $parent[SelectableTextBlock].Copy}"
+                  IsEnabled="{Binding $parent[SelectableTextBlock].CanCopy}"
+                  InputGesture="{x:Static TextBox.CopyGesture}" />
+    </MenuFlyout>
+    <ControlTheme x:Key="{x:Type SelectableTextBlock}" TargetType="SelectableTextBlock">
+        <Setter Property="SelectionBrush" Value="{DynamicResource Vhilz.Brush.Selection}" />
+        <Style Selector="^[IsEnabled=True]">
+            <Setter Property="Cursor" Value="IBeam" />
+            <Setter Property="ContextFlyout" Value="{StaticResource Vhilz.SelectableTextBlock.ContextFlyout}" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

@@ -1,0 +1,85 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="using:System">
+    <x:Double x:Key="Vhilz.Width.NotificationCardTypeIcon">16</x:Double>
+    <x:Double x:Key="Vhilz.Width.NotificationCardCloseButton">24</x:Double>
+    <x:Double x:Key="Vhilz.Height.NotificationCardCloseButton">24</x:Double>
+    <sys:TimeSpan x:Key="Vhilz.Duration.NotificationCompletion">00:00:00.001</sys:TimeSpan>
+    <x:Double x:Key="Vhilz.Width.NotificationCard">356</x:Double>
+    <Thickness x:Key="Vhilz.Margin.NotificationCard">0,0,0,8</Thickness>
+    <StreamGeometry x:Key="Vhilz.Geometry.NotificationInformation">M12 2A10 10 0 1 0 12 22A10 10 0 1 0 12 2ZM11 10H13V18H11ZM11 6H13V8H11Z</StreamGeometry>
+    <StreamGeometry x:Key="Vhilz.Geometry.NotificationSuccess">M12 2A10 10 0 1 0 12 22A10 10 0 1 0 12 2ZM9 17L4 12L5.4 10.6L9 14.2L18.6 4.6L20 6Z</StreamGeometry>
+    <StreamGeometry x:Key="Vhilz.Geometry.NotificationWarning">M12 2L1 21H23ZM11 8H13V14H11ZM11 16H13V18H11Z</StreamGeometry>
+    <StreamGeometry x:Key="Vhilz.Geometry.NotificationError">M7 2H17L22 7V17L17 22H7L2 17V7ZM7 8.4L10.6 12L7 15.6L8.4 17L12 13.4L15.6 17L17 15.6L13.4 12L17 8.4L15.6 7L12 10.6L8.4 7Z</StreamGeometry>
+    <ControlTheme x:Key="Vhilz.NotificationCard.Theme" TargetType="NotificationCard">
+        <Setter Property="Width" Value="{DynamicResource Vhilz.Width.NotificationCard}" />
+        <Setter Property="Margin" Value="{DynamicResource Vhilz.Margin.NotificationCard}" />
+        <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Popup}" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Border}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="Padding" Value="{DynamicResource Vhilz.Padding.Control}" />
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <PathIcon Name="PART_TypeIcon"
+                                  Width="{DynamicResource Vhilz.Width.NotificationCardTypeIcon}"
+                                  Height="{DynamicResource Vhilz.Width.NotificationCardTypeIcon}"
+                                  Margin="0,3,8,0"
+                                  Data="{DynamicResource Vhilz.Geometry.NotificationInformation}"
+                                  VerticalAlignment="Top" />
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          Grid.Column="1"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        <Button Grid.Column="2"
+                                Content="×"
+                                Theme="{StaticResource Vhilz.Button.Subtle.Theme}"
+                                Width="{DynamicResource Vhilz.Width.NotificationCardCloseButton}"
+                                Height="{DynamicResource Vhilz.Height.NotificationCardCloseButton}"
+                                MinHeight="0"
+                                Padding="0"
+                                NotificationCard.CloseOnClick="True"
+                                AutomationProperties.Name="关闭通知"
+                                VerticalAlignment="Top" />
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:success /template/ PathIcon#PART_TypeIcon">
+            <Setter Property="Data" Value="{DynamicResource Vhilz.Geometry.NotificationSuccess}" />
+        </Style>
+        <Style Selector="^:warning /template/ PathIcon#PART_TypeIcon">
+            <Setter Property="Data" Value="{DynamicResource Vhilz.Geometry.NotificationWarning}" />
+        </Style>
+        <Style Selector="^:error">
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Danger}" />
+        </Style>
+        <Style Selector="^:error /template/ PathIcon#PART_TypeIcon">
+            <Setter Property="Data" Value="{DynamicResource Vhilz.Geometry.NotificationError}" />
+            <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Danger}" />
+        </Style>
+        <!-- 保留上游非视觉关闭完成调度，避免 CloseAll 枚举过程中同步移除集合元素。-->
+        <Style Selector="^[IsClosing=true]">
+            <Style.Animations>
+                <Animation Duration="{DynamicResource Vhilz.Duration.NotificationCompletion}" FillMode="Forward">
+                    <KeyFrame Cue="100%">
+                        <Setter Property="IsClosed" Value="True" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type NotificationCard}"
+                  TargetType="NotificationCard"
+                  BasedOn="{StaticResource Vhilz.NotificationCard.Theme}" />
+</ResourceDictionary>

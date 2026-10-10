@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:motion="using:SukiUI.Motion">
+                    xmlns:motion="using:SukiUI.Motion"
+                    xmlns:transform="using:Avalonia.Media.Transformation">
     <!-- 跨明暗不变且可供多个控件或应用稳定覆盖的几何资源在此定义；颜色语义在明暗字典中维护。 -->
 
     <!-- 窗口与操作按钮 -->
@@ -23,6 +24,7 @@
     <SineEaseInOut x:Key="Vhilz.Easing.Standard" />
     <CubicEaseOut x:Key="Vhilz.Easing.Decelerate" />
     <motion:SukiSpringEaseOut x:Key="Vhilz.Easing.Spring" />
+    <transform:TransformOperations x:Key="Vhilz.Transform.PressFeedback">scale(0.94)</transform:TransformOperations>
     <x:Double x:Key="Vhilz.Opacity.Disabled">0.4</x:Double>
     <SolidColorBrush x:Key="Vhilz.Brush.OnDanger">White</SolidColorBrush>
     <!-- 焦点轮廓沿用 1 DIP 描边；正式观感仍由 Demo 验收。 -->
@@ -36,4 +38,18 @@
     <x:String x:Key="Vhilz.Text.Window.Maximize">最大化</x:String>
     <x:String x:Key="Vhilz.Text.Window.Restore">还原</x:String>
     <x:String x:Key="Vhilz.Text.Window.Close">关闭</x:String>
+    <!-- 原生控件首轮外观候选，沿用既有按钮密度；不声明通用大小档位。 -->
+    <x:Double x:Key="Vhilz.Height.Control">32</x:Double>
+    <x:Double x:Key="Vhilz.FontSize.Body">14</x:Double>
+    <x:Double x:Key="Vhilz.FontSize.Caption">12</x:Double>
+    <FontFamily x:Key="Vhilz.FontFamily.Body">Default</FontFamily>
+    <Thickness x:Key="Vhilz.Thickness.Border">1</Thickness>
+    <Thickness x:Key="Vhilz.Padding.Control">12,6</Thickness>
+    <Thickness x:Key="Vhilz.Padding.Item">8,6</Thickness>
+    <Thickness x:Key="Vhilz.Padding.Popup">8</Thickness>
+    <CornerRadius x:Key="Vhilz.Radius.Full">999</CornerRadius>
+    <Thickness x:Key="Vhilz.Padding.TabStrip">3</Thickness>
+    <Thickness x:Key="Vhilz.Padding.TabContent">0,8</Thickness>
+    <x:String x:Key="Vhilz.Text.TextFlyoutCopyText">复制</x:String>
+    <x:String x:Key="Vhilz.Text.DrawerToggle">切换导航抽屉</x:String>
 </ResourceDictionary>

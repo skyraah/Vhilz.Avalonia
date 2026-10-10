@@ -1,0 +1,76 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <x:Double x:Key="Vhilz.RadioButton.Indicator.Size">16</x:Double>
+    <Thickness x:Key="Vhilz.RadioButton.Content.Padding">8,0,0,0</Thickness>
+    <x:Double x:Key="Vhilz.RadioButton.Mark.Size">8</x:Double>
+    <ControlTheme x:Key="Vhilz.RadioButton.Theme" TargetType="RadioButton">
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Input}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Border}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Full}" />
+        <Setter Property="Padding" Value="{DynamicResource Vhilz.RadioButton.Content.Padding}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="FocusAdorner" Value="{x:Null}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid Background="Transparent" ColumnDefinitions="Auto,*">
+                    <Panel Width="{DynamicResource Vhilz.RadioButton.Indicator.Size}"
+                           Height="{DynamicResource Vhilz.RadioButton.Indicator.Size}"
+                           VerticalAlignment="Center">
+                        <Border Name="PART_Indicator"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}">
+                            <Panel>
+                                <Ellipse Name="checkMark"
+                                         Width="{DynamicResource Vhilz.RadioButton.Mark.Size}"
+                                         Height="{DynamicResource Vhilz.RadioButton.Mark.Size}"
+                                         Fill="{DynamicResource Vhilz.Brush.Primary}"
+                                         IsVisible="False"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center" />
+                            </Panel>
+                        </Border>
+                        <Border Name="PART_FocusRing"
+                                Margin="-3"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                BorderBrush="{DynamicResource Vhilz.Brush.Focus}"
+                                BorderThickness="{DynamicResource Vhilz.Thickness.Focus}"
+                                IsVisible="False"
+                                IsHitTestVisible="False" />
+                    </Panel>
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Grid.Column="1"
+                                      Margin="{TemplateBinding Padding}"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      RecognizesAccessKey="True" />
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:checked /template/ Ellipse#checkMark">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+        <Style Selector="^:pointerover:not(:pressed):not(:disabled)">
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.TextSecondary}" />
+        </Style>
+        <Style Selector="^:pressed:not(:disabled)">
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Primary}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
+        </Style>
+        <Style Selector="^:focus-visible:not(:disabled) /template/ Border#PART_FocusRing">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type RadioButton}"
+                  TargetType="RadioButton"
+                  BasedOn="{StaticResource Vhilz.RadioButton.Theme}" />
+</ResourceDictionary>

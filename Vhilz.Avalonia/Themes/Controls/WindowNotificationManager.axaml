@@ -1,0 +1,55 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Thickness x:Key="Vhilz.Margin.WindowNotificationManagerWindowInset">0 0 8 8</Thickness>
+    <x:Double x:Key="Vhilz.Spacing.WindowNotificationManagerContent">8</x:Double>
+    <ControlTheme x:Key="Vhilz.WindowNotificationManager.Theme" TargetType="WindowNotificationManager">
+        <Setter Property="Margin" Value="{DynamicResource Vhilz.Margin.WindowNotificationManagerWindowInset}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ReversibleStackPanel Name="PART_Items">
+                    <ReversibleStackPanel.DataTemplates>
+                        <DataTemplate DataType="INotification">
+                            <StackPanel Margin="0"
+                                        Spacing="{DynamicResource Vhilz.Spacing.WindowNotificationManagerContent}">
+                                <TextBlock FontWeight="Medium" Text="{Binding Title}" />
+                                <TextBlock Margin="0" Text="{Binding Message}" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </DataTemplate>
+                        <DataTemplate DataType="x:String">
+                            <TextBlock Margin="0" Text="{Binding}" />
+                        </DataTemplate>
+                    </ReversibleStackPanel.DataTemplates>
+                </ReversibleStackPanel>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:topleft /template/ ReversibleStackPanel#PART_Items">
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+        <Style Selector="^:topright /template/ ReversibleStackPanel#PART_Items">
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <Style Selector="^:topcenter /template/ ReversibleStackPanel#PART_Items">
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="^:bottomleft /template/ ReversibleStackPanel#PART_Items">
+            <Setter Property="ReverseOrder" Value="True" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+        <Style Selector="^:bottomright /template/ ReversibleStackPanel#PART_Items">
+            <Setter Property="ReverseOrder" Value="True" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <Style Selector="^:bottomcenter /template/ ReversibleStackPanel#PART_Items">
+            <Setter Property="ReverseOrder" Value="True" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type WindowNotificationManager}"
+                  TargetType="WindowNotificationManager"
+                  BasedOn="{StaticResource Vhilz.WindowNotificationManager.Theme}" />
+</ResourceDictionary>

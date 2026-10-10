@@ -1,0 +1,162 @@
+<!--
+  // (c) Copyright Microsoft Corporation.
+  // This source is subject to the Microsoft Public License (Ms-PL).
+  // Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+  // All other rights reserved.-->
+<!-- 基于 Avalonia 12.1.3 官方模板保留原生部件与绑定；外观使用 Vhilz 语义资源。-->
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="using:System">
+    <x:String x:Key="Vhilz.Text.DatePickerYear">年</x:String>
+    <x:String x:Key="Vhilz.Text.DatePickerMonth">月</x:String>
+    <x:String x:Key="Vhilz.Text.DatePickerDay">日</x:String>
+    <x:Double x:Key="Vhilz.DatePicker.FirstSpacer.Width">1</x:Double>
+    <x:Double x:Key="Vhilz.DatePicker.SecondSpacer.Width">1</x:Double>
+    <Thickness x:Key="Vhilz.DatePicker.FocusVisual.Margin">-2</Thickness>
+    <x:Double x:Key="Vhilz.DatePicker.Width">296</x:Double>
+    <x:Double x:Key="Vhilz.DatePicker.MinWidth">296</x:Double>
+    <x:Double x:Key="Vhilz.DatePicker.MaxHeight">398</x:Double>
+    <x:Double x:Key="Vhilz.DatePicker.Background.MaxHeight">398</x:Double>
+    <x:Double x:Key="Vhilz.DatePicker.Path.StrokeThickness">0.75</x:Double>
+    <x:Double x:Key="Vhilz.DatePicker.FlyoutPresenterHighlightHeight">40</x:Double>
+    <x:Double x:Key="Vhilz.DatePicker.FlyoutPresenterItemHeight">40</x:Double>
+    <x:Double x:Key="Vhilz.DatePicker.FlyoutPresenterAcceptDismissHostGridHeight">41</x:Double>
+    <x:Double x:Key="Vhilz.DatePicker.ThemeMinWidth">296</x:Double>
+    <x:Double x:Key="Vhilz.DatePicker.ThemeMaxWidth">456</x:Double>
+    <Thickness x:Key="Vhilz.DatePicker.FlyoutPresenterItemPadding">0,3,0,6</Thickness>
+    <Thickness x:Key="Vhilz.DatePicker.FlyoutPresenterMonthPadding">9,3,0,6</Thickness>
+    <Thickness x:Key="Vhilz.DatePicker.HostPadding">0,3,0,6</Thickness>
+    <Thickness x:Key="Vhilz.DatePicker.HostMonthPadding">9,3,0,6</Thickness>
+    <x:Double x:Key="Vhilz.DatePicker.SpacerThemeWidth">1</x:Double>
+    <ControlTheme x:Key="Vhilz.DatePicker.FlyoutButton.Theme" TargetType="Button">
+        <Setter Property="RenderTransform" Value="none" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Focus}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ContentPresenter Name="PART_ContentPresenter"
+                                  HorizontalContentAlignment="Stretch"
+                                  VerticalContentAlignment="Stretch"
+                                  Background="{TemplateBinding Background}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                  Content="{TemplateBinding Content}"
+                                  CornerRadius="{TemplateBinding CornerRadius}"
+                                  Foreground="{TemplateBinding Foreground}" />
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover:not(:pressed):not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlHover}" />
+        </Style>
+        <Style Selector="^:pressed:not(:disabled)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlPressed}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="Vhilz.DatePicker.Theme" TargetType="DatePicker">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Input}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Border}" />
+        <Setter Property="MinHeight" Value="{DynamicResource Vhilz.Height.Control}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <DataValidationErrors>
+                        <Grid Name="LayoutRoot" Margin="{TemplateBinding Padding}">
+                            <Button Name="PART_FlyoutButton"
+                                    MinWidth="{DynamicResource Vhilz.DatePicker.ThemeMinWidth}"
+                                    MaxWidth="{DynamicResource Vhilz.DatePicker.ThemeMaxWidth}"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    IsEnabled="{TemplateBinding IsEnabled}"
+                                    TemplatedControl.IsTemplateFocusTarget="True"
+                                    Theme="{StaticResource Vhilz.DatePicker.FlyoutButton.Theme}"
+                                    MinHeight="{DynamicResource Vhilz.Height.Control}">
+                                <Grid Name="PART_ButtonContentGrid" ColumnDefinitions="78*,Auto,132*,Auto,78*">
+                                    <TextBlock Name="PART_DayTextBlock"
+                                               Padding="{DynamicResource Vhilz.DatePicker.HostPadding}"
+                                               HorizontalAlignment="Center"
+                                               FontFamily="{TemplateBinding FontFamily}"
+                                               FontSize="{TemplateBinding FontSize}"
+                                               FontWeight="{TemplateBinding FontWeight}"
+                                               Text="{DynamicResource Vhilz.Text.DatePickerDay}" />
+                                    <TextBlock Name="PART_MonthTextBlock"
+                                               Padding="{DynamicResource Vhilz.DatePicker.HostMonthPadding}"
+                                               FontFamily="{TemplateBinding FontFamily}"
+                                               FontSize="{TemplateBinding FontSize}"
+                                               FontWeight="{TemplateBinding FontWeight}"
+                                               Text="{DynamicResource Vhilz.Text.DatePickerMonth}"
+                                               TextAlignment="Left" />
+                                    <TextBlock Name="PART_YearTextBlock"
+                                               Padding="{DynamicResource Vhilz.DatePicker.HostPadding}"
+                                               HorizontalAlignment="Center"
+                                               FontFamily="{TemplateBinding FontFamily}"
+                                               FontSize="{TemplateBinding FontSize}"
+                                               FontWeight="{TemplateBinding FontWeight}"
+                                               Text="{DynamicResource Vhilz.Text.DatePickerYear}" />
+                                    <Rectangle x:Name="PART_FirstSpacer"
+                                               Grid.Column="1"
+                                               Width="{DynamicResource Vhilz.DatePicker.FirstSpacer.Width}"
+                                               HorizontalAlignment="Center"
+                                               Fill="{DynamicResource Vhilz.Brush.Border}" />
+                                    <Rectangle x:Name="PART_SecondSpacer"
+                                               Grid.Column="3"
+                                               Width="{DynamicResource Vhilz.DatePicker.SecondSpacer.Width}"
+                                               HorizontalAlignment="Center"
+                                               Fill="{DynamicResource Vhilz.Brush.Border}" />
+                                </Grid>
+                            </Button>
+                            <Popup Name="PART_Popup"
+                                   IsLightDismissEnabled="True"
+                                   Placement="Bottom"
+                                   PlacementTarget="{TemplateBinding}"
+                                   WindowManagerAddShadowHint="False">
+                                <DatePickerPresenter Name="PART_PickerPresenter" />
+                            </Popup>
+                        </Grid>
+                    </DataValidationErrors>
+                    <Border Name="FocusVisual"
+                            BorderBrush="{DynamicResource Vhilz.Brush.Focus}"
+                            BorderThickness="{DynamicResource Vhilz.Thickness.Focus}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Margin="{DynamicResource Vhilz.DatePicker.FocusVisual.Margin}"
+                            IsVisible="False"
+                            IsHitTestVisible="False" />
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^ /template/ Button#PART_FlyoutButton TextBlock">
+            <Setter Property="VerticalAlignment" Value="{TemplateBinding VerticalContentAlignment}" />
+        </Style>
+        <Style Selector="^:hasnodate /template/ Button#PART_FlyoutButton TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.TextMuted}" />
+        </Style>
+        <Style Selector="^:error">
+            <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Danger}" />
+        </Style>
+        <Style Selector="^:disabled /template/ Rectangle">
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
+        </Style>
+        <Style Selector="^:focus-within:not(:disabled) /template/ Border#FocusVisual">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type DatePicker}" TargetType="DatePicker" BasedOn="{StaticResource Vhilz.DatePicker.Theme}" />
+</ResourceDictionary>

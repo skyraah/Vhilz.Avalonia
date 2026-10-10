@@ -1,0 +1,236 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <x:String x:Key="Vhilz.Text.ScrollBarScrollHere">滚动到此处</x:String>
+    <x:String x:Key="Vhilz.Text.ScrollBarTop">顶部</x:String>
+    <x:String x:Key="Vhilz.Text.ScrollBarBottom">底部</x:String>
+    <x:String x:Key="Vhilz.Text.ScrollBarPageUp">上一页</x:String>
+    <x:String x:Key="Vhilz.Text.ScrollBarPageDown">下一页</x:String>
+    <x:String x:Key="Vhilz.Text.ScrollBarScrollUp">向上滚动</x:String>
+    <x:String x:Key="Vhilz.Text.ScrollBarScrollDown">向下滚动</x:String>
+    <x:String x:Key="Vhilz.Text.ScrollBarLeftEdge">左侧</x:String>
+    <x:String x:Key="Vhilz.Text.ScrollBarRightEdge">右侧</x:String>
+    <x:String x:Key="Vhilz.Text.ScrollBarPageLeft">向左一页</x:String>
+    <x:String x:Key="Vhilz.Text.ScrollBarPageRight">向右一页</x:String>
+    <x:String x:Key="Vhilz.Text.ScrollBarScrollLeft">向左滚动</x:String>
+    <x:String x:Key="Vhilz.Text.ScrollBarScrollRight">向右滚动</x:String>
+    <MenuFlyout x:Key="Vhilz.ScrollBar.Vertical.ContextFlyout">
+        <MenuItem Header="{DynamicResource Vhilz.Text.ScrollBarScrollHere}"
+                  Command="{Binding $parent[ScrollBar].ScrollHere}"
+                  AutomationProperties.AutomationId="ScrollHere" />
+        <Separator />
+        <MenuItem Header="{DynamicResource Vhilz.Text.ScrollBarTop}"
+                  Command="{Binding $parent[ScrollBar].ScrollToHome}"
+                  AutomationProperties.AutomationId="Top" />
+        <MenuItem Header="{DynamicResource Vhilz.Text.ScrollBarBottom}"
+                  Command="{Binding $parent[ScrollBar].ScrollToEnd}"
+                  AutomationProperties.AutomationId="Bottom" />
+        <Separator />
+        <MenuItem Header="{DynamicResource Vhilz.Text.ScrollBarPageUp}"
+                  Command="{Binding $parent[ScrollBar].PageUp}"
+                  AutomationProperties.AutomationId="PageUp" />
+        <MenuItem Header="{DynamicResource Vhilz.Text.ScrollBarPageDown}"
+                  Command="{Binding $parent[ScrollBar].PageDown}"
+                  AutomationProperties.AutomationId="PageDown" />
+        <Separator />
+        <MenuItem Header="{DynamicResource Vhilz.Text.ScrollBarScrollUp}"
+                  Command="{Binding $parent[ScrollBar].LineUp}"
+                  AutomationProperties.AutomationId="ScrollUp" />
+        <MenuItem Header="{DynamicResource Vhilz.Text.ScrollBarScrollDown}"
+                  Command="{Binding $parent[ScrollBar].LineDown}"
+                  AutomationProperties.AutomationId="ScrollDown" />
+    </MenuFlyout>
+    <MenuFlyout x:Key="Vhilz.ScrollBar.Horizontal.ContextFlyout">
+        <MenuItem Header="{DynamicResource Vhilz.Text.ScrollBarScrollHere}"
+                  Command="{Binding $parent[ScrollBar].ScrollHere}"
+                  AutomationProperties.AutomationId="ScrollHere" />
+        <Separator />
+        <MenuItem Header="{DynamicResource Vhilz.Text.ScrollBarLeftEdge}"
+                  Command="{Binding $parent[ScrollBar].ScrollToHome}"
+                  AutomationProperties.AutomationId="LeftEdge" />
+        <MenuItem Header="{DynamicResource Vhilz.Text.ScrollBarRightEdge}"
+                  Command="{Binding $parent[ScrollBar].ScrollToEnd}"
+                  AutomationProperties.AutomationId="RightEdge" />
+        <Separator />
+        <MenuItem Header="{DynamicResource Vhilz.Text.ScrollBarPageLeft}"
+                  Command="{Binding $parent[ScrollBar].PageLeft}"
+                  AutomationProperties.AutomationId="PageLeft" />
+        <MenuItem Header="{DynamicResource Vhilz.Text.ScrollBarPageRight}"
+                  Command="{Binding $parent[ScrollBar].PageRight}"
+                  AutomationProperties.AutomationId="PageRight" />
+        <Separator />
+        <MenuItem Header="{DynamicResource Vhilz.Text.ScrollBarScrollLeft}"
+                  Command="{Binding $parent[ScrollBar].LineLeft}"
+                  AutomationProperties.AutomationId="ScrollLeft" />
+        <MenuItem Header="{DynamicResource Vhilz.Text.ScrollBarScrollRight}"
+                  Command="{Binding $parent[ScrollBar].LineRight}"
+                  AutomationProperties.AutomationId="ScrollRight" />
+    </MenuFlyout>
+    <x:Double x:Key="Vhilz.ScrollBar.Thickness">10</x:Double>
+    <x:Double x:Key="Vhilz.ScrollBar.Thumb.Thickness">6</x:Double>
+    <ControlTheme x:Key="Vhilz.ScrollBar.PageButton.Theme" TargetType="RepeatButton">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}" />
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type ScrollBar}" TargetType="ScrollBar">
+        <Setter Property="Cursor" Value="Arrow" />
+        <Style Selector="^:horizontal">
+            <Setter Property="ContextFlyout" Value="{StaticResource Vhilz.ScrollBar.Horizontal.ContextFlyout}" />
+            <Setter Property="Height" Value="{DynamicResource Vhilz.ScrollBar.Thickness}" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="Transparent" UseLayoutRounding="False">
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <RepeatButton Name="PART_LineUpButton"
+                                          Grid.Row="0"
+                                          Grid.Column="0"
+                                          MinWidth="{DynamicResource Vhilz.ScrollBar.Thickness}"
+                                          VerticalAlignment="Center"
+                                          Classes="VhilzScrollBarLine"
+                                          IsVisible="False"
+                                          Focusable="False"
+                                          AutomationProperties.Name="Column left">
+                                <Path Data="M 4 0 L 4 8 L 0 4 Z" />
+                            </RepeatButton>
+                            <Track Grid.Row="1"
+                                   Grid.Column="1"
+                                   Maximum="{TemplateBinding Maximum}"
+                                   Minimum="{TemplateBinding Minimum}"
+                                   Orientation="{TemplateBinding Orientation}"
+                                   ViewportSize="{TemplateBinding ViewportSize}"
+                                   DeferThumbDrag="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                                   Value="{TemplateBinding Value, Mode=TwoWay}">
+                                <Track.DecreaseButton>
+                                    <RepeatButton Name="PART_PageUpButton"
+                                                  Classes="VhilzScrollBarPage"
+                                                  Focusable="False"
+                                                  AutomationProperties.Name="Page left" />
+                                </Track.DecreaseButton>
+                                <Track.IncreaseButton>
+                                    <RepeatButton Name="PART_PageDownButton"
+                                                  Classes="VhilzScrollBarPage"
+                                                  Focusable="False"
+                                                  AutomationProperties.Name="Page right" />
+                                </Track.IncreaseButton>
+                                <Thumb Name="thumb" AutomationProperties.Name="Position" />
+                            </Track>
+                            <RepeatButton Name="PART_LineDownButton"
+                                          Grid.Row="2"
+                                          Grid.Column="2"
+                                          MinWidth="{DynamicResource Vhilz.ScrollBar.Thickness}"
+                                          VerticalAlignment="Center"
+                                          Classes="VhilzScrollBarLine"
+                                          IsVisible="False"
+                                          Focusable="False"
+                                          AutomationProperties.Name="Column right">
+                                <Path Data="M 0 0 L 4 4 L 0 8 Z" />
+                            </RepeatButton>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="^:vertical">
+            <Setter Property="ContextFlyout" Value="{StaticResource Vhilz.ScrollBar.Vertical.ContextFlyout}" />
+            <Setter Property="Width" Value="{DynamicResource Vhilz.ScrollBar.Thickness}" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="Transparent" UseLayoutRounding="False">
+                        <Grid RowDefinitions="Auto,*,Auto">
+                            <RepeatButton Name="PART_LineUpButton"
+                                          Grid.Row="0"
+                                          MinHeight="{DynamicResource Vhilz.ScrollBar.Thickness}"
+                                          HorizontalAlignment="Center"
+                                          Classes="VhilzScrollBarLine"
+                                          IsVisible="False"
+                                          Focusable="False"
+                                          AutomationProperties.Name="Line up">
+                                <Path Data="M 0 4 L 8 4 L 4 0 Z" />
+                            </RepeatButton>
+                            <Track Grid.Row="1"
+                                   Grid.Column="1"
+                                   IsDirectionReversed="True"
+                                   Maximum="{TemplateBinding Maximum}"
+                                   Minimum="{TemplateBinding Minimum}"
+                                   Orientation="{TemplateBinding Orientation}"
+                                   ViewportSize="{TemplateBinding ViewportSize}"
+                                   DeferThumbDrag="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                                   Value="{TemplateBinding Value, Mode=TwoWay}">
+                                <Track.DecreaseButton>
+                                    <RepeatButton Name="PART_PageUpButton"
+                                                  Classes="VhilzScrollBarPage"
+                                                  Focusable="False"
+                                                  AutomationProperties.Name="Page up" />
+                                </Track.DecreaseButton>
+                                <Track.IncreaseButton>
+                                    <RepeatButton Name="PART_PageDownButton"
+                                                  Classes="VhilzScrollBarPage"
+                                                  Focusable="False"
+                                                  AutomationProperties.Name="Page down" />
+                                </Track.IncreaseButton>
+                                <Thumb Name="thumb" AutomationProperties.Name="Position" />
+                            </Track>
+                            <RepeatButton Name="PART_LineDownButton"
+                                          Grid.Row="2"
+                                          Grid.Column="2"
+                                          MinHeight="{DynamicResource Vhilz.ScrollBar.Thickness}"
+                                          HorizontalAlignment="Center"
+                                          Classes="VhilzScrollBarLine"
+                                          IsVisible="False"
+                                          Focusable="False"
+                                          AutomationProperties.Name="Line down">
+                                <Path Data="M 0 0 L 4 4 L 8 0 Z" />
+                            </RepeatButton>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="^ /template/ Thumb#thumb">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Border}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="{DynamicResource Vhilz.Radius.Full}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style Selector="^:horizontal /template/ Thumb#thumb">
+            <Setter Property="MinWidth" Value="{DynamicResource Vhilz.ScrollBar.Thickness}" />
+            <Setter Property="Height" Value="{DynamicResource Vhilz.ScrollBar.Thumb.Thickness}" />
+        </Style>
+        <Style Selector="^:vertical /template/ Thumb#thumb">
+            <Setter Property="MinHeight" Value="{DynamicResource Vhilz.ScrollBar.Thickness}" />
+            <Setter Property="Width" Value="{DynamicResource Vhilz.ScrollBar.Thumb.Thickness}" />
+        </Style>
+        <Style Selector="^ /template/ RepeatButton &gt; Path">
+            <Setter Property="Fill" Value="{DynamicResource Vhilz.Brush.TextMuted}" />
+        </Style>
+        <Style Selector="^ /template/ RepeatButton.VhilzScrollBarLine">
+            <Setter Property="Padding" Value="2" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        <Style Selector="^ /template/ RepeatButton.VhilzScrollBarPage">
+            <Setter Property="Theme" Value="{StaticResource Vhilz.ScrollBar.PageButton.Theme}" />
+        </Style>
+        <Style Selector="^:not(:disabled) /template/ Thumb#thumb:pointerover:not(:pressed)">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlHover}" />
+        </Style>
+        <Style Selector="^ /template/ RepeatButton:pointerover &gt; Path">
+            <Setter Property="Fill" Value="{DynamicResource Vhilz.Brush.Primary}" />
+        </Style>
+        <Style Selector="^:not(:disabled) /template/ Thumb#thumb:pressed">
+            <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlPressed}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

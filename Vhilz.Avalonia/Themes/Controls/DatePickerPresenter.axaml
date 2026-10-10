@@ -1,0 +1,138 @@
+<!--
+  // (c) Copyright Microsoft Corporation.
+  // This source is subject to the Microsoft Public License (Ms-PL).
+  // Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+  // All other rights reserved.-->
+<!-- 基于 Avalonia 12.1.3 官方模板保留原生部件与绑定；外观使用 Vhilz 语义资源。-->
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="using:System">
+    <ControlTheme x:Key="Vhilz.DatePickerPresenter.Theme" TargetType="DatePickerPresenter">
+        <Setter Property="Width" Value="{DynamicResource Vhilz.DatePicker.Width}" />
+        <Setter Property="MinWidth" Value="{DynamicResource Vhilz.DatePicker.MinWidth}" />
+        <Setter Property="MaxHeight" Value="{DynamicResource Vhilz.DatePicker.MaxHeight}" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Popup}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
+        <Setter Property="BorderThickness"
+                Value="{DynamicResource Vhilz.DateTimePickerShared.DateTimeFlyoutBorderThickness}" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="Background"
+                        MaxHeight="{DynamicResource Vhilz.DatePicker.Background.MaxHeight}"
+                        Padding="{DynamicResource Vhilz.DateTimePickerShared.DateTimeFlyoutBorderPadding}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{DynamicResource Vhilz.Radius.Small}"
+                        BoxShadow="{DynamicResource Vhilz.Shadow.Popup}">
+                    <Grid Name="ContentRoot" RowDefinitions="*,Auto">
+                        <Grid Name="PART_PickerContainer">
+                            <Grid.Styles>
+                                <Style Selector="DateTimePickerPanel &gt; ListBoxItem">
+                                    <Setter Property="Theme" Value="{StaticResource Vhilz.DateTimePicker.Item.Theme}" />
+                                </Style>
+                            </Grid.Styles>
+                            <Panel Name="PART_MonthHost">
+                                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                              VerticalScrollBarVisibility="Hidden">
+                                    <DateTimePickerPanel Name="PART_MonthSelector"
+                                                         ItemHeight="{DynamicResource Vhilz.DatePicker.FlyoutPresenterItemHeight}"
+                                                         PanelType="Month"
+                                                         ShouldLoop="True" />
+                                </ScrollViewer>
+                                <RepeatButton Name="PART_MonthUpButton"
+                                              Theme="{StaticResource Vhilz.DateTimePicker.UpButton.Theme}" />
+                                <RepeatButton Name="PART_MonthDownButton"
+                                              Theme="{StaticResource Vhilz.DateTimePicker.DownButton.Theme}" />
+                            </Panel>
+                            <Panel Name="PART_DayHost">
+                                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                              VerticalScrollBarVisibility="Hidden">
+                                    <DateTimePickerPanel Name="PART_DaySelector"
+                                                         ItemHeight="{DynamicResource Vhilz.DatePicker.FlyoutPresenterItemHeight}"
+                                                         PanelType="Day"
+                                                         ShouldLoop="True" />
+                                </ScrollViewer>
+                                <RepeatButton Name="PART_DayUpButton"
+                                              Theme="{StaticResource Vhilz.DateTimePicker.UpButton.Theme}" />
+                                <RepeatButton Name="PART_DayDownButton"
+                                              Theme="{StaticResource Vhilz.DateTimePicker.DownButton.Theme}" />
+                            </Panel>
+                            <Panel Name="PART_YearHost">
+                                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                              VerticalScrollBarVisibility="Hidden">
+                                    <DateTimePickerPanel Name="PART_YearSelector"
+                                                         ItemHeight="{DynamicResource Vhilz.DatePicker.FlyoutPresenterItemHeight}"
+                                                         PanelType="Year"
+                                                         ShouldLoop="False" />
+                                </ScrollViewer>
+                                <RepeatButton Name="PART_YearUpButton"
+                                              Theme="{StaticResource Vhilz.DateTimePicker.UpButton.Theme}" />
+                                <RepeatButton Name="PART_YearDownButton"
+                                              Theme="{StaticResource Vhilz.DateTimePicker.DownButton.Theme}" />
+                            </Panel>
+                            <Rectangle Name="HighlightRect"
+                                       Grid.Column="0"
+                                       Grid.ColumnSpan="5"
+                                       Height="{DynamicResource Vhilz.DatePicker.FlyoutPresenterHighlightHeight}"
+                                       VerticalAlignment="Center"
+                                       IsHitTestVisible="False"
+                                       ZIndex="-1"
+                                       Fill="{DynamicResource Vhilz.Brush.Selection}" />
+                            <Rectangle Name="PART_FirstSpacer"
+                                       Grid.Column="1"
+                                       Width="{DynamicResource Vhilz.DatePicker.SpacerThemeWidth}"
+                                       HorizontalAlignment="Center"
+                                       Fill="{DynamicResource Vhilz.Brush.Border}" />
+                            <Rectangle Name="PART_SecondSpacer"
+                                       Grid.Column="3"
+                                       Width="{DynamicResource Vhilz.DatePicker.SpacerThemeWidth}"
+                                       HorizontalAlignment="Center"
+                                       Fill="{DynamicResource Vhilz.Brush.Border}" />
+                        </Grid>
+                        <Grid Name="AcceptDismissGrid" Grid.Row="1" ColumnDefinitions="*,*">
+                            <Rectangle Grid.ColumnSpan="2"
+                                       Height="{DynamicResource Vhilz.DatePicker.SpacerThemeWidth}"
+                                       VerticalAlignment="Top"
+                                       Fill="{DynamicResource Vhilz.Brush.Border}" />
+                            <Button Name="PART_AcceptButton"
+                                    Grid.Column="0"
+                                    Height="{DynamicResource Vhilz.DatePicker.FlyoutPresenterAcceptDismissHostGridHeight}"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Theme="{StaticResource Vhilz.DateTimePicker.Button.Theme}">
+                                <Path Data="M0.5,8.5 5,13.5 15.5,3"
+                                      Stroke="{Binding $parent[Button].Foreground}"
+                                      StrokeLineCap="Round"
+                                      StrokeThickness="{DynamicResource Vhilz.DatePicker.Path.StrokeThickness}" />
+                            </Button>
+                            <Button Name="PART_DismissButton"
+                                    Grid.Column="1"
+                                    Height="{DynamicResource Vhilz.DatePicker.FlyoutPresenterAcceptDismissHostGridHeight}"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Theme="{StaticResource Vhilz.DateTimePicker.Button.Theme}">
+                                <Path Data="M2,2 14,14 M2,14 14 2"
+                                      Stroke="{Binding $parent[Button].Foreground}"
+                                      StrokeLineCap="Round"
+                                      StrokeThickness="{DynamicResource Vhilz.DatePicker.Path.StrokeThickness}" />
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^ /template/ Panel">
+            <Style Selector="^:pointerover RepeatButton">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+        </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="{x:Type DatePickerPresenter}"
+                  TargetType="DatePickerPresenter"
+                  BasedOn="{StaticResource Vhilz.DatePickerPresenter.Theme}" />
+</ResourceDictionary>

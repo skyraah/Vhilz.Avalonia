@@ -4,7 +4,7 @@
         <RootNamespace>Vhilz.Avalonia.Theme</RootNamespace>
         <AssemblyName>Vhilz.Avalonia</AssemblyName>
         <PackageId>Vhilz.Avalonia</PackageId>
-        <Description>Avalonia 主题库，提供语义资源、自定义窗口与标题栏装饰。</Description>
+        <Description>Avalonia 主题库，提供语义资源、原生控件主题、自定义窗口与标题栏装饰。</Description>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/skyraah/Vhilz.Avalonia</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="../README.md" Pack="true" PackagePath="/" />
+        <None Include="../README.md" Pack="true" PackagePath="/"/>
+        <None Include="../THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="/"/>
     </ItemGroup>
 </Project>

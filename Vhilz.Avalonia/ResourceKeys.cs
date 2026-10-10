@@ -1,8 +1,18 @@
 namespace Vhilz.Avalonia.Theme;
 
 /// <summary>资源键集中入口；语义 Token 优先，控件键只用于独立覆盖的差异。</summary>
-public static class ResourceKeys {
+public static partial class ResourceKeys {
     public static class Brush {
+        public const string Primary = "Vhilz.Brush.Primary";
+        public const string PrimaryHover = "Vhilz.Brush.PrimaryHover";
+        public const string PrimaryPressed = "Vhilz.Brush.PrimaryPressed";
+        public const string OnPrimary = "Vhilz.Brush.OnPrimary";
+        public const string Input = "Vhilz.Brush.Input";
+        public const string Popup = "Vhilz.Brush.Popup";
+        public const string Selection = "Vhilz.Brush.Selection";
+        public const string OnSelection = "Vhilz.Brush.OnSelection";
+        public const string Danger = "Vhilz.Brush.Danger";
+        public const string Focus = "Vhilz.Brush.Focus";
         public const string Border = "Vhilz.Brush.Border";
         public const string BorderInactive = "Vhilz.Brush.BorderInactive";
         public const string Control = "Vhilz.Brush.Control";
@@ -87,6 +97,16 @@ public static class ResourceKeys {
     }
 
     public static class Color {
+        public const string Primary = "Vhilz.Color.Primary";
+        public const string PrimaryHover = "Vhilz.Color.PrimaryHover";
+        public const string PrimaryPressed = "Vhilz.Color.PrimaryPressed";
+        public const string OnPrimary = "Vhilz.Color.OnPrimary";
+        public const string Input = "Vhilz.Color.Input";
+        public const string Popup = "Vhilz.Color.Popup";
+        public const string Selection = "Vhilz.Color.Selection";
+        public const string OnSelection = "Vhilz.Color.OnSelection";
+        public const string Danger = "Vhilz.Color.Danger";
+        public const string Focus = "Vhilz.Color.Focus";
         public const string Border = "Vhilz.Color.Border";
         public const string BorderInactive = "Vhilz.Color.BorderInactive";
         public const string Control = "Vhilz.Color.Control";
@@ -102,6 +122,35 @@ public static class ResourceKeys {
         public const string Fast = "Vhilz.Duration.Fast";
         public const string Normal = "Vhilz.Duration.Normal";
         public const string Slow = "Vhilz.Duration.Slow";
+    }
+
+    public static class Height {
+        public const string Control = "Vhilz.Height.Control";
+    }
+
+    public static class FontSize {
+        public const string Body = "Vhilz.FontSize.Body";
+        public const string Caption = "Vhilz.FontSize.Caption";
+    }
+
+    public static class FontFamily {
+        public const string Body = "Vhilz.FontFamily.Body";
+    }
+
+    public static class Padding {
+        public const string Control = "Vhilz.Padding.Control";
+        public const string Item = "Vhilz.Padding.Item";
+        public const string Popup = "Vhilz.Padding.Popup";
+        public const string TabStrip = "Vhilz.Padding.TabStrip";
+        public const string TabContent = "Vhilz.Padding.TabContent";
+    }
+
+    public static class Shadow {
+        public const string Popup = "Vhilz.Shadow.Popup";
+    }
+
+    public static class RepeatButton {
+        public const string Theme = "Vhilz.RepeatButton.Theme";
     }
 
     public static class Easing {
@@ -132,6 +181,7 @@ public static class ResourceKeys {
     }
 
     public static class Radius {
+        public const string Full = "Vhilz.Radius.Full";
         public const string Small = "Vhilz.Radius.Small";
     }
 
@@ -147,7 +197,12 @@ public static class ResourceKeys {
     }
 
     public static class Thickness {
+        public const string Border = "Vhilz.Thickness.Border";
         public const string Focus = "Vhilz.Thickness.Focus";
+    }
+
+    public static class Transform {
+        public const string PressFeedback = "Vhilz.Transform.PressFeedback";
     }
 
     public static class TitleBar {

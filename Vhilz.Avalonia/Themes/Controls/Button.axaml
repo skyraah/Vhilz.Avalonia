@@ -1,13 +1,15 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vhz="https://github.com/skyraah/Vhilz.Avalonia">
     <ControlTheme x:Key="Vhilz.Button.Theme" TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Control}" />
         <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Text}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.Border}" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="{DynamicResource Vhilz.Thickness.Border}" />
         <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Small}" />
-        <Setter Property="Padding" Value="12,6" />
-        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="Padding" Value="{DynamicResource Vhilz.Padding.Control}" />
+        <Setter Property="MinHeight" Value="{DynamicResource Vhilz.Height.Control}" />
+        <Setter Property="FontSize" Value="{DynamicResource Vhilz.FontSize.Body}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -15,7 +17,7 @@
         <Setter Property="FocusAdorner" Value="{x:Null}" />
         <Setter Property="Template">
             <ControlTemplate TargetType="Button">
-                <Panel>
+                <Panel Background="Transparent">
                     <ContentPresenter x:Name="PART_ContentPresenter"
                                       Background="{TemplateBinding Background}"
                                       Foreground="{TemplateBinding Foreground}"
@@ -27,12 +29,16 @@
                                       Padding="{TemplateBinding Padding}"
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      RenderTransformOrigin="50%,50%"
                                       RecognizesAccessKey="True">
                         <ContentPresenter.Transitions>
                             <Transitions>
                                 <BrushTransition Property="Background"
                                                  Duration="{DynamicResource Vhilz.Duration.Fast}"
                                                  Easing="{DynamicResource Vhilz.Easing.Standard}" />
+                                <TransformOperationsTransition Property="RenderTransform"
+                                                               Duration="{DynamicResource Vhilz.Duration.Normal}"
+                                                               Easing="{DynamicResource Vhilz.Easing.Spring}" />
                             </Transitions>
                         </ContentPresenter.Transitions>
                     </ContentPresenter>
@@ -46,11 +52,18 @@
         <Style Selector="^[IsDefault=True]">
             <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.TextSecondary}" />
         </Style>
-        <Style Selector="^:pointerover:not(:disabled), ^:flyout-open:not(:disabled)">
+        <Style Selector="^[(vhz|ButtonMotion.PressAnimation)=Scale] /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="RenderTransform" Value="scale(1)" />
+        </Style>
+        <Style Selector="^:pointerover:not(:pressed):not(:disabled), ^:flyout-open:not(:pressed):not(:disabled)">
             <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlHover}" />
         </Style>
         <Style Selector="^:pressed:not(:disabled)">
             <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlPressed}" />
+        </Style>
+        <Style
+            Selector="^[(vhz|ButtonMotion.PressAnimation)=Scale]:pressed:not(:disabled) /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="RenderTransform" Value="{DynamicResource Vhilz.Transform.PressFeedback}" />
         </Style>
         <Style Selector="^:disabled">
             <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
@@ -58,6 +71,12 @@
         <Style Selector="^:focus-visible:not(:disabled) /template/ Border#PART_FocusRing">
             <Setter Property="IsVisible" Value="True" />
         </Style>
+    </ControlTheme>
+    <!-- 仅供原生模板内关闭/返回等辅助按钮消费，避免为普通 Button 新增 class 变体。 -->
+    <ControlTheme x:Key="Vhilz.Button.Subtle.Theme" TargetType="Button" BasedOn="{StaticResource Vhilz.Button.Theme}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
     </ControlTheme>
     <ControlTheme x:Key="{x:Type Button}" TargetType="Button" BasedOn="{StaticResource Vhilz.Button.Theme}" />
     <Design.PreviewWith>
@@ -75,8 +94,10 @@
                                 <TextBlock Text="{Binding}" />
                                 <StackPanel Orientation="Horizontal" Spacing="12">
                                     <Button Theme="{StaticResource Vhilz.Button.Theme}" Content="按钮" />
-                                    <Button Theme="{StaticResource Vhilz.Button.Theme}" Content="较长的按钮文本" />
-                                    <Button Theme="{StaticResource Vhilz.Button.Theme}" Content="禁用" IsEnabled="False" />
+                                    <Button Theme="{StaticResource Vhilz.Button.Theme}"
+                                            vhz:ButtonMotion.PressAnimation="Scale" Content="较长的按钮文本" />
+                                    <Button Theme="{StaticResource Vhilz.Button.Theme}"
+                                            vhz:ButtonMotion.PressAnimation="Scale" Content="禁用" IsEnabled="False" />
                                 </StackPanel>
                             </StackPanel>
                         </Border>

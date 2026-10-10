@@ -1,0 +1,120 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="using:Avalonia.Controls.Converters">
+    <converters:StringFormatConverter x:Key="Vhilz.ProgressBar.Text.Converter" />
+    <x:Double x:Key="Vhilz.ProgressBar.Thickness">8</x:Double>
+    <x:Double x:Key="Vhilz.ProgressBar.Length">120</x:Double>
+    <Thickness x:Key="Vhilz.ProgressBar.Text.Padding">3,0</Thickness>
+    <x:TimeSpan x:Key="Vhilz.ProgressBar.Indeterminate.Duration">0:0:3</x:TimeSpan>
+    <ControlTheme x:Key="{x:Type ProgressBar}" TargetType="ProgressBar">
+        <Setter Property="CornerRadius" Value="{DynamicResource Vhilz.Radius.Full}" />
+        <Setter Property="ClipToBounds" Value="True" />
+        <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.Control}" />
+        <Setter Property="Foreground" Value="{DynamicResource Vhilz.Brush.Primary}" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="ProgressBar">
+                <Grid>
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <Panel>
+                            <Border Name="PART_Indicator"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    Background="{TemplateBinding Foreground}"
+                                    IsVisible="{Binding !IsIndeterminate, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Border Name="PART_IndeterminateIndicator"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    Background="{TemplateBinding Foreground}"
+                                    IsVisible="{Binding IsIndeterminate, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </Panel>
+                    </Border>
+                    <LayoutTransformControl Name="PART_LayoutTransformControl"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            IsVisible="{Binding ShowProgressText, RelativeSource={RelativeSource TemplatedParent}}">
+                        <!-- 文字有独立表面，避免在完成/未完成轨道之间失去对比度。-->
+                        <Border Background="{DynamicResource Vhilz.Brush.Surface}"
+                                Padding="{DynamicResource Vhilz.ProgressBar.Text.Padding}"
+                                CornerRadius="{DynamicResource Vhilz.Radius.Small}">
+                            <TextBlock Foreground="{DynamicResource Vhilz.Brush.Text}"
+                                       FontSize="{DynamicResource Vhilz.FontSize.Caption}">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource Vhilz.ProgressBar.Text.Converter}">
+                                        <TemplateBinding Property="ProgressTextFormat" />
+                                        <Binding Path="Value" RelativeSource="{RelativeSource TemplatedParent}" />
+                                        <TemplateBinding Property="Percentage" />
+                                        <TemplateBinding Property="Minimum" />
+                                        <TemplateBinding Property="Maximum" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Border>
+                    </LayoutTransformControl>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:horizontal /template/ Border#PART_Indicator">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+        </Style>
+        <Style Selector="^:vertical /template/ Border#PART_Indicator">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+        </Style>
+        <Style Selector="^:horizontal">
+            <Setter Property="MinWidth" Value="{DynamicResource Vhilz.ProgressBar.Length}" />
+            <Setter Property="MinHeight" Value="{DynamicResource Vhilz.ProgressBar.Thickness}" />
+        </Style>
+        <Style Selector="^:vertical">
+            <Setter Property="MinWidth" Value="{DynamicResource Vhilz.ProgressBar.Thickness}" />
+            <Setter Property="MinHeight" Value="{DynamicResource Vhilz.ProgressBar.Length}" />
+        </Style>
+        <Style Selector="^:vertical /template/ LayoutTransformControl#PART_LayoutTransformControl">
+            <Setter Property="LayoutTransform">
+                <Setter.Value>
+                    <RotateTransform Angle="90" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style Selector="^[IsVisible=True]:horizontal:indeterminate /template/ Border#PART_IndeterminateIndicator">
+            <Style.Animations>
+                <Animation Easing="LinearEasing"
+                           IterationCount="Infinite"
+                           Duration="{DynamicResource Vhilz.ProgressBar.Indeterminate.Duration}">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="TranslateTransform.X"
+                                Value="{Binding $parent[ProgressBar].TemplateSettings.IndeterminateStartingOffset}" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="TranslateTransform.X"
+                                Value="{Binding $parent[ProgressBar].TemplateSettings.IndeterminateEndingOffset}" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+            <Setter Property="Width"
+                    Value="{Binding TemplateSettings.ContainerWidth, RelativeSource={RelativeSource TemplatedParent}}" />
+        </Style>
+        <Style Selector="^[IsVisible=True]:vertical:indeterminate /template/ Border#PART_IndeterminateIndicator">
+            <Style.Animations>
+                <Animation Easing="LinearEasing"
+                           IterationCount="Infinite"
+                           Duration="{DynamicResource Vhilz.ProgressBar.Indeterminate.Duration}">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="TranslateTransform.Y"
+                                Value="{Binding $parent[ProgressBar].TemplateSettings.IndeterminateStartingOffset}" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="TranslateTransform.Y"
+                                Value="{Binding $parent[ProgressBar].TemplateSettings.IndeterminateEndingOffset}" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+            <Setter Property="Height"
+                    Value="{Binding TemplateSettings.ContainerWidth, RelativeSource={RelativeSource TemplatedParent}}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

@@ -1,0 +1,8 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ControlTheme x:Key="Vhilz.RepeatButton.Theme"
+                  TargetType="RepeatButton"
+                  BasedOn="{StaticResource Vhilz.Button.Theme}" />
+    <ControlTheme x:Key="{x:Type RepeatButton}"
+                  TargetType="RepeatButton"
+                  BasedOn="{StaticResource Vhilz.RepeatButton.Theme}" />
+</ResourceDictionary>
