@@ -148,7 +148,9 @@ BasedOn 复用主题声明，不给选择器加权；StaticResource/DynamicResou
 | `VhilzCaptionClose` | WindowDecorations 中的 CaptionButton 命名主题 | 关闭按钮角色；库模板和对应 Demo 设置             | 保持既有拼写，只在该 Theme 内消费；不是所有 Button 的危险操作公共类。 |
 | `VhilzInactive`     | TitleBar 及窗口标题文字命名主题               | 内部窗口激活状态投射；模板根据窗口 IsActive 绑定 | 保留既有机制；不是可由调用方随意设置的公共 Disabled/Muted 变体。      |
 
-此表只列实际既有库名称。交付后集成人登记真正发布的新增名称和所有者；未实现候选只留在该任务交付包，不加入已支持列表。名称删除、改义、公开化或改为伪类都需先检查全部消费者，不在整理规范时自动实施。
+基础 Button 的按下缩放由附加属性 `ButtonMotion.PressAnimation` 选择，值为 `None` 或 `Scale`，默认 `None`；不再使用 class 表达该选择。`Scale` 只在 `Vhilz.Button.Theme` 中缩放 `PART_ContentPresenter`，按下状态仍由 Button 的 `:pressed` 产生。实际 Demo 在 `Vhilz.Avalonia.Demo/MainWindow.axaml` 的“Button 按下动效”区域；标题栏按钮保留自己的默认按压反馈。
+
+此表只列实际已实现的库名称。交付后集成人登记真正发布的新增名称和所有者；未实现候选只留在该任务交付包，不加入已支持列表。名称删除、改义、公开化或改为伪类都需先检查全部消费者，不在整理规范时自动实施。
 
 ## S8 — 提交前完成条件
 

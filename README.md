@@ -1,6 +1,6 @@
 # Vhilz.Avalonia
 
-基于 Avalonia 与 Fluid.Avalonia.Acrylic 的主题库，视觉方向为克制的玻璃层次与简洁表面。当前实现 VhilzWindow、TitleBar、GeometryIcon、SvgIcon、基础 Button 和窗口装饰按钮，尚未覆盖全部默认控件。材质采样限于应用视觉树，不依赖桌面背景或真实折射。
+基于 Avalonia 与 Fluid.Avalonia.Acrylic 的主题库，视觉方向为克制的玻璃层次与简洁表面。当前提供 VhilzWindow、TitleBar、GeometryIcon、SvgIcon、窗口装饰及计划内原生控件的首轮主题。原生外观参考 shadcn/ui，视觉待用户验收；材质采样限于应用视觉树。
 
 ## 使用
 
@@ -15,7 +15,9 @@
 </Application>
 ```
 
-窗口使用 `vhz:VhilzWindow`。`TextBox`、`ComboBox` 等尚无 Vhilz 模板；需要这些默认控件的应用自行引用 Avalonia.Themes.Fluent，在 VhilzTheme 之前加载 FluentTheme，或像 Demo 一样在工具容器中局部加载。库目前不自动引入回退主题。
+窗口使用 `vhz:VhilzWindow`。`Button`、输入、选择、滚动、菜单、日期时间、树、TableView、通知及页面家族等原生主题随 `VhilzTheme` 加载，库不自动引入 Fluent/Simple 回退。
+
+Demo 的“打开原生组件外观目录”提供 41 个独立样例，可切换明暗并执行真实操作。范围、限制与验证见 [原生外观交付](docs/components/delivery/native-appearance.md)，样式分析见 [shadcn 原版参考](docs/components/shadcn-style-reference.md)。Spinner 后续里程碑、ColorPicker/DataGrid 独立包和 C 系列组合/自研组件尚未实施。已有按钮/窗口动效保留，新增外观过渡由用户继续打磨。
 
 ## 基础 Button
 
@@ -25,6 +27,14 @@
 <Button Content="确认" />
 <Button Content="确认" Theme="{DynamicResource Vhilz.Button.Theme}" />
 ```
+
+按下动效通过 `ButtonMotion.PressAnimation` 选择，默认 `None`；`Scale` 复用标题栏按钮的缩放幅度、时长和弹簧缓动：
+
+```xml
+<Button Content="确认" vhz:ButtonMotion.PressAnimation="Scale" />
+```
+
+也可在 C# 中使用 `ButtonMotion.SetPressAnimation(button, ButtonPressAnimation.Scale)`，运行时改值会立即切换。缩放只作用于内容表面，不改变按钮的命中区域。
 
 模板支持文本、图文和 `ContentTemplate`，保留原生点击、命令、访问键及默认/取消按钮行为。明暗表面包含悬停、按下、弹层展开、禁用和键盘焦点状态；`IsDefault` 使用更清晰的描边。表面颜色使用 `Vhilz.Color.Control`、`ControlHover`、`ControlPressed` 及对应的 `Brush` 资源。显式设置 `Background` 会保持该背景，不再应用默认交互状态色。
 
@@ -86,9 +96,9 @@ Demo 顶部的“自定义路径图标”和“SVG 文件图标”提供独立�
 ## 构建与验收
 
 ```powershell
-dotnet build Vhilz.Avalonia.sln --artifacts-path artifacts/optimization
-dotnet test Vhilz.Avalonia.sln --artifacts-path artifacts/optimization
-dotnet artifacts/optimization/bin/Vhilz.Avalonia.Demo/debug/Vhilz.Avalonia.Demo.dll
+dotnet build Vhilz.Avalonia.sln --artifacts-path artifacts/agent
+dotnet test Vhilz.Avalonia.sln --artifacts-path artifacts/agent
+dotnet artifacts/agent/bin/Vhilz.Avalonia.Demo/debug/Vhilz.Avalonia.Demo.dll
 ```
 
 库测试与 Demo 集成测试分开，Win32 冒烟程序作为独立可执行项目加入解决方案，普通 dotnet test 不会运行它。CI 构建与测试不发布包。包版本以 Directory.Packages.props 为准；SukiUI 与 Lucide 按用户选择保留，SukiUI 当前为 nightly。

@@ -8,19 +8,28 @@
 
 | 类型 | 已实现的用途 |
 | --- | --- |
-| Color / Brush | Surface、Control、ControlHover、ControlPressed、Text、TextSecondary、TextMuted、Border、BorderInactive；Brush 另有 OnDanger |
-| Radius | Small，沿用现有 5 DIP；其他圆角档位尚未确认 |
+| Color / Brush | Surface、Control、ControlHover、ControlPressed、Text、TextSecondary、TextMuted、Border、BorderInactive；原生首轮新增 Primary、PrimaryHover、PrimaryPressed、OnPrimary、Input、Popup、Selection、OnSelection、Danger、Focus；Brush 另有 OnDanger |
+| Radius | Small=5 DIP；Full=999，用于圆形标记与轨道 |
+| Height | Control=32 DIP，沿用既有按钮密度 |
+| FontSize / FontFamily | Body=14 DIP、Caption=12 DIP；FontFamily.Body=Default |
+| Padding | Control=12,6、Item=8,6、Popup=8、TabStrip=3、TabContent=0,8 |
+| Shadow | Popup，明暗分别定义轻阴影 |
 | Duration | Fast=80、Normal=160、Slow=220 ms |
 | Easing | Standard、Decelerate、Spring；Spring 仍使用获准保留的 SukiUI |
 | Opacity | Disabled，沿用 0.4 |
-| Thickness | Focus，1 DIP 焦点轮廓，视觉待验收 |
-| Text | Window.Close / Minimize / Maximize / Restore / Fullscreen / ExitFullscreen，可供本地化覆盖 |
+| Transform | PressFeedback，按下时缩放内部表面；与 Normal 时长及 Spring 缓动组合 |
+| Thickness | Border、Focus，均为 1 DIP，焦点与错误轮廓独立呈现，视觉待验收 |
+| Text | Window.Close / Minimize / Maximize / Restore / Fullscreen / ExitFullscreen、TextFlyoutCopyText、DrawerToggle，可供本地化覆盖 |
 
-Space.XS…XL、Radius.Medium/Large、Color.Danger 是命名方向，当前未定义数值或契约。不要把候选用途写成已经存在的能力。
+Space.XS…XL、Radius.Medium/Large 尚未定义数值或契约。原生首轮新增的共享参数已有消费者，但仍是待用户观察的候选，不代表全局密度档位已验收；范围见 [F01 交付](components/delivery/F01.md)。
 
 控件级键仅用于具有独立覆盖需求的差异，例如 `Vhilz.CaptionButton.Close.Pressed.BackgroundBrush`、`Vhilz.CaptionButton.RevealBorder.Radius`。窗口与标题栏的局部画笔继续保留，以支持同一窗口内分别覆盖背景与前景。120 ms 染色与 400 ms 关闭按钮恢复时长保留为 `CaptionButton.Duration.Color`、`CaptionButton.Close.Duration.Reset`，不冒充通用档位。
 
-Theme、Geometry 等资源保留明确角色结尾。Preview 只服务设计时，C# 入口为内部常量，不属于稳定应用契约。附加登记属性及 CaptionSurface 命名属性是内部实现，应用应覆盖控件公开属性、ControlTheme 或文档列出的资源。
+标题栏按钮原有的 `Vhilz.CaptionButton.Surface.Pressed.RenderTransform` 仍是独立覆盖键，默认值引用 `Vhilz.Transform.PressFeedback`；应用覆盖标题栏缩放时继续使用原键。
+
+Theme、Geometry 等资源保留明确角色结尾。Preview 只服务设计时，C# 入口为内部常量，不属于稳定应用契约。窗口装饰的附加登记属性及 CaptionSurface 命名属性是内部实现；Button 的公开动效入口为 `ButtonMotion.PressAnimation`。应用可覆盖公开属性、ControlTheme 或文档列出的资源。
+
+原生主题的局部尺寸、几何和辅助主题留在所属控件字典，例如 `Vhilz.ToggleSwitch.Knob.Travel`、`Vhilz.ScrollBar.PageButton.Theme`。这些实现资源在 `ResourceKeys.Native.cs` 中登记为内部常量，不新增稳定公开属性；只有经实际复用和验收的参数才提升为共享 Token。
 
 ## 动态覆盖与注释
 
