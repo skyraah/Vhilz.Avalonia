@@ -23,6 +23,7 @@
         <ScrollViewer x:Name="InspectionScrollViewer" VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <TextBlock Text="Vhilz.Avalonia 开发入口" />
+                <Button Content="打开原生组件外观目录" Click="OnOpenComponentCatalog" />
                 <ComboBox SelectedIndex="0" SelectionChanged="OnThemeSelectionChanged">
                     <ComboBoxItem Content="跟随系统" />
                     <ComboBoxItem Content="浅色" />
@@ -43,6 +44,15 @@
                     <Button Theme="{DynamicResource Vhilz.Button.Theme}" Content="较长的按钮文本"
                             Click="OnButtonPreviewClick" Tag="长文本按钮" />
                     <Button Theme="{DynamicResource Vhilz.Button.Theme}" Content="禁用" IsEnabled="False" />
+                </StackPanel>
+                <TextBlock Text="Button 按下动效" />
+                <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,0,0,12">
+                    <Button Theme="{DynamicResource Vhilz.Button.Theme}" vhz:ButtonMotion.PressAnimation="None"
+                            Content="无缩放" Click="OnButtonPreviewClick" Tag="无缩放" />
+                    <Button Theme="{DynamicResource Vhilz.Button.Theme}" vhz:ButtonMotion.PressAnimation="Scale"
+                            Content="按下缩放" Click="OnButtonPreviewClick" Tag="按下缩放" />
+                    <Button Theme="{DynamicResource Vhilz.Button.Theme}" vhz:ButtonMotion.PressAnimation="Scale"
+                            Content="禁用" IsEnabled="False" />
                 </StackPanel>
                 <TextBlock x:Name="ButtonPreviewStatus" Text="尚未点击" />
                 <TextBlock Text="自定义路径图标" />
@@ -75,7 +85,8 @@
                                  Size="{DynamicResource Vhilz.CaptionButton.Icon.Size}"
                                  Foreground="{DynamicResource Vhilz.Brush.Text}"
                                  Margin="{DynamicResource Vhilz.CaptionButton.Group.Margin}" />
-                    <vhz:SvgIcon x:Name="MulticolorSvgIconPreview" Path="avares://Vhilz.Avalonia.Demo/Assets/Icons/palette.svg"
+                    <vhz:SvgIcon x:Name="MulticolorSvgIconPreview"
+                                 Path="avares://Vhilz.Avalonia.Demo/Assets/Icons/palette.svg"
                                  Foreground="{DynamicResource Vhilz.Brush.Text}"
                                  Margin="{DynamicResource Vhilz.CaptionButton.Group.Margin}" />
                     <Button x:Name="SvgIconButtonPreview" Theme="{DynamicResource Vhilz.CaptionButton.Theme}"
@@ -165,8 +176,9 @@
                 </ComboBox>
                 <TextBlock Text="标题预览：编辑上方标题，输入长文本后缩窄窗口；切换明暗主题并切换窗口焦点，检查左侧文字、省略号及右上角按钮。拖动标题文字区域、双击最大化，再检查全屏浮层标题。"
                            TextWrapping="Wrap" />
-                <TextBlock Text="标题栏按钮检查：检查按钮之间 6 DIP 留白及按钮组到窗口边缘的间距；移开指针后应与标题栏底色一致；沿按钮边缘移动，辉光应跟随指针，接近相邻按钮时逐渐出现。切换明暗主题，并在最大化、还原及全屏浮层中检查。"
-                           TextWrapping="Wrap" />
+                <TextBlock
+                    Text="标题栏按钮检查：检查按钮之间 6 DIP 留白及按钮组到窗口边缘的间距；移开指针后应与标题栏底色一致；沿按钮边缘移动，辉光应跟随指针，接近相邻按钮时逐渐出现。切换明暗主题，并在最大化、还原及全屏浮层中检查。"
+                    TextWrapping="Wrap" />
                 <TextBlock Text="还原图标预览：最大化窗口后，检查右上角双窗口图标；切换明暗主题，再点击还原。"
                            TextWrapping="Wrap" />
                 <ComboBox x:Name="IconComparisonSelector" SelectedIndex="0" SelectionChanged="OnIconComparisonChanged">

@@ -55,6 +55,10 @@ public partial class MainWindow : VhilzWindow
         }
     }
 
+    private void OnOpenComponentCatalog(object? sender, RoutedEventArgs e) {
+        new Catalog.ComponentCatalogWindow().Show(this);
+    }
+
     private void OnThemeSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (sender is ComboBox selector && Application.Current is { } application)

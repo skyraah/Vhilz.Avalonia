@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Vhilz.Avalonia.Demo.Components.N01.N01Sample">
+    <StackPanel Spacing="16">
+        <TextBlock Text="按钮与连续操作" FontSize="20" FontWeight="SemiBold" />
+        <TextBlock Text="点击、按住重复按钮，或用 Tab 聚焦后按空格。" TextWrapping="Wrap" />
+        <WrapPanel>
+            <Button Content="普通按钮" Click="OnClick" Margin="0,0,8,8" />
+            <Button Content="带访问键的 _按钮" Click="OnClick" Margin="0,0,8,8" />
+            <Button Content="较长的操作按钮文本" Click="OnClick" Margin="0,0,8,8" />
+            <Button Content="默认操作" IsDefault="True" Click="OnClick" Margin="0,0,8,8" />
+            <Button Content="取消" IsCancel="True" Click="OnClick" Margin="0,0,8,8" />
+            <Button Content="禁用按钮" IsEnabled="False" Margin="0,0,8,8" />
+        </WrapPanel>
+        <RepeatButton Content="按住增加计数" Click="OnClick" Delay="400" Interval="80" />
+        <Button x:Name="CommandButton" Content="命令不可执行" />
+        <TextBlock x:Name="Status" Text="已执行 0 次" />
+    </StackPanel>
+</UserControl>
