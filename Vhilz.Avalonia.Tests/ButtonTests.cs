@@ -11,6 +11,7 @@ using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using Vhilz.Avalonia.Theme;
+using Vhilz.Avalonia.Theme.Controls;
 using Xunit;
 
 namespace Vhilz.Avalonia.Tests;
@@ -52,6 +53,71 @@ public class ButtonTests {
             window.MouseDown(point, MouseButton.Left);
             window.MouseUp(point, MouseButton.Left);
             Assert.False(button.IsPressed);
+            Assert.Equal(1, clicks);
+        }
+        finally {
+            window.Close();
+        }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void PressAnimationCanChangeWhilePressed(bool light) {
+        var button = new Button { Content = "按压反馈" };
+        var window = new Window {
+            Width = 400, Height = 200, Content = button,
+            RequestedThemeVariant = light ? ThemeVariant.Light : ThemeVariant.Dark
+        };
+        window.Show();
+        try {
+            var presenter = Assert.Single(button.GetVisualDescendants().OfType<ContentPresenter>());
+            presenter.Transitions = null;
+            Assert.True(button.TryFindResource(ResourceKeys.Transform.PressFeedback,
+                button.ActualThemeVariant, out var pressedTransform));
+            Assert.Equal(ButtonPressAnimation.None, ButtonMotion.GetPressAnimation(button));
+            var point = button.TranslatePoint(new Point(button.Bounds.Width / 2, button.Bounds.Height / 2), window)!
+                .Value;
+            window.MouseMove(point);
+            window.MouseDown(point, MouseButton.Left);
+            Assert.True(button.IsPressed);
+            Assert.NotSame(pressedTransform, presenter.RenderTransform);
+            ButtonMotion.SetPressAnimation(button, ButtonPressAnimation.Scale);
+            Assert.Equal(ButtonPressAnimation.Scale, ButtonMotion.GetPressAnimation(button));
+            Assert.Same(pressedTransform, presenter.RenderTransform);
+            ButtonMotion.SetPressAnimation(button, ButtonPressAnimation.None);
+            Assert.NotSame(pressedTransform, presenter.RenderTransform);
+            ButtonMotion.SetPressAnimation(button, ButtonPressAnimation.Scale);
+            Assert.Same(pressedTransform, presenter.RenderTransform);
+            window.MouseUp(point, MouseButton.Left);
+            Assert.NotSame(pressedTransform, presenter.RenderTransform);
+
+            button.IsEnabled = false;
+            window.MouseDown(point, MouseButton.Left);
+            Assert.False(button.IsPressed);
+            Assert.NotSame(pressedTransform, presenter.RenderTransform);
+        }
+        finally {
+            window.Close();
+        }
+    }
+
+    [AvaloniaFact]
+    public void PressFeedbackKeepsButtonEdgesClickable() {
+        var button = new Button { Content = "按压反馈" };
+        ButtonMotion.SetPressAnimation(button, ButtonPressAnimation.Scale);
+        var window = new Window { Width = 400, Height = 200, Content = button };
+        var clicks = 0;
+        button.Click += (_, _) => clicks++;
+        window.Show();
+        try {
+            var presenter = Assert.Single(button.GetVisualDescendants().OfType<ContentPresenter>());
+            presenter.Transitions = null;
+            var point = button.TranslatePoint(new Point(1, button.Bounds.Height / 2), window)!.Value;
+            window.MouseMove(point);
+            window.MouseDown(point, MouseButton.Left);
+            Assert.True(button.IsPressed);
+            window.MouseUp(point, MouseButton.Left);
             Assert.Equal(1, clicks);
         }
         finally {
