@@ -2,16 +2,16 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:vhz="https://github.com/skyraah/Vhilz.Avalonia"
                  x:Class="Vhilz.Avalonia.Demo.Catalog.ComponentCatalogWindow"
-                 Title="原生组件外观目录" Width="1080" Height="760"
+                 Title="组件使用示例" Width="1080" Height="760"
                  MinWidth="640" MinHeight="440"
                  ExtendClientAreaToDecorationsHint="True">
-    <Grid RowDefinitions="Auto,*" ColumnDefinitions="240,*">
+    <Grid RowDefinitions="Auto,*" ColumnDefinitions="280,*">
         <!-- 工具区的 Fluent 限定在此 Border，目标样例仅使用正式 VhilzTheme。 -->
         <Border Grid.ColumnSpan="2" Padding="16" BorderThickness="0,0,0,1"
                 BorderBrush="{DynamicResource Vhilz.Brush.Border}">
             <Border.Styles><FluentTheme /></Border.Styles>
             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
-                <TextBlock Text="组件外观预览" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" />
+                <TextBlock Text="按使用场景浏览" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" />
                 <ComboBox Grid.Column="1" SelectedIndex="0" SelectionChanged="OnThemeChanged" MinWidth="140">
                     <ComboBoxItem Content="跟随系统" />
                     <ComboBoxItem Content="浅色" />
@@ -19,12 +19,15 @@
                 </ComboBox>
             </Grid>
         </Border>
-        <ListBox Grid.Row="1" x:Name="ComponentList" SelectionChanged="OnComponentChanged" Margin="8" />
+        <TreeView Grid.Row="1" x:Name="ComponentList" SelectionChanged="OnComponentChanged" Margin="8" />
         <Border Grid.Row="1" Grid.Column="1" BorderThickness="1,0,0,0"
                 BorderBrush="{DynamicResource Vhilz.Brush.Border}" Padding="24">
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <ContentControl x:Name="SampleHost" />
-            </ScrollViewer>
+            <Grid RowDefinitions="Auto,*" RowSpacing="16">
+                <TextBlock x:Name="SampleHeading" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap" />
+                <ScrollViewer Grid.Row="1" x:Name="SampleScroll" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <ContentControl x:Name="SampleHost" />
+                </ScrollViewer>
+            </Grid>
         </Border>
     </Grid>
 </vhz:VhilzWindow>

@@ -16,7 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Vhilz.Avalonia\Vhilz.Avalonia.csproj" />
-      <AvaloniaResource Include="Assets/**/*.svg" />
+        <ProjectReference Include="..\Vhilz.Avalonia\Vhilz.Avalonia.csproj"/>
     </ItemGroup>
 </Project>
