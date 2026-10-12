@@ -17,7 +17,7 @@
 
 窗口使用 `vhz:VhilzWindow`。`Button`、输入、选择、滚动、菜单、日期时间、树、TableView、通知及页面家族等原生主题随 `VhilzTheme` 加载，库不自动引入 Fluent/Simple 回退。
 
-Demo 的“打开原生组件外观目录”提供 41 个独立样例，可切换明暗并执行真实操作。范围、限制与验证见 [原生外观交付](docs/components/delivery/native-appearance.md)，样式分析见 [shadcn 原版参考](docs/components/shadcn-style-reference.md)。Spinner 后续里程碑、ColorPicker/DataGrid 独立包和 C 系列组合/自研组件尚未实施。已有按钮/窗口动效保留，新增外观过渡由用户继续打磨。
+Demo 启动后直接显示组件外观预览，按创建窗口、页面与导航、输入与选择、内容与布局、数据展示、操作与反馈六个场景分组，提供 42 个独立样例，可切换明暗并执行真实操作。创建窗口示例将 VhilzWindow、TitleBar 和窗口按钮放在同一真实窗口中演示。范围、限制与验证见 [原生外观交付](docs/components/delivery/native-appearance.md)，样式分析见 [shadcn 原版参考](docs/components/shadcn-style-reference.md)。Spinner 后续里程碑、ColorPicker/DataGrid 独立包和 C 系列组合/自研组件尚未实施。已有按钮/窗口动效保留，新增外观过渡由用户继续打磨。
 
 ## 基础 Button
 
@@ -38,7 +38,7 @@ Demo 的“打开原生组件外观目录”提供 41 个独立样例，可切�
 
 模板支持文本、图文和 `ContentTemplate`，保留原生点击、命令、访问键及默认/取消按钮行为。明暗表面包含悬停、按下、弹层展开、禁用和键盘焦点状态；`IsDefault` 使用更清晰的描边。表面颜色使用 `Vhilz.Color.Control`、`ControlHover`、`ControlPressed` 及对应的 `Brush` 资源。显式设置 `Background` 会保持该背景，不再应用默认交互状态色。
 
-圆角、禁用透明度、背景过渡分别复用 `Vhilz.Radius.Small`、`Vhilz.Opacity.Disabled` 和 `Vhilz.Duration.Fast`；基础内边距与最小高度暂由 Button 主题 Setter 定义，不代表全局密度规范。Demo 顶部“基础 Button”和 `Button.axaml` 的设计预览提供检查入口，颜色、焦点轮廓与动画观感待实际验收。
+圆角、禁用透明度、背景过渡分别复用 `Vhilz.Radius.Small`、`Vhilz.Opacity.Disabled` 和 `Vhilz.Duration.Fast`；基础内边距与最小高度暂由 Button 主题 Setter 定义，不代表全局密度规范。Demo 目录中的 N01 示例和 `Button.axaml` 的设计预览提供检查入口，颜色、焦点轮廓与动画观感待实际验收。
 
 ## 自定义路径图标
 
@@ -68,7 +68,7 @@ Demo 的“打开原生组件外观目录”提供 41 个独立样例，可切�
 
 清空 `Path` 会清空文件图标；文件缺失或解析失败沿用上游的日志与空内容行为。继承的 `Source` 支持 SVG XML，避免同时设置 `Path` 与 `Source`。SVG 语法、滤镜及动画支持以上游为准，不承诺完整浏览器 SVG 能力。该版本依赖保持项目当前的 Avalonia 与 SkiaSharp 版本。
 
-Demo 顶部的“自定义路径图标”和“SVG 文件图标”提供独立、按钮内、禁用及多色示例。切换浅色/深色并检查悬停、按下、焦点、非正方形 SVG 比例；最终视觉待用户验收。
+旧主窗口的路径与 SVG 图标验收示例已随窗口删除；控件 API 与库测试仍保留。
 
 ## 覆盖语义资源
 

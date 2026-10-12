@@ -58,6 +58,6 @@ dotnet test Vhilz.Avalonia.Demo.Tests/Vhilz.Avalonia.Demo.Tests.csproj --artifac
 dotnet artifacts/agent/bin/Vhilz.Avalonia.Demo/debug/Vhilz.Avalonia.Demo.dll
 ```
 
-主窗口点击“打开原生组件外观目录”，切换明暗主题并选择 Sample，观察适用的悬停、按下、禁用、焦点、选中和校验外观。
+Demo 启动后直接显示组件外观预览，切换明暗主题并选择 Sample，观察适用的悬停、按下、禁用、焦点、选中和校验外观。
 重点观察输入焦点与错误的并存、选中项文字对比、弹层边界和阴影、滚动条与滑块尺寸、日期日历布局、表格密度及 RTL。
 动效由用户继续打磨。本轮尚未实机验证视觉、Linux/macOS、真实触摸、IME/剪贴板或不同缩放比例。

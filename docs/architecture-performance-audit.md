@@ -89,7 +89,7 @@ Avalonia 的属性注册与 CLR 包装虽重复，但属于框架惯例，便于
 
 ### F04 / P2：Button.Margin 同时承担外部间距与内部表面收缩
 
-**状态：布局关系已复现，归属问题属于架构判断。** 位置：[WindowDecorations.axaml](../Vhilz.Avalonia/Themes/Controls/WindowDecorations.axaml) 第 49、98、132 行。
+**状态：布局关系已复现，归属问题属于架构判断。** 位置：[WindowDecorations.axaml](../Vhilz.Avalonia/Themes/Controls/Window/WindowDecorations.axaml) 第 49、98、132 行。
 
 Button 的外部布局已经消费 Margin；模板又把同一 Margin 传给内部材质表面和焦点轮廓。探针中外部 Button 为 46×32、Margin 为 4，内部表面实际变成 38×24，位置为 `(4,4)`。
 
@@ -124,7 +124,7 @@ flowchart LR
 
 ### F06 / P2：标题栏展开动画反复改变正文的可用高度
 
-**状态：已计数确认成本；是否超出性能预算待测。** 位置：[VhilzWindow.axaml](../Vhilz.Avalonia/Themes/Controls/VhilzWindow.axaml) 第 28–35、63–70 行；[FullscreenTitleBarController.cs](../Vhilz.Avalonia/Controls/Windows/FullscreenTitleBarController.cs) 第 97–126 行。
+**状态：已计数确认成本；是否超出性能预算待测。** 位置：[VhilzWindow.axaml](../Vhilz.Avalonia/Themes/Controls/Window/VhilzWindow.axaml) 第 28–35、63–70 行；[FullscreenTitleBarController.cs](../Vhilz.Avalonia/Controls/Windows/FullscreenTitleBarController.cs) 第 97–126 行。
 
 Height 的 DoubleTransition 改变 Grid 的 Auto 行，正文所在星号行随之变化。生产模板和确定性时钟探针中，10 次 16 ms 动画脉冲引发了正文 **7 次 Measure 和 7 次 Arrange**；并非每次脉冲都重排，布局舍入和缓动尾段会合并部分变化。
 

@@ -9,9 +9,41 @@
 | `Themes/VhilzTheme.axaml` | 加载明暗主题字典、公共 Token、控件主题及独立选择器样式 |
 | `Themes/Resources/Light.axaml`、`Dark.axaml` | 共享用途色与控件状态画笔，键及类型对应 |
 | `Themes/Resources/Tokens.axaml` | 跨主题的稳定尺寸、间距等公共参数 |
-| `Themes/Controls/*.axaml` | 控件主题、模板和仅服务该模板的实现参数 |
+| `Themes/Controls/**/*.axaml` | 控件主题、模板和仅服务该模板的实现参数；多文件组件放入所属目录，单文件控件直接平铺 |
 
-当前控件数量较少，继续直接加载控件字典；增加控件后按维护负担决定聚合入口。颜色命名继续遵循 [资源键规范](resource-key-naming.md)。
+控件字典由 `VhilzTheme.axaml` 按依赖顺序显式加载，目录归类不改变加载顺序或资源键。颜色命名继续遵循 [资源键规范](resource-key-naming.md)。
+
+## 控件目录归类
+
+按应用实际使用的组件及其配套部件归类，不按任务编号或宽泛的输入、布局类别分目录。
+当前 80 个 AXAML 中，39 个归入下列 16 个组件目录，其余 41 个留在根层。
+
+| `Themes/Controls/` 下的目录 | 文件（省略 `.axaml`） |
+| --- | --- |
+| `Window/` | VhilzWindow、TitleBar、WindowDecorations |
+| `Calendar/` | Calendar、CalendarItem、CalendarButton、CalendarDayButton |
+| `ComboBox/` | ComboBox、ComboBoxItem |
+| `ListBox/` | ListBox、ListBoxItem |
+| `TreeView/` | TreeView、TreeViewItem |
+| `TabControl/` | TabControl、TabItem |
+| `TabStrip/` | TabStrip、TabStripItem |
+| `Menu/` | Menu、MenuItem、ContextMenu、MenuFlyoutPresenter |
+| `DatePicker/` | DatePicker、DatePickerPresenter |
+| `TimePicker/` | TimePicker、TimePickerPresenter |
+| `NumericUpDown/` | NumericUpDown、ButtonSpinner |
+| `Notification/` | WindowNotificationManager、NotificationCard |
+| `TableView/` | TableView、TableViewRow、TableViewCell、TableViewColumnHeader |
+| `RefreshContainer/` | RefreshContainer、RefreshVisualizer |
+| `ScrollViewer/` | ScrollViewer、ScrollBar |
+| `Popup/` | PopupRoot、OverlayPopupHost |
+
+Button、Slider、CalendarDatePicker 等单文件控件不额外套目录。引用其他控件并不表示拥有那些控件：
+例如 CalendarDatePicker 使用 Calendar，仍保留独立文件；TextBox 使用 ScrollViewer，也不复制其主题。
+DateTimePickerShared、DataValidationErrors、TextSelectionHandle 等共享支持字典保留根层，避免误归为某一个控件的私有部件。
+Menu 目录统一收纳共享 MenuItem 的菜单家族；Popup 目录收纳同一弹层职责的窗口宿主与应用内宿主。
+
+通过 `VhilzTheme` 加载主题的应用用法不变；直接加载已移动字典的应用需要使用新 URI，
+例如 `avares://Vhilz.Avalonia/Themes/Controls/Window/VhilzWindow.axaml`。
 
 ## 共享色与局部画笔
 

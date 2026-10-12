@@ -13,7 +13,7 @@ Linear/克制玻璃方向，不要求一比一复制 shadcn 外观或 React API�
 
 1. 读 [AGENTS.md](../../AGENTS.md) 和 [执行约定](work-contract.md)。
 2. [F00](delivery/F00.md) 与 [F01](delivery/F01.md) 首轮已集成：交接当前未提交基线、接入独立 Sample 目录和共享资源。
-   Demo 主窗口的“打开原生组件外观目录”进入明暗主题验收入口。
+   Demo 启动后直接显示组件外观预览，作为明暗主题验收入口。
 3. 其他负责人可以先领取组件卡读上游源码和准备方案；编码以依赖与资源契约可用为前提。核对 [领取记录](claims.md)，确认任务没有被别人占用。
 4. 选择下表中的条目，打开任务卡即可看到范围、硬依赖、独占文件、Demo
    和完成条件。复制 [领取指令](work-contract.md#6-可直接复制的领取指令) 开工。
@@ -24,7 +24,7 @@ Linear/克制玻璃方向，不要求一比一复制 shadcn 外观或 React API�
 
 ## 当前基线
 
-当前库已有窗口/标题栏/图标与原生控件首轮主题，F00/F01 已接入独立目录与共享资源，N01 接续原有 Button 工作。41 个 Sample 使用正式主题，工具区局部使用 Fluent。库不自动加载 Fluent/Simple 回退，未提交工作保留；资源、依赖与命名空间以当前源码为准。
+当前库已有窗口/标题栏/图标与原生控件首轮主题，F00/F01 已接入独立目录与共享资源，N01 接续原有 Button 工作。42 个 Sample 按六个实际使用场景组织，使用正式主题，工具区局部使用 Fluent。窗口组合示例覆盖 VhilzWindow、TitleBar 与窗口按钮；任务 ID 仅用于源码登记。库不自动加载 Fluent/Simple 回退，未提交工作保留；资源、依赖与命名空间以当前源码为准。
 
 历史研究入口：[ShadUI 对 Avalonia](../shadui-component-coverage-research.md)、[ShadUI 对 shadcn/ui](../shadui-shadcn-component-comparison.md)。
 **ShadUI 有某组件，不表示本库已经实现它**；本表以本库任务状态为准。
