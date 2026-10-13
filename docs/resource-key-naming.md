@@ -17,7 +17,7 @@
 | Duration | Fast=80、Normal=160、Slow=220 ms |
 | Easing | Standard、Decelerate、Spring；Spring 仍使用获准保留的 SukiUI |
 | Opacity | Disabled，沿用 0.4 |
-| Transform | PressFeedback，按下时缩放内部表面；与 Normal 时长及 Spring 缓动组合 |
+| Transform | PressFeedback，按下时缩放内部表面，与 Normal 时长及 Spring 缓动组合；PressSink，下沉 1 DIP，与 Fast 时长及 Decelerate 缓动组合 |
 | Thickness | Border、Focus，均为 1 DIP，焦点与错误轮廓独立呈现，视觉待验收 |
 | Text | Window.Close / Minimize / Maximize / Restore / Fullscreen / ExitFullscreen、TextFlyoutCopyText、DrawerToggle，可供本地化覆盖 |
 

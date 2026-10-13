@@ -28,15 +28,35 @@ Demo 启动后直接显示组件外观预览，按创建窗口、页面与导航
 <Button Content="确认" Theme="{DynamicResource Vhilz.Button.Theme}" />
 ```
 
-按下动效通过 `ButtonMotion.PressAnimation` 选择，默认 `None`；`Scale` 复用标题栏按钮的缩放幅度、时长和弹簧缓动：
+按下动效通过 `ButtonMotion.PressAnimation` 选择，默认 `None`；`Scale` 复用标题栏按钮的缩放幅度、时长和弹簧缓动；`Sink` 保持原尺寸，按下时下沉 1 DIP，松开时恢复，使用 80ms 缓出过渡：
 
 ```xml
 <Button Content="确认" vhz:ButtonMotion.PressAnimation="Scale" />
+<Button Content="保存" vhz:ButtonMotion.PressAnimation="Sink" />
 ```
 
-也可在 C# 中使用 `ButtonMotion.SetPressAnimation(button, ButtonPressAnimation.Scale)`，运行时改值会立即切换。缩放只作用于内容表面，不改变按钮的命中区域。
+也可在 C# 中使用 `ButtonMotion.SetPressAnimation(button, ButtonPressAnimation.Sink)`，运行时改值会立即切换。动效只作用于内容表面，不改变按钮布局和命中区域。下沉幅度可通过 `Vhilz.Transform.PressSink` 动态覆盖，时长和缓动分别使用 `Vhilz.Duration.Fast` 与 `Vhilz.Easing.Decelerate`。
 
 模板支持文本、图文和 `ContentTemplate`，保留原生点击、命令、访问键及默认/取消按钮行为。明暗表面包含悬停、按下、弹层展开、禁用和键盘焦点状态；`IsDefault` 使用更清晰的描边。表面颜色使用 `Vhilz.Color.Control`、`ControlHover`、`ControlPressed` 及对应的 `Brush` 资源。显式设置 `Background` 会保持该背景，不再应用默认交互状态色。
+
+颜色反馈也通过 `ButtonMotion` 配置，支持运行时修改、绑定和样式 Setter：
+
+| 附加属性 | 默认值 | 作用 |
+| --- | --- | --- |
+| `IsPressStyleEnabled` | `True` | 是否应用按下背景色；关闭后保留悬停/弹层展开颜色，键盘按下且无悬停时保持常态色，不影响 `Scale / Sink` 或点击行为。 |
+| `IsColorAnimationEnabled` | `True` | hover、press 及退出状态共用的背景颜色过渡开关；关闭后立即切色，不影响形变动画。 |
+| `ColorAnimationDuration` | `Vhilz.Duration.Fast`（80ms） | 共用颜色过渡时长，类型为 `TimeSpan`；允许零，不接受负值。 |
+
+```xml
+<Button Content="保留下沉，关闭按下变色"
+        vhz:ButtonMotion.PressAnimation="Sink"
+        vhz:ButtonMotion.IsPressStyleEnabled="False" />
+<Button Content="立即切色" vhz:ButtonMotion.IsColorAnimationEnabled="False" />
+<Button Content="200ms 渐变" vhz:ButtonMotion.ColorAnimationDuration="0:0:0.2" />
+```
+
+C# 对应 `ButtonMotion.SetIsPressStyleEnabled`、`SetIsColorAnimationEnabled` 和 `SetColorAnimationDuration`。
+这些设置由 `Vhilz.Button.Theme` 消费，基于该主题的 RepeatButton 同样适用，不改变标题栏按钮主题。
 
 圆角、禁用透明度、背景过渡分别复用 `Vhilz.Radius.Small`、`Vhilz.Opacity.Disabled` 和 `Vhilz.Duration.Fast`；基础内边距与最小高度暂由 Button 主题 Setter 定义，不代表全局密度规范。Demo 目录中的 N01 示例和 `Button.axaml` 的设计预览提供检查入口，颜色、焦点轮廓与动画观感待实际验收。
 
