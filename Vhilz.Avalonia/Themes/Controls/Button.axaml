@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:vhz="https://github.com/skyraah/Vhilz.Avalonia">
     <ControlTheme x:Key="Vhilz.Button.Theme" TargetType="Button">
@@ -15,10 +15,11 @@
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FocusAdorner" Value="{x:Null}" />
+        <Setter Property="vhz:ButtonMotion.ColorAnimationDuration" Value="{DynamicResource Vhilz.Duration.Fast}" />
         <Setter Property="Template">
             <ControlTemplate TargetType="Button">
                 <Panel Background="Transparent">
-                    <ContentPresenter x:Name="PART_ContentPresenter"
+                    <vhz:ButtonContentPresenter x:Name="PART_ContentPresenter"
                                       Background="{TemplateBinding Background}"
                                       Foreground="{TemplateBinding Foreground}"
                                       BorderBrush="{TemplateBinding BorderBrush}"
@@ -30,18 +31,12 @@
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       RenderTransformOrigin="50%,50%"
-                                      RecognizesAccessKey="True">
-                        <ContentPresenter.Transitions>
-                            <Transitions>
-                                <BrushTransition Property="Background"
-                                                 Duration="{DynamicResource Vhilz.Duration.Fast}"
-                                                 Easing="{DynamicResource Vhilz.Easing.Standard}" />
-                                <TransformOperationsTransition Property="RenderTransform"
-                                                               Duration="{DynamicResource Vhilz.Duration.Normal}"
-                                                               Easing="{DynamicResource Vhilz.Easing.Spring}" />
-                            </Transitions>
-                        </ContentPresenter.Transitions>
-                    </ContentPresenter>
+                                      RecognizesAccessKey="True"
+                                      IsColorAnimationEnabled="{TemplateBinding vhz:ButtonMotion.IsColorAnimationEnabled}"
+                                      ColorAnimationDuration="{TemplateBinding vhz:ButtonMotion.ColorAnimationDuration}"
+                                      ColorEasing="{DynamicResource Vhilz.Easing.Standard}"
+                                      TransformDuration="{DynamicResource Vhilz.Duration.Normal}"
+                                      TransformEasing="{DynamicResource Vhilz.Easing.Spring}" />
                     <Border x:Name="PART_FocusRing" IsVisible="False" IsHitTestVisible="False"
                             CornerRadius="{TemplateBinding CornerRadius}"
                             BorderBrush="{DynamicResource Vhilz.Brush.Text}"
@@ -49,21 +44,35 @@
                 </Panel>
             </ControlTemplate>
         </Setter>
+        <!-- 下沉表面超出原布局 1 DIP，保留完整边框；外层布局与命中区域不变。 -->
+        <Style Selector="^[(vhz|ButtonMotion.PressAnimation)=Sink]">
+            <Setter Property="ClipToBounds" Value="False" />
+        </Style>
+        <Style Selector="^[(vhz|ButtonMotion.PressAnimation)=Scale] /template/ vhz|ButtonContentPresenter#PART_ContentPresenter">
+            <Setter Property="RenderTransform" Value="scale(1)" />
+        </Style>
+        <Style Selector="^[(vhz|ButtonMotion.PressAnimation)=Sink] /template/ vhz|ButtonContentPresenter#PART_ContentPresenter">
+            <Setter Property="RenderTransform" Value="translate(0px, 0px)" />
+            <Setter Property="TransformDuration" Value="{DynamicResource Vhilz.Duration.Fast}" />
+            <Setter Property="TransformEasing" Value="{DynamicResource Vhilz.Easing.Decelerate}" />
+        </Style>
         <Style Selector="^[IsDefault=True]">
             <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.TextSecondary}" />
         </Style>
-        <Style Selector="^[(vhz|ButtonMotion.PressAnimation)=Scale] /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="RenderTransform" Value="scale(1)" />
-        </Style>
-        <Style Selector="^:pointerover:not(:pressed):not(:disabled), ^:flyout-open:not(:pressed):not(:disabled)">
+        <Style
+            Selector="^:pointerover:not(:pressed):not(:disabled), ^:flyout-open:not(:pressed):not(:disabled), ^[(vhz|ButtonMotion.IsPressStyleEnabled)=False]:pointerover:not(:disabled), ^[(vhz|ButtonMotion.IsPressStyleEnabled)=False]:flyout-open:not(:disabled)">
             <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlHover}" />
         </Style>
-        <Style Selector="^:pressed:not(:disabled)">
+        <Style Selector="^[(vhz|ButtonMotion.IsPressStyleEnabled)=True]:pressed:not(:disabled)">
             <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlPressed}" />
         </Style>
         <Style
-            Selector="^[(vhz|ButtonMotion.PressAnimation)=Scale]:pressed:not(:disabled) /template/ ContentPresenter#PART_ContentPresenter">
+            Selector="^[(vhz|ButtonMotion.PressAnimation)=Scale]:pressed:not(:disabled) /template/ vhz|ButtonContentPresenter#PART_ContentPresenter">
             <Setter Property="RenderTransform" Value="{DynamicResource Vhilz.Transform.PressFeedback}" />
+        </Style>
+        <Style
+            Selector="^[(vhz|ButtonMotion.PressAnimation)=Sink]:pressed:not(:disabled) /template/ vhz|ButtonContentPresenter#PART_ContentPresenter">
+            <Setter Property="RenderTransform" Value="{DynamicResource Vhilz.Transform.PressSink}" />
         </Style>
         <Style Selector="^:disabled">
             <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
@@ -93,7 +102,8 @@
                             <StackPanel Spacing="12">
                                 <TextBlock Text="{Binding}" />
                                 <StackPanel Orientation="Horizontal" Spacing="12">
-                                    <Button Theme="{StaticResource Vhilz.Button.Theme}" Content="按钮" />
+                                    <Button Theme="{StaticResource Vhilz.Button.Theme}" Content="按钮"
+                                            vhz:ButtonMotion.PressAnimation="Sink" />
                                     <Button Theme="{StaticResource Vhilz.Button.Theme}"
                                             vhz:ButtonMotion.PressAnimation="Scale" Content="较长的按钮文本" />
                                     <Button Theme="{StaticResource Vhilz.Button.Theme}"

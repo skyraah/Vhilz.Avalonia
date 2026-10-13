@@ -25,6 +25,7 @@
     <CubicEaseOut x:Key="Vhilz.Easing.Decelerate" />
     <motion:SukiSpringEaseOut x:Key="Vhilz.Easing.Spring" />
     <transform:TransformOperations x:Key="Vhilz.Transform.PressFeedback">scale(0.94)</transform:TransformOperations>
+    <transform:TransformOperations x:Key="Vhilz.Transform.PressSink">translate(0px, 1px)</transform:TransformOperations>
     <x:Double x:Key="Vhilz.Opacity.Disabled">0.4</x:Double>
     <SolidColorBrush x:Key="Vhilz.Brush.OnDanger">White</SolidColorBrush>
     <!-- 焦点轮廓沿用 1 DIP 描边；正式观感仍由 Demo 验收。 -->

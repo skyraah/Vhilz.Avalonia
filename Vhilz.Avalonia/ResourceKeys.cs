@@ -202,6 +202,7 @@ public static partial class ResourceKeys {
     }
 
     public static class Transform {
+        public const string PressSink = "Vhilz.Transform.PressSink";
         public const string PressFeedback = "Vhilz.Transform.PressFeedback";
     }
 
