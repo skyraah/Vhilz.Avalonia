@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vhz="https://github.com/skyraah/Vhilz.Avalonia"
              x:Class="Vhilz.Avalonia.Demo.Components.N01.N01Sample">
     <StackPanel Spacing="16">
         <TextBlock Text="按钮与连续操作" FontSize="20" FontWeight="SemiBold" />
@@ -13,7 +14,24 @@
             <Button Content="禁用按钮" IsEnabled="False" Margin="0,0,8,8" />
         </WrapPanel>
         <RepeatButton Content="按住增加计数" Click="OnClick" Delay="400" Interval="80" />
+        <TextBlock Text="按压反馈对比" FontWeight="SemiBold" />
+        <WrapPanel>
+            <Button Content="轻微下沉" vhz:ButtonMotion.PressAnimation="Sink" Click="OnClick" Margin="0,0,8,8" />
+            <Button Content="缩放反馈" vhz:ButtonMotion.PressAnimation="Scale" Click="OnClick" Margin="0,0,8,8" />
+            <Button Content="下沉（禁用）" vhz:ButtonMotion.PressAnimation="Sink" IsEnabled="False" Margin="0,0,8,8" />
+        </WrapPanel>
         <Button x:Name="CommandButton" Content="命令不可执行" />
+        <TextBlock Text="颜色反馈对比" FontWeight="SemiBold" />
+        <WrapPanel>
+            <Button Content="不使用按下色（保留下沉）" vhz:ButtonMotion.IsPressStyleEnabled="False"
+                    vhz:ButtonMotion.PressAnimation="Sink" Click="OnClick" Margin="0,0,8,8" />
+            <Button Content="颜色立即切换" vhz:ButtonMotion.IsColorAnimationEnabled="False"
+                    Click="OnClick" Margin="0,0,8,8" />
+            <Button Content="慢速颜色过渡" vhz:ButtonMotion.ColorAnimationDuration="{DynamicResource Vhilz.Duration.Slow}"
+                    Click="OnClick" Margin="0,0,8,8" />
+            <Button Content="颜色反馈（禁用）" vhz:ButtonMotion.IsPressStyleEnabled="False"
+                    IsEnabled="False" Margin="0,0,8,8" />
+        </WrapPanel>
         <TextBlock x:Name="Status" Text="已执行 0 次" />
     </StackPanel>
 </UserControl>
