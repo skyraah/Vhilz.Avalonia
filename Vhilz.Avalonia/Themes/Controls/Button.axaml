@@ -20,23 +20,23 @@
             <ControlTemplate TargetType="Button">
                 <Panel Background="Transparent">
                     <vhz:ButtonContentPresenter x:Name="PART_ContentPresenter"
-                                      Background="{TemplateBinding Background}"
-                                      Foreground="{TemplateBinding Foreground}"
-                                      BorderBrush="{TemplateBinding BorderBrush}"
-                                      BorderThickness="{TemplateBinding BorderThickness}"
-                                      CornerRadius="{TemplateBinding CornerRadius}"
-                                      Content="{TemplateBinding Content}"
-                                      ContentTemplate="{TemplateBinding ContentTemplate}"
-                                      Padding="{TemplateBinding Padding}"
-                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                      RenderTransformOrigin="50%,50%"
-                                      RecognizesAccessKey="True"
-                                      IsColorAnimationEnabled="{TemplateBinding vhz:ButtonMotion.IsColorAnimationEnabled}"
-                                      ColorAnimationDuration="{TemplateBinding vhz:ButtonMotion.ColorAnimationDuration}"
-                                      ColorEasing="{DynamicResource Vhilz.Easing.Standard}"
-                                      TransformDuration="{DynamicResource Vhilz.Duration.Normal}"
-                                      TransformEasing="{DynamicResource Vhilz.Easing.Spring}" />
+                                                Background="{TemplateBinding Background}"
+                                                Foreground="{TemplateBinding Foreground}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="{TemplateBinding CornerRadius}"
+                                                Content="{TemplateBinding Content}"
+                                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                Padding="{TemplateBinding Padding}"
+                                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                RenderTransformOrigin="50%,50%"
+                                                RecognizesAccessKey="True"
+                                                IsColorAnimationEnabled="{TemplateBinding vhz:ButtonMotion.IsColorAnimationEnabled}"
+                                                ColorAnimationDuration="{TemplateBinding vhz:ButtonMotion.ColorAnimationDuration}"
+                                                ColorEasing="{DynamicResource Vhilz.Easing.Standard}"
+                                                TransformDuration="{DynamicResource Vhilz.Duration.Normal}"
+                                                TransformEasing="{DynamicResource Vhilz.Easing.Spring}" />
                     <Border x:Name="PART_FocusRing" IsVisible="False" IsHitTestVisible="False"
                             CornerRadius="{TemplateBinding CornerRadius}"
                             BorderBrush="{DynamicResource Vhilz.Brush.Text}"
@@ -48,35 +48,46 @@
         <Style Selector="^[(vhz|ButtonMotion.PressAnimation)=Sink]">
             <Setter Property="ClipToBounds" Value="False" />
         </Style>
-        <Style Selector="^[(vhz|ButtonMotion.PressAnimation)=Scale] /template/ vhz|ButtonContentPresenter#PART_ContentPresenter">
+        <!-- 缩放模式：设定内容表面的原始比例，供松开后回弹。 -->
+        <Style
+            Selector="^[(vhz|ButtonMotion.PressAnimation)=Scale] /template/ vhz|ButtonContentPresenter#PART_ContentPresenter">
             <Setter Property="RenderTransform" Value="scale(1)" />
         </Style>
-        <Style Selector="^[(vhz|ButtonMotion.PressAnimation)=Sink] /template/ vhz|ButtonContentPresenter#PART_ContentPresenter">
+        <!-- 下沉模式：设定内容表面的原位与快速减速过渡。 -->
+        <Style
+            Selector="^[(vhz|ButtonMotion.PressAnimation)=Sink] /template/ vhz|ButtonContentPresenter#PART_ContentPresenter">
             <Setter Property="RenderTransform" Value="translate(0px, 0px)" />
             <Setter Property="TransformDuration" Value="{DynamicResource Vhilz.Duration.Fast}" />
             <Setter Property="TransformEasing" Value="{DynamicResource Vhilz.Easing.Decelerate}" />
         </Style>
+        <!-- 默认操作按钮：强化边框，提示回车触发的目标。 -->
         <Style Selector="^[IsDefault=True]">
             <Setter Property="BorderBrush" Value="{DynamicResource Vhilz.Brush.TextSecondary}" />
         </Style>
+        <!-- 可用按钮悬停或弹层展开时提亮；关闭按下配色后，按住仍保留此反馈。 -->
         <Style
             Selector="^:pointerover:not(:pressed):not(:disabled), ^:flyout-open:not(:pressed):not(:disabled), ^[(vhz|ButtonMotion.IsPressStyleEnabled)=False]:pointerover:not(:disabled), ^[(vhz|ButtonMotion.IsPressStyleEnabled)=False]:flyout-open:not(:disabled)">
             <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlHover}" />
         </Style>
+        <!-- 启用按下配色时，以按下背景替代悬停背景；禁用按钮不参与。 -->
         <Style Selector="^[(vhz|ButtonMotion.IsPressStyleEnabled)=True]:pressed:not(:disabled)">
             <Setter Property="Background" Value="{DynamicResource Vhilz.Brush.ControlPressed}" />
         </Style>
+        <!-- 缩放模式按下时收缩内容表面，保持按钮布局和命中区域稳定。 -->
         <Style
             Selector="^[(vhz|ButtonMotion.PressAnimation)=Scale]:pressed:not(:disabled) /template/ vhz|ButtonContentPresenter#PART_ContentPresenter">
             <Setter Property="RenderTransform" Value="{DynamicResource Vhilz.Transform.PressFeedback}" />
         </Style>
+        <!-- 下沉模式按下时下移内容表面，保持按钮布局和命中区域稳定。 -->
         <Style
             Selector="^[(vhz|ButtonMotion.PressAnimation)=Sink]:pressed:not(:disabled) /template/ vhz|ButtonContentPresenter#PART_ContentPresenter">
             <Setter Property="RenderTransform" Value="{DynamicResource Vhilz.Transform.PressSink}" />
         </Style>
+        <!-- 禁用时整体淡化，统一弱化边框、背景与内容。 -->
         <Style Selector="^:disabled">
             <Setter Property="Opacity" Value="{DynamicResource Vhilz.Opacity.Disabled}" />
         </Style>
+        <!-- 可用按钮需要可见焦点提示时显示独立焦点环，不覆盖表面配色。 -->
         <Style Selector="^:focus-visible:not(:disabled) /template/ Border#PART_FocusRing">
             <Setter Property="IsVisible" Value="True" />
         </Style>
